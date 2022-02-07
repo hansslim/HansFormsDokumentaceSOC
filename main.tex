@@ -12,43 +12,55 @@
 \date{2022} %% -- rok, kdy píšeš SOČku
 
 \usepackage[top=2.5cm, bottom=2.5cm, left=3.5cm, right=1.5cm]{geometry} %% nastaví okraje, left -- vnitřní okraj, right -- vnější okraj
-
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{pdfpages} %% Balíček umožňující vkládat stránky z PDF souborů, 
+\usepackage{float} %% formátování obrázků
 \usepackage[czech]{babel} %% balík babel pro sazbu v češtině
 \usepackage[utf8]{inputenc} %% balíky pro kódování textu
 \usepackage[T1]{fontenc}
 \usepackage{cmap} %% balíček zajišťující, že vytvořené PDF bude prohledávatelné a kopírovatelné
-
 \usepackage{graphicx} %% balík pro vkládání obrázků
-
 \usepackage{subcaption} %% balíček pro vkládání podobrázků
-
 \usepackage{hyperref} %% balíček, který v PDF vytváří odkazy
 
-\linespread{1.15} %% řádkování
+%% styly kapitol a sekcí
+	\usepackage[pagestyles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
+	%% definování nové sekce resp. jeho příkazu (5.)
+	\titleclass{\subsubsubsection}{straight}[\subsection]
+	\newcounter{subsubsubsection}[subsubsection]
+	\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+	\makeatletter
+	\def\toclevel@subsubsubsection{4}
+	\def\l@subsubsubsection{\@dottedtocline{4}{11em}{4em}}
+	\makeatother
+	%%
+	
+	%% stylování jednotlivých nadpisů sekcí
+	\titleformat{\chapter}[block]{\scshape\bfseries\LARGE}{\thechapter}{12pt}{\vspace{0pt}}[\vspace{-34pt}]
+	\titleformat{\section}[block]{\scshape\bfseries\Large}{\thesection}{12pt}{\vspace{-10pt}}
+	\titleformat{\subsection}[block]{\bfseries\large}{\thesubsection}{12pt}{\vspace{-8pt}}
+	\titleformat{\subsubsection}[block]{\bfseries\large}{\thesubsubsection}{12pt}{\vspace{-8pt}}
+	
+	\titleformat{\subsubsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{\vspace{-9pt}}
+	\titlespacing*{\subsubsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+	%%
+	
+	%% vykreslování úrovní v nadpisech a v obsahu
+	\setcounter{secnumdepth}{6}
+	\setcounter{tocdepth}{6}
+	%%
+%% konec stylů kapitol a sekcí
 
-\usepackage[pagestyles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
-\titleformat{\chapter}[block]{\scshape\bfseries\LARGE}{\thechapter}{12pt}{\vspace{0pt}}[\vspace{-34pt}]
-\titleformat{\section}[block]{\scshape\bfseries\Large}{\thesection}{12pt}{\vspace{-10pt}}
-\titleformat{\subsection}[block]{\bfseries\large}{\thesubsection}{12pt}{\vspace{-8pt}}
-\titleformat{\subsubsection}[block]{\bfseries\large}{\thesubsubsection}{12pt}{\vspace{-8pt}}
-
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{1}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
 
-\usepackage{booktabs}
-
-\usepackage{url}
-
-\usepackage{pdfpages} %% Balíček umožňující vkládat stránky z PDF souborů, 
-
-\usepackage{float} %% formátování obrázků
-
 %% formátování odstavců
 \setlength{\parindent}{0em}
 \setlength{\parskip}{0,7em}
+
+\linespread{1.15} %% řádkování
 
 %% Začátek dokumentu
 %%%%%%%%%%%%%%%%%%%%
@@ -78,6 +90,5 @@
 %
 %\chapter{%Příloha A 
 %Spot diagramy a další }
-
 
 \end{document}

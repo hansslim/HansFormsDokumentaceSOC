@@ -23,6 +23,9 @@
 \usepackage{graphicx} %% balík pro vkládání obrázků
 \usepackage{subcaption} %% balíček pro vkládání podobrázků
 \usepackage{hyperref} %% balíček, který v PDF vytváří odkazy
+\usepackage{etoolbox}
+
+\patchcmd{\thebibliography}{*}{}{}{} %% přidání číslování pro nadpis zdrojů
 
 %% styly kapitol a sekcí
 	\usepackage[pagestyles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
@@ -90,5 +93,7 @@
 %
 %\chapter{%Příloha A 
 %Spot diagramy a další }
+
+\input{texts/appendix.tex}
 
 \end{document}

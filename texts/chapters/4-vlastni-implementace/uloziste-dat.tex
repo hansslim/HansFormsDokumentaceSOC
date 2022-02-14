@@ -1,17 +1,10 @@
-\section{Úchovávání dat}
-Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někde uchovávány. Webová aplikace (tj. VueJS frontend a Laravel backend) je nasazena pomocí služby "App Platform" od poskytovatele DigitalOcean. PostgreSQL databáze pro administraci nad uživatelskými daty a formuláři, jejíž struktura bude rozebrána v této části, je nasazena na Heroku serveru. 
+\section{Uchovávání dat}
+Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někde uchovávány. Webová aplikace (tj. VueJS frontend a Laravel backend) je nasazena pomocí služby \uv{App Platform} od poskytovatele DigitalOcean. PostgreSQL databáze pro administraci nad uživatelskými daty a formuláři, jejíž struktura bude rozebrána v této části, je nasazena na Heroku serveru. 
 
 	\subsection{Struktura databáze}
-	K tomu, aby byla struktura databáze vysvětlena, je níže vygenerováno schéma pomocí programu DataGrip !!!citace!!!, které by mělo sloužit pro lepší vizualizaci.
+	K tomu, aby byla struktura databáze vysvětlena, je v příloze přiloženo vygenerované schéma pomocí programu DataGrip (viz příloha \nameref{fig:db_diagram}), které by mělo sloužit pro lepší vizualizaci. 
 	
-	\begin{figure}[h]
-		\centering %% příkaz, který ti obrázek zarovná na střed
-		\includegraphics[width=0.65\textwidth]{img/db_diagram.png} %% vložení samotného obrátku
-		\caption{Diagram struktury databáze} %% popisek obrázku, nezapomeň na citace!
-		\label{fig:db_diagram} %% označení až budeš chtít na obrázek odkazovat
-	\end{figure}
-	
-	Jak je již z obrázku vidět, databáze je tvořena tabulkami, které jsou provázány určitými relacemi. Všechny tabulky (kromě tabulky \textit{password\_resets} atribut \textit{id}) mají unikátní primární klíč, kterým lze identifikovat jednotlivé instance. Většina z nich má také tzv. cizí klíč, který slouží k propojení s jinou tabulkou na základě shody tohoto klíče s cizím primárním klíčem. Také většina obsahuje předgenerované atributy timestamps (v překladu časová razítka) \textit{created\_at} a \textit{updated\_at}, které nám umožňují sledovat, kdy byla položka vytvořena či upravena.
+	Ze schématu vyplývá, že je databáze tvořena tabulkami, které jsou provázány určitými relacemi. Všechny tabulky (kromě tabulky \textit{password\_resets} atribut \textit{id}) mají unikátní primární klíč, kterým lze identifikovat jednotlivé instance. Většina z nich má také tzv. cizí klíč, který slouží k propojení s jinou tabulkou na základě shody tohoto klíče s cizím primárním klíčem. Také většina obsahuje předgenerované atributy timestamps (v překladu časová razítka) \textit{created\_at} a \textit{updated\_at}, které nám umožňují sledovat, kdy byla položka vytvořena či upravena.
 	
 	V práci nebudou popsány tabulky \textit{personal\_access\_tokens}, \textit{failed\_jobs}, \textit{migrations} a \textit{password\_resets}, jelikož se jedná o předgenerované tabulky Laravelem. Výjimkou je tabulka \textit{users}, která byla cíleně využita.
 	
@@ -44,7 +37,7 @@ Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někd
 	Speciálním případem je poslední zmíněný vstup pro odpověď z výběru předepsaných možných odpovědí. K němu je vytvořena tabulka \textit{select\_input\_choices}, sloužící k ukládání jednotlivých možností odpovědí k nadřazenému vstupu pro odpověď. Jsou zde obsaženy tyto atributy: text vyjadřující možnou odpověď (\textit{text}), skrytý popisek pro export (\textit{hidden\_label}) a pořadí, jak mají být možnosti otázky seřazeny.
 	
 	\subsubsection{Odpovědi k otázkám}
-	Dalšími objekty jsou odpovědi k otázkám, které - jak už z jejich názvu vyplývá - slouží k zaznamenávání příslušných odpovědí k jednotlivým otázkám. Je jich stejné množství jako počet typů vstupů a s každým tímto vstupem jsou samozřejmě relačně provázány - musí náležet jak příslušnému typu vstupu, tak i objektu vyplnění formuláře (tabulka \textit{form\_completions}). Obsahuji kromě standardních atributů jen atribut hodnoty (\textit{value}), ve kterém je uložena právě odpověď na otázku.
+	Dalšími objekty jsou odpovědi k otázkám. Ty slouží k samotnému zaznamenávání uživatelských vstupů při vyplnění formuláře - tedy odpovědí. Je jich stejné množství jako počet typů vstupů a s každým tímto vstupem jsou samozřejmě relačně provázány - musí náležet jak příslušnému typu vstupu, tak i objektu vyplnění formuláře (tabulka \textit{form\_completions}). Obsahuji kromě standardních atributů jen atribut hodnoty (\textit{value}), ve kterém je uložena právě odpověď na otázku.
 	
 	Jedinou výjimkou je znovu objekt pro zaznamenávání odpovědí pro otázky s výběrem předepsaných možných odpovědí. V něm není hodnota uložena ve sloupci \textit{value}, ale jako cizí klíč odkazující na příslušnou možnost otázky.
 	

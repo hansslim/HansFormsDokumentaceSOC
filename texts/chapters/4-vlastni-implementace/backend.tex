@@ -1,19 +1,23 @@
 \section{Backend}
-	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API (???citace???) - tzn. že na ní přicházejí požadavky od klienta a na ně náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno dále.
+	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno dále.
 	
 	Zde jsou zobecněné základní úkony, které v mé implementaci právě backend vykonává:
+	
 	\begin{itemize}
 		\item Zpracování a vyřizování požadavků z webové frontendové části
-		\item Administraci databáze - tzn. vytváření, úpravu, mazání a čtení jednotlivých objektů a migrace databáze (tj. automatizovaná deklarace struktury databázového objektu ???citace???)
+		\item Administraci databáze - tzn. vytváření, úpravu, mazání a čtení jednotlivých objektů a migrace databáze (tj. automatizovaná deklarace struktury databázového objektu)
 		\item Rozesílání emailů (např. pozvánky na neveřejný formulář)
 		\item Exportování dat do Excel tabulek
 		\item Autentifikaci uživatele
 	\end{itemize}
 	 
+	V následující části jsou popsány jednotlivé backendové komponenty a principy, díky kterým je celý projekt implementován.
+	
 	\subsection{Obecná struktura Laravel projektu}
 	%% obrázek stromové struktury složky
 
 	\subsection{Modely}
+	Modely slouží k mapování jednotlivých dat z databáze. 
 			
 	\subsection{Kontrolery}
 	

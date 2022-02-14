@@ -1,15 +1,15 @@
 \chapter{Použité technologie}
-V dnešní době máme na výběr mnoho technologií, ve kterých můžeme tvořit různé aplikace. Po mnohých konzultacích jsem vybral pro svůj projekt následující. 
+Tato kapitola shrnuje a představuje hlavní technologie využité při řešení a implementaci projektu.
 
 \section{Frontend}
 Za frontend je v souvislosti s programováním a návrhem aplikace považováno to, co běžně vidí uživatel dané aplikace. Jedná se o vizuální stránku programu, díky které lze komunikovat s tzv. backendem (viz dále) – to znamená, že musí jednak správně interagovat s uživatelem (např. umožnit uživateli si v e-shopu vybrat zboží, zpracovat další potřebné údaje poskytnuté uživatelem a následně zboží objednat), ale i se serverem (např. posílat validní data a instrukce od uživatele na server).
 
-Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena primárně pro běžnou a intuitivní obsluhu lidmi, kteří ani nemusí rozumět technologiím, na kterých tato část funguje. \cite{FEvsBE}
+Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena primárně pro běžnou a intuitivní obsluhu lidmi, kteří nemusí a ani nepotřebují rozumět technologiím, na kterých tato část funguje. \cite{FEvsBE}
 
 	\subsection{Javascript}
-	JavaScript je multiplatformní, objektově orientovaný, událostmi řízený skriptovací jazyk, který je používán primárně při tvorbě webových stránkách. Je určen především pro tvorbu klientské strany, ale např. díky prostředí Node.js lze v něm dnes psát i serverovou část aplikace. \cite{JS1} \cite{JS2}
+	JavaScript je multiplatformní, objektově orientovaný, událostmi řízený skriptovací jazyk, který je používán primárně při tvorbě webových stránek. Je určen především pro tvorbu klientské strany, ale např. díky prostředí Node.js lze v něm dnes psát i serverovou část aplikace. \cite{JS1} \cite{JS2}
 	
-	V dnešní době psát web v čistém Javascriptu v souvislosti s pokročilejšími webovými aplikacemi s největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen níže.
+	Psát web v čistém Javascriptu dnes v souvislosti s pokročilejšími webovými aplikacemi s největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen níže.
 	
 	\subsection{VueJS}
 	VueJS je open-source progresivní framework určený k tvorbě uživatelských rozhraní. Jedná se framework psaný v jazyce Javascript, ale lze ho psát i v Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v něm např. programovat chování serveru. \cite{VueJS1}
@@ -37,7 +37,7 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 	
 	Dále samotný Laravel disponuje velkým ekosystémem přídavků, funkcí a knihoven, díky kterým si můžeme při vývoji ještě více usnadnit práci. \cite{LaravelEco} V mém projektu ze zmíněného ekosystému využívám např. Laravel Sanctum pro autentifikaci single-page aplikací.
 	
-		\subsubsection{Vzor MVC}
+		\subsubsection{Návrhový vzor MVC}
 		MVC (zkr. pro Model-View-Controller) je architektonický vzor, jehož základní myšlenkou je oddělení logiky od výstupu. Obsahuje (jak už z názvu vyplývá) tři základní komponenty:
 		
 		\begin{itemize}
@@ -54,17 +54,17 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 	\subsection{Webhosting}
 	Webhosting je služba, díky které si můžeme pronajmout prostor na cizím vzdáleném serveru pro naše webové stránky. Poskytovatelé těchto služeb většinou nabízí i služby spojené s provozem databází nebo e-mailové schránky. Hlavní výhodou této služby je fakt, že nemusíme fyzicky vlastnit žádný server a že nemusíme řešit administrativní úkony s ním spojené (např. instalace specializovaného softwaru na serveru). \cite{Webhosting}
 	
-	Pro mé účely bylo potřeba mít jak webový server pro nahrání celé aplikace, tak i databázový server pro uchovávání dat. O mnou využitých poskytovatelích těchto služeb je psáno v práci dále. 
+	Pro účely tohoto projektu bylo potřeba mít jak webový server pro nahrání celé aplikace, tak i databázový server pro uchovávání dat. O mnou využitých poskytovatelích těchto služeb je psáno v práci dále. 
 	
 		\subsubsection{DigitalOcean}
 		DigitalOcean je americký poskytovatel cloudových služeb s datovými centry po celém světě. Nabízí obrovské množství technologií a služeb – např. správu webového serveru, virtuální stroje či možnost zprostředkování databázového serveru. Celkově se společnost snaží především o poskytnutí služeb, které budou uživatelsky přívětivé. \cite{DO1} \cite{DO2}
 		
-		Z balíčku služeb, které DigitalOcean nabízí, jsem pro svůj projekt využil takzvanou „App Platform“ \cite{DO3}, do které lze jednoduše nahrát soubory webové aplikace a následně využívat webové služby.
+		Z balíčku služeb, které DigitalOcean nabízí, byla pro tento projekt použita takzvaná \uv{App Platform} \cite{DO3}, do které lze jednoduše nahrát soubory webové aplikace a následně využívat webové služby.
 		
 		\subsubsection{Heroku}
 		Heroku je cloudová platforma, která je využívána k nasazení, správě a škálování moderních aplikací. V rámci nabízených služeb se velmi podobá DigitalOceanu – nabízí tedy např. možnost využití virtuálních strojů a služby s tím spojené nebo možnost zprostředkování nejrůznějších databázových serverů. \cite{Heroku1} \cite{Heroku2}
 		
-		V rámci mé implementace byla od Heroku využita služba zprostředkovávající databázové služby – konkrétně PostgreSQL server. 
+		V rámci této implementace byla od Heroku využita služba zprostředkovávající databázové služby – konkrétně PostgreSQL server. 
 		
 	\subsection{Databáze}
 	Databáze je organizovaná kolekce strukturovaných dat, která je v dnešní době běžně uchovávána elektronicky. Je většinou řízena tzv. database management systémem (DBMS), který zajištuje veškerou administrativu nad daty. Data a DBMS dohromady tvoří databázový systém. Cílem moderní databáze je např. zajistit zpracování a uchovávání velkého množství dat, zabezpečení dat, dostupnost dat, možnost správy a údržby systému či škálovatelnost. Za předchůdce databáze lze považovat např. kartotéku u lékaře. \cite{DBSummary}
@@ -78,7 +78,7 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 		\item \textbf{Objektově orientovaný model} – data jsou reprezentována jako objekty, které vychází z objektově-orientovaného programování \cite{OOPDB}
 	\end{itemize}
 	
-	K zajištění možnosti ovládání databáze musí být také zajištěn způsob, jakým lze s databází komunikovat. K těmto účelům vznikly tzv. dotazovací jazyky, které právě slouží ke komunikaci uživatele s příslušným programem \cite{DotazJazyk} - zde databázovým systémem. Mezi nejpoužívanější jazyky tohoto druhu patří např. jazyk SQL primárně používán s relačními databázemi \cite{SQL}.
+	K zajištění možnosti ovládání databáze musí být také zajištěn způsob, jakým lze s databází komunikovat. K těmto účelům vznikly tzv. dotazovací jazyky, které právě slouží ke komunikaci uživatele s příslušným programem \cite{DotazJazyk} - zde databázovým systémem. Mezi nejpoužívanější jazyky tohoto druhu patří jazyk SQL, který je primárně používán s relačními databázemi \cite{SQL}.
 	
 	Dalším důležitým faktorem je spolehlivost databáze. K tomuto účelu slouží tzv. zásady ACID - ty garantují, že data po jednotlivých úkonech nebo transakcích (zjednodušeně skupiny úkonů \cite{Transakce}) - např. aktualizace dat - budou přesná a konzistentní i při selhání systému. Zkratku ACID lze rozdělit na tyto části:
 	
@@ -93,4 +93,4 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 	V projektu byla využita relační databáze PostgreSQL, která je popsána dále.
 	
 		\subsubsection{PostgreSQL}
-		PostgreSQL je open-source objektově-relační databáze (spojení relačního a objektově orientovaného modelu) splňující ACID zásady. Je rozšířená a oblíbená kvůli její architektuře, výkonnosti, spolehlivosti, datové integritě, rozšířitelnosti, škálovatelnosti a velkému množství funkcí. Komunikuje pomocí jazyku SQL, který rozšiřuje o další funkce a syntaxi. \cite{PostgreSQL}
+		PostgreSQL je open-source objektově-relační databáze (spojení relačního a objektově orientovaného modelu) splňující ACID zásady. Je rozšířená a oblíbená kvůli její architektuře, výkonnosti, spolehlivosti, datové integritě, rozšířitelnosti, škálovatelnosti a velkému množství funkcí. Využívá jazyk SQL, který rozšiřuje o další funkce a syntaxi. \cite{PostgreSQL}

@@ -43,7 +43,7 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 		\begin{itemize}
 			\item \textbf{Model} – obsahuje veškerou logiku spojenou s daty (např. databázové dotazy); neřeší, odkud data přišla a ani jak budou dále předána uživateli
 			\item \textbf{View} (v překladu Pohled) – řeší, jak budou data vyobrazena uživateli; neřeší, odkud mu data přišla
-			\item \textbf{Controller} (v překladu Řadič) – tzv. prostředník mezi modely a pohledy – propojuje je; reaguje na podněty uživatele
+			\item \textbf{Controller} (v překladu Řadič nebo Kontrolér) – tzv. prostředník mezi modely a pohledy – propojuje je; reaguje na podněty uživatele
 		\end{itemize}
 	
 		Jeho účelem je zamezení tvorby tzv. „špagetového kódu“ – tj. dlouhý soubor, který obsahuje implementaci výše zmíněných funkcionalit (vše na jednom místě), což je v konečném důsledku velmi nepřehledné. Také nám usnadňuje myšlení při vývoji projektu – jednotlivé části kódu se umisťují tam, kam patří (např. stylování a konečný výstup pro uživatele do pohledu). \cite{MVC}

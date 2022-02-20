@@ -213,7 +213,7 @@
 	
 	Kromě zmíněných vlastností bylo ještě nutné specifikovat tzv. cizí klíče, které slouží k vytvoření relací mezi ostatními databázovými objekty a k celkovému provázání dat. Jedná se o samostatné atributy, které většinou obsahují ID jiného objektu v databázi - tím je zaručeno, který řádek v tabulce patří k řádku/řádkům jiné tabulky. 
 	
-	 \begin{figure}[H]
+	 \begin{figure}[h]
 		\centering
 		\includegraphics[width=0.85\textwidth]{img/migrace.png}
 		\caption{Ukázka části kódu migrace (Tabulka pro formuláře)}
@@ -225,17 +225,95 @@
 	Poslední věcí, která byla nutná k zachování referenční integrity dat v databázi pro implementaci projektu, bylo u několika tabulek specifikovat chování při smazání řádku z tabulky, který je provázán s jinou tabulkou. K tomu slouží vlastnost \textit{onDelete}, kde toto chování deklarujeme. V tomto projektu je použit způsob chování \uv{kaskáda}. Ta funguje v případě mazání tak, že pokud je smazán rodičovský (nadřazený) objekt, tak jsou smazány všichni potomci (podřazené objekty). *cite??? https://kb.objectrocket.com/postgresql/how-to-use-the-postgresql-delete-cascade-1369*
 		
 		\subsubsection{Testovací data}
-		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k těmto účelům v Laravelu existují tzv. Factories.
+		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k těmto účelům v Laravelu existují tzv. Factories a Seeders.
 		
-		Factories (volně přeloženo jako Továrny) slouží k naplnění databáze vygenerovanými testovacími daty, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z továren.
+		Factories (volně přeloženo jako Továrny) slouží k vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z továren.
 	
 	\subsection{Pohledy}
+	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \textit{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. Javascript nebo CSS soubory. 
 	
+	V tomto projektu (jak již bylo zmíněno výše) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s názvem \textit{app}. Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jen jeden oddíl s ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{img/pohled_app.png}
+		\caption{Šablona \textit{app} (pro účely této práce upravena)}
+		\label{fig:pohled_app}
+	\end{figure}
 	
 	\subsection{Průběh jednotlivých činností}
-		\subsubsection{Ukládání formuláře}
-		\subsubsection{Mazání formuláře}
-		\subsubsection{Export dat}
-		%% atd.
+	V této části jsou popsány postupy, jak se jednotlivé akce zpracovávají na serveru a jak jsou data předávána databázi či uživateli webové stránky. Úkony jsou rozděleny tak, jak jsou zapsány v kontrolérech. Z hlediska kódu je každý úkon metodou kontroléru.
+	
+	Každá z těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Níže je seznam přímo využitých stavových kódů, které jsou serverem předávány.
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{ | p{0.1\linewidth} | p{0.3\linewidth} |  p{0.5\linewidth} |} 
+			\hline
+			\textbf{Stavový kód} & \textbf{Hláška} & \textbf{Popis hlášky} \\ 
+			\hline
+			200 & OK & Operace proběhla úspěšně. \\
+			\hline
+			204 & No Content & Operace proběhla úspěšně, ale žádná data nebyla klientovi poslána. \\
+			\hline
+			400 & Bad Request & Server nerozumí požadavku. \\
+			\hline
+			401 & Unauthorized & Server vyžaduje autorizaci. \\
+			\hline
+			404 & Not Found & Požadovaná stránka nebyla nalezena. \\
+			\hline
+			410 & Gone & Požadovaná stránka již není dostupná. \\
+			\hline
+			423 & Locked & Požadovaný zdroj je uzamčen. \\
+			\hline
+			500 & Internal Server Error & Obecná chybová hláška serveru - došlo k neočekávané chybě. \\
+			\hline
+		\end{tabular}
+		\caption{Využité stavové kódy HTTP}
+		\label{tab:http_stavove_kody}
+	\end{table}
 
+	Nutno zmínit, že stavový kód \uv{200 (OK)} je v této implementaci projektu automaticky odesílán v případě, že v průběhu vyřizování požadavku není zaznamenána žádná chyba. Dále v práci proto nebude jeho odesílání zmiňováno.
+	
+	*cite 20.2.2022 https://www.interval.cz/clanky/stavove-kody-a-hlaseni-v-odpovedi-protokolu-http/*
+	*cite https://cs.wikipedia.org/wiki/Stavov\%C3\%A9\_k\%C3\%B3dy\_HTTP*
+	
+	%%table HTTP codes
+	
+		\subsubsection{Manipulace s formuláři}
+		Tato část popisuje veškerou administrativu nad formuláři.
+		
+			\subsubsubsection{Vrácení všech formulářů}
+			Metoda (s názvem \textit{index}) nejprve ověří, zda je uživatel přihlášen. Pokud přihlášen je, vrátí uživateli všechny jeho formuláře bez elementů formuláře a bez dat o uživateli, které se obecně k datům připojují. Tento set formulářů je seřazen podle doby vytvoření formuláře sestupně. Pokud přihlášen není, je vrácen stavový kód 401.
+			
+			Metoda slouží k hydrataci úvodní stránky uživatele - jedná se o přehled všech vlastněných formulářů.
+			
+			\subsubsubsection{Vytvoření formuláře}
+			
+			
+			\subsubsubsection{Vrácení konkrétního veřejného formuláře}
+			\subsubsubsection{Vrácení konkrétního privátního formuláře}
+			\subsubsubsection{Duplikování formuláře}
+			\subsubsubsection{Vrácení informací o formuláři majiteli}
+			\subsubsubsection{Zveřejnění výsledků formuláře} %% přesunout?
+			\subsubsubsection{Úprava formuláře}
+			\subsubsubsection{Úprava dostupnosti formuláře}
+			\subsubsubsection{Mazání formuláře}
+			\subsubsubsection{Export dat}
+			
+		\subsubsection{Manipulace s výsledky formuláře}
+			\subsubsubsection{Vrácení všech výsledků}
+			\subsubsubsection{Vrácení veřejných výsledků}
+			\subsubsubsection{Export výsledků}
+			\subsubsubsection{Zaznamenávání odpovědi na veřejný formulář}
+			\subsubsubsection{Zaznamenávání odpovědi na privátní formulář}
+		
+		\subsubsection{Manipulace s uživateli}
+			\subsubsubsection{Registrace uživatele}
+			\subsubsubsection{Přihlášení uživatele}
+			\subsubsubsection{Odhlášení uživatele}
+			\subsubsubsection{Vrácení informací o uživateli}
+			\subsubsubsection{Vymazání účtu uživatele}
+			\subsubsubsection{Zapomenuté heslo uživatele} %% přepsat?
+			\subsubsubsection{Resetování hesla uživatele}
 

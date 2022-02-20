@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper,
+\documentclass[hidelinks, 12pt, a4paper,
   %oneside,      %% -- odkomentujte, pokud chcete svou práci mít pouze jednostrannou, mezera pro hřbet pak automaticky bude pouze na levé straně
  twoside,        %% -- pro oboustranné práce, mezera pro hřbet následně střídá strany.
  openright
@@ -31,7 +31,7 @@
 \patchcmd{\thebibliography}{*}{}{}{} %% přidání číslování pro nadpis zdrojů
 
 %% styly kapitol a sekcí
-	\usepackage[pagestyles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
+	\usepackage[pagestyles,nobottomtitles*]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
 	%% definování nové sekce resp. jeho příkazu (5.)
 	\titleclass{\subsubsubsection}{straight}[\subsection]
 	\newcounter{subsubsubsection}[subsubsection]

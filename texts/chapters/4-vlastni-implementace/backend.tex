@@ -24,7 +24,7 @@
 	%% obrázek struktury složky
 	Jak můžeme na obrázku výše vidět, celý projekt je složen z mnoha složek a souborů. Jelikož podrobný rozbor jednotlivých částí není předmětem této práce, tak jsou nejdůležitější části pro implementaci projektu popsány níže jen obecně.
 	\begin{itemize}
-		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace
+		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery)
 		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace
 		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace
 		\item Složka \textit{database} obsahuje soubory spojené s prací s databázi
@@ -42,10 +42,109 @@
 		\item Soubor webpack.mix.js obsahující informace pro kompilaci souborů pro frontend \cite{LaravelJSCSS}
 	\end{itemize} \cite{LaravelDir}
 
-	\subsection{Modely}
-	Modely slouží k mapování jednotlivých dat z databáze a jsou zprostředkovány pomocí objektově-relačního mapovacího balíčku Eloquent. Pro správnou funkčnost musí být zajištěno, že má každá tabulka v databázi vlastní model. Díky tomuto přístupu lze s daty manipulovat tak, že vytvoříme instanci příslušné třídy a na ní voláme příslušné metody (např. \textit{update} pro změnu záznamů). *cite https://laravel.com/docs/8.x/eloquent*
+	\subsection{Cesty} %%Routes
+	Cesty (volně přeložen původní název Routes) jsou využívány abstraktně k rozdělení aplikace - to je myšleno tak, že na každé cestě lze provádět jen úkon, který jí je přiřazen. Tyto cesty mají tvar URL adresy - skládají se z názvu výchozí domény, který je rozšířen o příslušnou cestu (ve formě textového řetězce děleného lomítky), a jsou využívány např. v prohlížeči pro přístup na specifickou stránku. Příkladem může být cesta vytvoření formuláře s příkladovou výchozí doménou \textit{localhost} s portem 8000 \textit{\uv{localhost:8000/forms/create}}. Po zadání této cesty do webového prohlížeče se za splnění podmínek jako spuštění lokálního serveru s aplikací a přihlášení do uživatelského účtu zobrazí požadovaná stránka.
 	
-	V rámci tohoto projektu vzniklo mnoho modelů, které mapují většinu tabulek databáze (v kontextu mnou vytvořených modelů nejsou vytvořeny modely např. pro předgenerované tabulky jako \textit{migrations} nebo \textit{failed\_jobs}). Kromě samotné funkce mapování dat z databáze jim můžeme přiřazovat různé vlastnosti a metody, díky kterým lze měnit např. chování při předávání dat. Nejdůležitější a mnou použité jsou v následujícím seznamu:
+	Běžně se v Laravelu tyto cesty definují v souboru \textit{web.php} - v tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v aplikaci dostat, jsou definovány ve frontendové části - to také vyplývá z předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v prohlížeči vykreslena - k tomu slouží frontendová část ve VueJS. K těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v části Pohledy), který je pak doplněn o příslušný obsah, který zajišťuje oddělený frontend. Jedinou výjimkou jsou zde cesty pro resetování hesla předdefinované pro samotný Laravel.
+	
+	\begin{figure}[H]
+		\centering %% příkaz, který ti obrázek zarovná na střed
+		\includegraphics[width=0.6\textwidth]{img/routes/web_routes.png} %% vložení samotného obrátku
+		\caption{Část kódu \textit{web.php} vracející pohled \textit{app} na všech cestách} %% popisek obrázku, nezapomeň na citace!
+		\label{fig:routes_web} %% označení až budeš chtít na obrázek odkazovat
+	\end{figure}
+	
+	Cesty, které Laravel specificky obsluhuje, jsou v souboru \textit{api.php}. Na tyto cesty uživatel v adresním řádku webového prohlížeče vůbec nepřistupuje - jsou využívány ve frontendové části na pozadí. Až zde je vlastně definováno abstraktní rozdělení aplikace - dle cesty se vykonává určitý úkon. 
+	
+	Tyto API cesty jsou oproti běžným cestám aplikace rozlišeny tak, že mezi výchozí doménu a cestu k dané službě je vložen řetězec \textit{\uv{/api/}} - to je výchozí chování cest v souboru \textit{api.php}. K tomu, aby tyto cesty fungovaly s dalšími službami, bylo nutné je specifikovat v konfiguračních souborech \textit{sanctum.php} a \textit{cors.php}.
+	
+	\begin{figure}[H]
+		\centering %% příkaz, který ti obrázek zarovná na střed
+		\includegraphics[width=0.9\textwidth]{img/routes/api_routes.png} %% vložení samotného obrátku
+		\caption{Část kódu \textit{api.php}} %% popisek obrázku, nezapomeň na citace!
+		\label{fig:routes_api} %% označení až budeš chtít na obrázek odkazovat
+	\end{figure}
+	
+	Zmíněné cesty jsou rozděleny do dvou skupin - s veřejným přístupem (bez přihlášení) nebo s privátním přístupem (s přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s příslušnými daty odeslány údaje o přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček Laravel Sanctum pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarovaný v přiděleném kontroléru. 
+	
+	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
+	
+	V rámci popisu aplikace jsou zde tabulky s jednotlivými cestami a jejich úkony - první obsahuje veřejné cesty, druhá obsahuje cesty s přihlášením. Hodnoty u cest ve složených závorkách značí určitou proměnnou přenášenou přes URL adresu (např. \textit{slug} jako identifikátor formuláře).
+	
+	\newpage
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{ | p{0.4\linewidth} | p{0.1\linewidth} | p{0.4\linewidth} | } 
+			\hline
+			\textbf{Cesta (\texttt{/api/} + řetězec níže)} & \textbf{Metoda} & \textbf{Funkce} \\ 
+			\hline
+			\texttt{/login} & POST & Přihlášení uživatele \\ 
+			\hline
+			\texttt{/register} & POST & Registrace uživatele \\ 
+			\hline
+			\texttt{/logged\_user} & GET & Vrácení přihlášeného uživatele \\ 
+			\hline
+			\texttt{/forgot\_password} & POST & Zaslání emailu pro resetování hesla \\
+			\hline
+			\texttt{/reset\_password} & POST & Resetování hesla \\
+			\hline
+			\texttt{/form/\{slug\}} & GET & Vrácení veřejného formuláře \\
+			\hline
+			\texttt{/private\_form/\{token\}} & GET & Vrácení privátního formuláře \\
+			\hline
+			\texttt{/form/complete/\{slug\}} & POST & Odeslání odpovědi na veřejný formulář \\
+			\hline
+			\texttt{/form/private\_complete/\{token\}} & POST & Odeslání odpovědi na privátní formulář \\
+			\hline
+			\texttt{/form/public\_results/\{slug\}} & GET & Vrácení veřejných výsledků formuláře \\
+			\hline
+		\end{tabular}
+		\caption{Veřejné cesty}
+		\label{tab:verejne_cesty}
+	\end{table}
+
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{ | p{0.4\linewidth} | p{0.1\linewidth} | p{0.4\linewidth} | } 
+			\hline
+			\textbf{Cesta (\texttt{/api/} + řetězec níže)} & \textbf{Metoda} & \textbf{Funkce} \\ 
+			\hline
+			\texttt{/form/authenticated/\{slug\}} & GET & Vrácení formuláře pro administrátorský přístup \\
+			\hline
+			\texttt{/forms} & GET & Vrácení formulářů, které patří uživateli \\
+			\hline
+			\texttt{/forms/update/\{slug\}} & PUT & Aktualizace formuláře \\
+			\hline
+			\texttt{/forms/create} & POST & Vytvoření formuláře \\
+			\hline
+			\texttt{/forms/\{slug\}} & DELETE & Odstranění formuláře \\
+			\hline
+			\texttt{/form/duplicate} & POST & Duplikování formuláře \\
+			\hline
+			\texttt{/form/results/\{slug\}} & GET & Vrácení výsledků formuláře \\
+			\hline
+			\texttt{/form/results/\{slug\}/download} & GET & Export výsledků formuláře ke stažení \\
+			\hline
+			\texttt{/form/results/\{slug\}/\newline publish\_results} & POST & Nastavení veřejných výsledků \\
+			\hline
+			\texttt{/forms/update\_access/\{slug\}} & PUT & Úprava přístupu k formuláři \\
+			\hline
+			\texttt{/logout} & POST & Odhlášení uživatele \\
+			\hline
+			\texttt{/change\_password} & PUT & Změna hesla \\
+			\hline
+			\texttt{/delete\_account} & POST & Smazání účtu uživatele \\
+			\hline
+		\end{tabular}
+		\caption{Cesty s přihlášením}
+		\label{tab:cesty_s_prihlasenim}
+	\end{table}
+	\newpage
+	
+	\subsection{Modely}
+	Modely slouží k mapování jednotlivých dat z databáze a jsou zprostředkovány pomocí objektově-relačního mapovacího balíčku Eloquent. Pro správnou funkčnost musí být zajištěno, že má každá tabulka v databázi vlastní model. Díky tomuto přístupu lze s daty manipulovat tak, že vytvoříme instanci příslušné třídy a na ní voláme příslušné metody (např. \textit{update} pro změnu záznamů) - nemusíme tedy vytvářet jednotlivé SQL příkazy pro všechny požadované úkony \cite{LaravelORM}.
+	
+	V rámci tohoto projektu vzniklo mnoho modelů, které mapují většinu tabulek databáze (v kontextu mnou vytvořených modelů nejsou vytvořeny modely např. pro předgenerované tabulky jako \textit{migrations} nebo \textit{failed\_jobs}). Kromě samotné funkce mapování dat z databáze jim můžeme přiřazovat různé vlastnosti a metody, díky kterým lze měnit např. chování při předávání dat. Nejdůležitější a v projektu použité jsou v následujícím seznamu:
 	
 	\begin{itemize}
 		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k jednodušší práci s daty. Existuje mnoho metod - např. belongsTo (označuje, komu samotný model náleží) či hasOne/hasMany (označuje, které model/y samotnému modelu patří).
@@ -53,45 +152,64 @@
 		\item Vlastnost visible - Ta určuje, které atributy jsou ve vrácených datech z databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server.
 		\item Vlastnost table - Ta slouží k přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje.
 		\item Vlastnost with - Ta slouží k výchozímu připojení dalších dat z jiného modelu ke stávajícímu setu dat modelu. K takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod.
-	\end{itemize} *cite https://laravel.com/docs/8.x/eloquent*
+	\end{itemize} \cite{LaravelORM}
 
 	Každý model většinou nevyužívá všechny zmíněné činnosti, ale jen ty, které jsou pro jeho typ důležité. Příkladem je zde uveden poměrně rozsáhlý model formuláře \textit{Form}. Podobným způsobem jsou vytvořeny i ostatní modely.
 	
 	Třída modelu Form reprezentuje jednotlivé formuláře. Odkazuje se na stejnojmennou tabulku \textit{forms}, ze které přebírá data. Má definované vlastnosti: \textit{fillable} (např. jméno formuláře, popis formuláře, čas spuštění, ID uživatele, kterému formulář patří,...), \textit{visible} (např. atributy jako jméno formuláře, odkaz na formulář či popis formuláře, ale také názvy atributů, které jsou přidávány v průběhu práce s daty, a názvy metod vytvářejících vazby mezi některými dalšími modely jako např. pro model uživatele, pro kterého platí, že mu formulář musí náležet) a \textit{with} (zde jen název vazbové metody pro model elementu formuláře, u kterého platí, že musí formuláři náležet a že jednomu formuláři může náležet i více elementů). Samotná definice provázání modelu s tabulkou v databázi pomocí vlastnosti table zde není potřeba - Laravel umí u jednoduše pojmenovaných modelů vygenerovaných pomocí Artisan skriptů tuto vlastnost vnitřně doplnit.
 	
 	%%obrázek modelu php
+	
 	\begin{figure}[H]
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.8\textwidth]{img/form_model/vlastnosti.png}
-			\caption{Zmíněné vlastnosti modelu formuláře}
-			\label{fig:model_vlastnosti}
-		\end{figure}
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.7\textwidth]{img/form_model/metody.png}
-			\caption{Zmíněné metody modelu formuláře}
-			\label{fig:model_metody}
-		\end{figure}
+		\centering
+		\includegraphics[width=0.85\textwidth]{img/form_model/vlastnosti.png}
+		\caption{Zmíněné vlastnosti modelu formuláře}
+		\label{fig:model_vlastnosti}
 	\end{figure}
 	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\textwidth]{img/form_model/metody.png}
+		\caption{Zmíněné metody modelu formuláře}
+		\label{fig:model_metody}
+	\end{figure}
 	
-	
-			
-	\subsection{Kontrolery}
-	
+	\subsection{Kontroléry}
+    Kontroléry jsou jednou z nejdůležitějších částí celé aplikace - probíhají v nich všechny požadované činnosti, které voláme přes specifické cesty. Obecně zajišťují veškerou administrativu nad příslušným modelem - tzn. např. model formuláře by měl mít svůj kontrolér. Většinou v nich najdeme metody pro vrácení všech prvků nebo konkrétního prvku příslušného modelu či metody pro ukládání, aktualizaci a mazání jednotlivých prvků.
+    
+    Kontroléry v této aplikaci, resp. jejich metody, jsou nastaveny tak, aby v případě chyby vrátily příslušný stavový kód pro jednoznačnou identifikaci chyby. Pokud se chyba nevyskytne, jsou navrácena příslušná data se stavovým kódem 200, který značí úspěch akce.
+    
+    \begin{figure}[H]
+    	\centering
+    	\includegraphics[width=0.85\textwidth]{img/kontroler.png}
+    	\caption{Ukázka části kódu kontroléru (Kontrolér formuláře)}
+    	\label{fig:kontroler}
+    \end{figure}
+    
+    Konkrétní postupy, jak se jednotlivé činnosti provádí, jsou popsány v jiné sekci práce.
+		\subsubsection{Kontrolér formuláře}
+		Kontrolér formuláře, jak už z názvu vyplývá, pracuje s daty jednotlivých formulářů. Kromě výše zmíněných běžných metod obsahuje metodu pro vrácení privátního formuláře, metodu pro duplikaci formuláře, metodu pro vrácení formuláře s dodatečnými daty pro majitele formuláře, metodu pro nastavení veřejných výsledků či metodu pro úpravu přístupu k formuláři (nastavení veřejného nebo privátního formuláře).
+		
+		\subsubsection{Kontrolér vyplnění formuláře}
+		Kontrolér vyplnění formuláře je oproti předchozímu kontroléru chudší. V rámci běžných metod neobsahuje např. metodu pro úpravu či smazání odpovědi. Oproti tomu ale disponuje speciální metodou pro export všech odpovědí do stáhnutelného formátu MS Excel, metodou pro uložení odpovědi z privátního formuláře či metodou pro zobrazení veřejných výsledků.
+		
+		\subsubsection{Kontrolér uživatele}
+		Kontrolér uživatele slouží ke správě uživatelů. Obsahuje základní metody pro registraci, přihlášení a odhlášení, ale i pro změnu hesla (i při zapomenutém hesle) či smazání účtu.
 	
 	\subsection{Exporty}
+	Exporty, resp. jejich třídy, slouží k definování vzhledu a způsobu uložení dat v určitém formátu. Exportovat můžeme různá data do různých formátů (např. obrázek do formátu PNG, list nějakých záznamů do tabulky formátu CSV,...).
+	
+	V rámci tohoto projektu byl export potřeba jen v jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi s tímto úkonem spojených. Jakým způsobem jsou data exportována je popsáno v jiné sekci práce.
 	
 	\subsection{Maily}
 	
+	
 	\subsection{Migrace databáze}
+		
 		\subsubsection{Factories}
 	
 	\subsection{Pohledy}
 	
-	\subsection{Routes}
 	
 	\subsection{Průběh jednotlivých činností}
 		\subsubsection{Ukládání formuláře}

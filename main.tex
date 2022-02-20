@@ -24,6 +24,9 @@
 \usepackage{subcaption} %% balíček pro vkládání podobrázků
 \usepackage{hyperref} %% balíček, který v PDF vytváří odkazy
 \usepackage{etoolbox}
+%\usepackage{array}
+%\usepackage{placeins}
+%\usepackage{needspace}
 
 \patchcmd{\thebibliography}{*}{}{}{} %% přidání číslování pro nadpis zdrojů
 
@@ -86,7 +89,7 @@
 \listoffigures
 
 %% tabulky
-%\listoftables
+\listoftables
 
 %\appendix %% začínají přílohy
 %\titleformat{\chapter}[block]{\scshape\bfseries\LARGE}{Příloha \thechapter}{10pt}{\vspace{0pt}}[\vspace{-22pt}] %% nastavení nadpisu u příloh

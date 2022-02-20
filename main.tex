@@ -43,18 +43,18 @@
 	%%
 	
 	%% stylování jednotlivých nadpisů sekcí
-	\titleformat{\chapter}[block]{\scshape\bfseries\LARGE}{\thechapter}{12pt}{\vspace{0pt}}[\vspace{-34pt}]
-	\titleformat{\section}[block]{\scshape\bfseries\Large}{\thesection}{12pt}{\vspace{-10pt}}
-	\titleformat{\subsection}[block]{\bfseries\large}{\thesubsection}{12pt}{\vspace{-8pt}}
+	\titleformat{\chapter}[block]{\scshape\bfseries\huge}{\thechapter}{12pt}{\vspace{0pt}}[\vspace{-34pt}]
+	\titleformat{\section}[block]{\scshape\bfseries\LARGE}{\thesection}{12pt}{\vspace{-10pt}}
+	\titleformat{\subsection}[block]{\bfseries\Large}{\thesubsection}{12pt}{\vspace{-8pt}}
 	\titleformat{\subsubsection}[block]{\bfseries\large}{\thesubsubsection}{12pt}{\vspace{-8pt}}
 	
-	\titleformat{\subsubsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{\vspace{-9pt}}
+	\titleformat{\subsubsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{12pt}{\vspace{-9pt}}
 	\titlespacing*{\subsubsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 	%%
 	
 	%% vykreslování úrovní v nadpisech a v obsahu
 	\setcounter{secnumdepth}{6}
-	\setcounter{tocdepth}{6}
+	\setcounter{tocdepth}{3}
 	%%
 %% konec stylů kapitol a sekcí
 
@@ -74,12 +74,11 @@
 
 \pagestyle{empty}
 \pagenumbering{gobble}
-\setcounter{tocdepth}{6}
 \input{texts/initial.tex}
 
 \pagenumbering{arabic}
 \pagestyle{plain}
-\setcounter{page}{13} %% úvod by neměla být první stránka, začína na čísle 'součet předchozích + 1'
+\setcounter{page}{15} %% úvod by neměla být první stránka, začína na čísle 'součet předchozích + 1'
 
 \input{texts/chapters/texts.tex}
 

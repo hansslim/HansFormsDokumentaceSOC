@@ -202,11 +202,32 @@
 	V rámci tohoto projektu byl export potřeba jen v jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi s tímto úkonem spojených. Jakým způsobem jsou data exportována je popsáno v jiné sekci práce.
 	
 	\subsection{Maily}
+	Maily, resp. jejich třídy, slouží k definování vzhledu a obsahu emailu. Poté, co se vytvoří instance této třídy, která je hydratována, data jsou předána příslušnému pohledu, který je poté poslán na příslušné emaily.
 	
+	Způsoby a principy, kterými jsou emaily rozesílány, zde nejsou popsány - jednak jsou předdefinované Laravelem a zároveň nejsou předmětem této práce. Jediné, co bylo potřeba k zprovoznění emailového klienta, bylo vyplnit příslušné konfigurační údaje (např. protokol pro přenos nebo port na emailový server) a přihlašovací údaje k emailu, ze kterého jsou emaily rozesílány. K těmto účelům byl v implementaci projektu na produkční verzi použit Google Gmail.
 	
 	\subsection{Migrace databáze}
+	Migrace databáze jsou určeny k deklaraci struktury jednotlivých tabulek v databázi. Obecně mají dvě metody: \textit{up} pro vytvoření předdefinované tabulky a \textit{down} pro odstranění tabulky z databáze. Tyto migrace se v Laravelu běžně generují pomocí Artisan skriptů.
+	
+	V implementaci tohoto projektu se využívala primárně metoda \textit{up}, kde se specifikovaly jednotlivé názvy a typy atributů tabulky. Těmto atributům lze přidávat další různé vlastnosti (v migraci zapsány jako metody) jako např. \textit{nullable} (možnost vložení prázdné hodnoty \textit{null} do atributu), \textit{default} (možnost nastavení výchozí hodnoty atributu při vytvoření) či \textit{unique} (možnost nastavení unikátní hodnoty atributu ve sloupci).
+	
+	Kromě zmíněných vlastností bylo ještě nutné specifikovat tzv. cizí klíče, které slouží k vytvoření relací mezi ostatními databázovými objekty a k celkovému provázání dat. Jedná se o samostatné atributy, které většinou obsahují ID jiného objektu v databázi - tím je zaručeno, který řádek v tabulce patří k řádku/řádkům jiné tabulky. 
+	
+	 \begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{img/migrace.png}
+		\caption{Ukázka části kódu migrace (Tabulka pro formuláře)}
+		\label{fig:migrace}
+	\end{figure}
+	
+	V Laravel migraci je toto deklarováno pomocí vlastnosti \textit{constrained}, ve které specifikujeme, se kterou tabulkou lze data ze současné tabulky spojovat. Pokud jsou i ostatní tabulky vytvořeny vygenerovanými migracemi, nemusíme ani specifikovat, který sloupec bude z jiné tabulky sloužit k provázání - k tomu Laravel standardně používá sloupec \textit{id}.
+	
+	Poslední věcí, která byla nutná k zachování referenční integrity dat v databázi pro implementaci projektu, bylo u několika tabulek specifikovat chování při smazání řádku z tabulky, který je provázán s jinou tabulkou. K tomu slouží vlastnost \textit{onDelete}, kde toto chování deklarujeme. V tomto projektu je použit způsob chování \uv{kaskáda}. Ta funguje v případě mazání tak, že pokud je smazán rodičovský (nadřazený) objekt, tak jsou smazány všichni potomci (podřazené objekty). *cite??? https://kb.objectrocket.com/postgresql/how-to-use-the-postgresql-delete-cascade-1369*
 		
-		\subsubsection{Factories}
+		\subsubsection{Testovací data}
+		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k těmto účelům v Laravelu existují tzv. Factories.
+		
+		Factories (volně přeloženo jako Továrny) slouží k naplnění databáze vygenerovanými testovacími daty, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z továren.
 	
 	\subsection{Pohledy}
 	
@@ -214,6 +235,7 @@
 	\subsection{Průběh jednotlivých činností}
 		\subsubsection{Ukládání formuláře}
 		\subsubsection{Mazání formuláře}
+		\subsubsection{Export dat}
 		%% atd.
 
 

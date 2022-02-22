@@ -22,30 +22,30 @@
 			\label{fig:laravel_str} %% označení až budeš chtít na obrázek odkazovat
 		\end{figure}
 	%% obrázek struktury složky
-	Jak můžeme na obrázku výše vidět, celý projekt je složen z mnoha složek a souborů. Jelikož podrobný rozbor jednotlivých částí není předmětem této práce, tak jsou nejdůležitější části pro implementaci projektu popsány níže jen obecně.
+	Jak můžeme na obrázku \ref{fig:laravel_str} vidět, celý projekt je složen z mnoha složek a souborů. Jelikož podrobný rozbor jednotlivých částí není předmětem této práce, tak jsou nejdůležitější části pro implementaci projektu popsány níže jen obecně.
 	\begin{itemize}
-		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery)
-		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace
-		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace
-		\item Složka \textit{database} obsahuje soubory spojené s prací s databázi
-		\item Složka \textit{lang} obsahuje soubory jazyků a překladů (zde nevyužita)
-		\item Složka \textit{public} obsahuje soubory, které jsou veřejně dostupné při uživatelské interakci s aplikací (např. při načtení webu v prohlížeči)
-		\item Složka \textit{resources} obsahuje pohledy a nezkompilované soubory pro celý frontend
-		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře)
-		\item Složka \textit{storage} obsahuje primárně záznamy o chodu aplikace a jiné aplikací vygenerované soubory
-		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita)
-		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků, které aplikace používá 
+		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery) \cite{LaravelDir}
+		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace \cite{LaravelDir}
+		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace \cite{LaravelDir}
+		\item Složka \textit{database} obsahuje soubory spojené s prací s databázi \cite{LaravelDir}
+		\item Složka \textit{lang} obsahuje soubory jazyků a překladů (zde nevyužita) \cite{LaravelDir}
+		\item Složka \textit{public} obsahuje soubory, které jsou veřejně dostupné při uživatelské interakci s aplikací (např. při načtení webu v prohlížeči) \cite{LaravelDir}
+		\item Složka \textit{resources} obsahuje pohledy a nezkompilované soubory pro celý frontend \cite{LaravelDir}
+		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře) \cite{LaravelDir}
+		\item Složka \textit{storage} obsahuje primárně záznamy o chodu aplikace a jiné aplikací vygenerované soubory \cite{LaravelDir}
+		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita) \cite{LaravelDir}
+		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků, které aplikace používá \cite{LaravelDir} 
 		\item Soubor .env držící veškeré důležité administrativní hodnoty jako např. přihlašovací údaje k databázi
-		\item Soubor artisan obsahující důležité příkazy pro stavbu aplikace \cite{LaravelArtisan}
+		\item Soubor artisan obsahující důležité příkazy pro stavbu aplikace \cite{LaravelArtisan} 
 		\item Soubor composer.json držící informace o přídavných balíčcích pro Laravel projekt \cite{ComposerpJSON}
 		\item Soubor package.json držící informace o přídavných balíčcích pro frontendovou část projektu \cite{NPMpJSON}
 		\item Soubor webpack.mix.js obsahující informace pro kompilaci souborů pro frontend \cite{LaravelJSCSS}
-	\end{itemize} \cite{LaravelDir}
+	\end{itemize}
 
 	\subsection{Cesty} %%Routes
 	Cesty (volně přeložen původní název Routes) jsou využívány abstraktně k rozdělení aplikace - to je myšleno tak, že na každé cestě lze provádět jen úkon, který jí je přiřazen. Tyto cesty mají tvar URL adresy - skládají se z názvu výchozí domény, který je rozšířen o příslušnou cestu (ve formě textového řetězce děleného lomítky), a jsou využívány např. v prohlížeči pro přístup na specifickou stránku. Příkladem může být cesta vytvoření formuláře s příkladovou výchozí doménou \textit{localhost} s portem 8000 \textit{\uv{localhost:8000/forms/create}}. Po zadání této cesty do webového prohlížeče se za splnění podmínek jako spuštění lokálního serveru s aplikací a přihlášení do uživatelského účtu zobrazí požadovaná stránka.
 	
-	Běžně se v Laravelu tyto cesty definují v souboru \textit{web.php} - v tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v aplikaci dostat, jsou definovány ve frontendové části - to také vyplývá z předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v prohlížeči vykreslena - k tomu slouží frontendová část ve VueJS. K těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v části Pohledy), který je pak doplněn o příslušný obsah, který zajišťuje oddělený frontend. Jedinou výjimkou jsou zde cesty pro resetování hesla předdefinované pro samotný Laravel.
+	Běžně se v Laravelu tyto cesty definují v souboru \textit{web.php} - v tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v aplikaci dostat, jsou definovány ve frontendové části - to také vyplývá z předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v prohlížeči vykreslena - k tomu slouží frontendová část ve VueJS. K těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v části Pohledy), který je pak doplněn o příslušný obsah, který zajišťuje oddělený frontend (viz obrázek \ref{fig:routes_web}). Jedinou výjimkou jsou zde cesty pro resetování hesla předdefinované pro samotný Laravel.
 	
 	\begin{figure}[H]
 		\centering %% příkaz, který ti obrázek zarovná na střed
@@ -54,7 +54,7 @@
 		\label{fig:routes_web} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Cesty, které Laravel specificky obsluhuje, jsou v souboru \textit{api.php}. Na tyto cesty uživatel v adresním řádku webového prohlížeče vůbec nepřistupuje - jsou využívány ve frontendové části na pozadí. Až zde je vlastně definováno abstraktní rozdělení aplikace - dle cesty se vykonává určitý úkon. 
+	Cesty, které Laravel specificky obsluhuje, jsou v souboru \textit{api.php} (viz. obrázek \ref{fig:routes_api}). Na tyto cesty uživatel v adresním řádku webového prohlížeče vůbec nepřistupuje - jsou využívány ve frontendové části na pozadí. Až zde je vlastně definováno abstraktní rozdělení aplikace - dle cesty se vykonává určitý úkon. 
 	
 	Tyto API cesty jsou oproti běžným cestám aplikace rozlišeny tak, že mezi výchozí doménu a cestu k dané službě je vložen řetězec \textit{\uv{/api/}} - to je výchozí chování cest v souboru \textit{api.php}. K tomu, aby tyto cesty fungovaly s dalšími službami, bylo nutné je specifikovat v konfiguračních souborech \textit{sanctum.php} a \textit{cors.php}.
 	
@@ -69,7 +69,7 @@
 	
 	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
 	
-	V rámci popisu aplikace jsou zde tabulky s jednotlivými cestami a jejich úkony - první obsahuje veřejné cesty, druhá obsahuje cesty s přihlášením. Hodnoty u cest ve složených závorkách značí určitou proměnnou přenášenou přes URL adresu (např. \textit{slug} jako identifikátor formuláře).
+	V rámci popisu aplikace jsou zde tabulky s jednotlivými cestami a jejich úkony - tabulka \ref{tab:verejne_cesty} obsahuje veřejné cesty, tabulka \ref{tab:cesty_s_prihlasenim} obsahuje cesty s přihlášením. Hodnoty u cest ve složených závorkách značí určitou proměnnou přenášenou přes URL adresu (např. \textit{slug} jako identifikátor formuláře).
 	
 	\newpage
 	\begin{table}[H]
@@ -147,19 +147,19 @@
 	V rámci tohoto projektu vzniklo mnoho modelů, které mapují většinu tabulek databáze (v kontextu mnou vytvořených modelů nejsou vytvořeny modely např. pro předgenerované tabulky jako \textit{migrations} nebo \textit{failed\_jobs}). Kromě samotné funkce mapování dat z databáze jim můžeme přiřazovat různé vlastnosti a metody, díky kterým lze měnit např. chování při předávání dat. Nejdůležitější a v projektu použité jsou v následujícím seznamu:
 	
 	\begin{itemize}
-		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k jednodušší práci s daty. Existuje mnoho metod - např. belongsTo (označuje, komu samotný model náleží) či hasOne/hasMany (označuje, které model/y samotnému modelu patří).
-		\item Vlastnost \textit{fillable} - Ta určuje, do kterých atributů může být na vrstvě webové aplikace zapisováno. Nenapíšeme sem tedy např. \textit{id}, které většinou chceme doplnit až při uložení do databáze samotnou databází.
-		\item Vlastnost visible - Ta určuje, které atributy jsou ve vrácených datech z databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server.
-		\item Vlastnost table - Ta slouží k přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje.
-		\item Vlastnost with - Ta slouží k výchozímu připojení dalších dat z jiného modelu ke stávajícímu setu dat modelu. K takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod.
-	\end{itemize} \cite{LaravelORM}
+		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k jednodušší práci s daty. Existuje mnoho metod - např. belongsTo (označuje, komu samotný model náleží) či hasOne/hasMany (označuje, které model/y samotnému modelu patří). \cite{LaravelORM}
+		\item Vlastnost \textit{fillable} - Ta určuje, do kterých atributů může být na vrstvě webové aplikace zapisováno. Nenapíšeme sem tedy např. \textit{id}, které většinou chceme doplnit až při uložení do databáze samotnou databází. \cite{LaravelORM}
+		\item Vlastnost visible - Ta určuje, které atributy jsou ve vrácených datech z databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server. \cite{LaravelORM}
+		\item Vlastnost table - Ta slouží k přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje. \cite{LaravelORM}
+		\item Vlastnost with - Ta slouží k výchozímu připojení dalších dat z jiného modelu ke stávajícímu setu dat modelu. K takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod. \cite{LaravelORM}
+	\end{itemize}
 
 	Každý model většinou nevyužívá všechny zmíněné činnosti, ale jen ty, které jsou pro jeho typ důležité. Příkladem je zde uveden poměrně rozsáhlý model formuláře \textit{Form}. Podobným způsobem jsou vytvořeny i ostatní modely.
 	
-	Třída modelu Form reprezentuje jednotlivé formuláře. Odkazuje se na stejnojmennou tabulku \textit{forms}, ze které přebírá data. Má definované vlastnosti: \textit{fillable} (např. jméno formuláře, popis formuláře, čas spuštění, ID uživatele, kterému formulář patří,...), \textit{visible} (např. atributy jako jméno formuláře, odkaz na formulář či popis formuláře, ale také názvy atributů, které jsou přidávány v průběhu práce s daty, a názvy metod vytvářejících vazby mezi některými dalšími modely jako např. pro model uživatele, pro kterého platí, že mu formulář musí náležet) a \textit{with} (zde jen název vazbové metody pro model elementu formuláře, u kterého platí, že musí formuláři náležet a že jednomu formuláři může náležet i více elementů). Samotná definice provázání modelu s tabulkou v databázi pomocí vlastnosti table zde není potřeba - Laravel umí u jednoduše pojmenovaných modelů vygenerovaných pomocí Artisan skriptů tuto vlastnost vnitřně doplnit.
+	Třída modelu Form reprezentuje jednotlivé formuláře. Odkazuje se na stejnojmennou tabulku \textit{forms}, ze které přebírá data. Má definované vlastnosti (viz obrázek \ref{fig:model_vlastnosti}): \textit{fillable} (např. jméno formuláře, popis formuláře, čas spuštění, ID uživatele, kterému formulář patří,...), \textit{visible} (např. atributy jako jméno formuláře, odkaz na formulář či popis formuláře, ale také názvy atributů, které jsou přidávány v průběhu práce s daty, a názvy metod vytvářejících vazby mezi některými dalšími modely (viz obrázek \ref{fig:model_metody}) jako např. pro model uživatele, pro kterého platí, že mu formulář musí náležet) a \textit{with} (zde jen název vazbové metody pro model elementu formuláře, u kterého platí, že musí formuláři náležet a že jednomu formuláři může náležet i více elementů). Samotná definice provázání modelu s tabulkou v databázi pomocí vlastnosti table zde není potřeba - Laravel umí u jednoduše pojmenovaných modelů vygenerovaných pomocí Artisan skriptů tuto vlastnost vnitřně doplnit.
 	
 	%%obrázek modelu php
-	
+	%%\newpage
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.85\textwidth]{img/form_model/vlastnosti.png}
@@ -173,11 +173,12 @@
 		\caption{Zmíněné metody modelu formuláře}
 		\label{fig:model_metody}
 	\end{figure}
+	%%\newpage
 	
 	\subsection{Kontroléry}
     Kontroléry jsou jednou z nejdůležitějších částí celé aplikace - probíhají v nich všechny požadované činnosti, které voláme přes specifické cesty. Obecně zajišťují veškerou administrativu nad příslušným modelem - tzn. např. model formuláře by měl mít svůj kontrolér. Většinou v nich najdeme metody pro vrácení všech prvků nebo konkrétního prvku příslušného modelu či metody pro ukládání, aktualizaci a mazání jednotlivých prvků.
     
-    Kontroléry v této aplikaci, resp. jejich metody, jsou nastaveny tak, aby v případě chyby vrátily příslušný stavový kód pro jednoznačnou identifikaci chyby. Pokud se chyba nevyskytne, jsou navrácena příslušná data se stavovým kódem 200, který značí úspěch akce.
+    Kontroléry v této aplikaci (viz obrázek \ref{fig:kontroler}), resp. jejich metody, jsou nastaveny tak, aby v případě chyby vrátily příslušný stavový kód pro jednoznačnou identifikaci chyby. Pokud se chyba nevyskytne, jsou navrácena příslušná data se stavovým kódem 200, který značí úspěch akce. 
     
     \begin{figure}[H]
     	\centering
@@ -222,7 +223,7 @@
 	
 	V Laravel migraci je toto deklarováno pomocí vlastnosti \textit{constrained}, ve které specifikujeme, se kterou tabulkou lze data ze současné tabulky spojovat. Pokud jsou i ostatní tabulky vytvořeny vygenerovanými migracemi, nemusíme ani specifikovat, který sloupec bude z jiné tabulky sloužit k provázání - k tomu Laravel standardně používá sloupec \textit{id}.
 	
-	Poslední věcí, která byla nutná k zachování referenční integrity dat v databázi pro implementaci projektu, bylo u několika tabulek specifikovat chování při smazání řádku z tabulky, který je provázán s jinou tabulkou. K tomu slouží vlastnost \textit{onDelete}, kde toto chování deklarujeme. V tomto projektu je použit způsob chování \uv{kaskáda}. Ta funguje v případě mazání tak, že pokud je smazán rodičovský (nadřazený) objekt, tak jsou smazány všichni potomci (podřazené objekty). *cite??? https://kb.objectrocket.com/postgresql/how-to-use-the-postgresql-delete-cascade-1369*
+	Poslední věcí, která byla nutná k zachování referenční integrity dat v databázi pro implementaci projektu, bylo u několika tabulek specifikovat chování při smazání řádku z tabulky, který je provázán s jinou tabulkou. K tomu slouží vlastnost \textit{onDelete}, kde toto chování deklarujeme. V tomto projektu je použit způsob chování \uv{kaskáda}. Ta funguje v případě mazání tak, že pokud je smazán rodičovský (nadřazený) objekt, tak jsou smazány všichni potomci (podřazené objekty) \cite{CascadeDel}.
 		
 		\subsubsection{Testovací data}
 		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k těmto účelům v Laravelu existují tzv. Factories a Seeders.
@@ -230,21 +231,21 @@
 		Factories (volně přeloženo jako Továrny) slouží k vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z továren.
 	
 	\subsection{Pohledy}
-	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \textit{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. Javascript nebo CSS soubory. 
+	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \uv{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. Javascript nebo CSS soubory. 
 	
-	V tomto projektu (jak již bylo zmíněno výše) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s názvem \textit{app}. Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jen jeden oddíl s ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce.
+	V tomto projektu (jak již bylo zmíněno výše) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jen jeden oddíl s ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce.
 	
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{img/pohled_app.png}
-		\caption{Šablona \textit{app} (pro účely této práce upravena)}
+		\caption{Šablona pohledu \textit{app} (pro účely této práce upravena)}
 		\label{fig:pohled_app}
 	\end{figure}
 	
 	\subsection{Průběh jednotlivých činností}
 	V této části jsou popsány postupy, jak se jednotlivé akce zpracovávají na serveru a jak jsou data předávána databázi či uživateli webové stránky. Úkony jsou rozděleny tak, jak jsou zapsány v kontrolérech. Z hlediska kódu je každý úkon metodou kontroléru.
 	
-	Každá z těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Níže je seznam přímo využitých stavových kódů, které jsou serverem předávány.
+	Každá z těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Zde (tabulka \ref{tab:http_stavove_kody}) je seznam přímo využitých stavových kódů, které jsou serverem předávány.
 	
 	\begin{table}[H]
 		\centering
@@ -269,16 +270,11 @@
 			500 & Internal Server Error & Obecná chybová hláška serveru - došlo k neočekávané chybě. \\
 			\hline
 		\end{tabular}
-		\caption{Využité stavové kódy HTTP}
+		\caption{Využité stavové kódy HTTP \cite{HTTPKody1} \cite{HTTPKody2}}
 		\label{tab:http_stavove_kody}
 	\end{table}
 
 	Nutno zmínit, že stavový kód \uv{200 (OK)} je v této implementaci projektu automaticky odesílán v případě, že v průběhu vyřizování požadavku není zaznamenána žádná chyba. Dále v práci proto nebude jeho odesílání zmiňováno.
-	
-	*cite 20.2.2022 https://www.interval.cz/clanky/stavove-kody-a-hlaseni-v-odpovedi-protokolu-http/*
-	*cite https://cs.wikipedia.org/wiki/Stavov\%C3\%A9\_k\%C3\%B3dy\_HTTP*
-	
-	%%table HTTP codes
 	
 		\subsubsection{Manipulace s formuláři}
 		Tato část popisuje veškerou administrativu nad formuláři.

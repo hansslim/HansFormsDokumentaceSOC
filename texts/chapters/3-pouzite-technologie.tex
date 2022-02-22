@@ -31,9 +31,14 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 Termínem backend označujeme část aplikace, která pro běžného uživatele zpravidla není vidět. Jedná se o administrátorskou část, ve které administrátor konfiguruje, jak se aplikace bude při jednotlivých situacích chovat. Backend, jako samostatná část aplikace, poté slouží ke zpracování dat – např. vyřizuje příchozí požadavky od frontendu nebo na frontend sama zasílá konkrétní data.
 
 Backend může být také zamýšlen jako prostředí pro správu např. obsahu webu. Příkladem může být e-shop, kde na backendu bude moci administrátor např. přidávat jednotlivé zboží nebo spravovat veškeré objednávky.  \cite{BE1} \cite{BE2}
-
+	
+	\subsection{PHP}
+	PHP (zkr. pro Hypertext Preprocessor) je open-source multiplatformní skriptovací jazyk. Je používán především pro vývoj webových aplikací a může být vložen přímo v souborech HTML. V rámci základních informací lze zmínit, že podporuje procedurální i objektově-orientované programování a dokáže pracovat s velkým množstvím databázových systémů. Oproti Javascriptu je kód spouštěn přímo na serveru, kde generuje HTML, které je předáváno dále na klientskou stranu uživateli. \cite{PHP1} \cite{PHP2}
+	
+	Hlavním důvodem, proč byl pro tento projekt jazyk PHP vybrán, byla jednoduchost syntaxe jazyka a obecně nižší provozní náklady. V jazyce PHP je napsán framework Laravel, ve kterém je tvořena backendová část projektu.
+	
 	\subsection{Laravel}
-	Laravel je open-source framework pro tvorbu webových aplikací. Řeší za vývojáře mnoho běžné implementovaných funkcí jako např. autentifikaci, přesměrovávání, správu session a cookies souborů, tvoření databázových migrací nebo testování aplikace. Je inspirován frameworky jako Ruby on Rails, ASP.NET MVC nebo Sinatra a snaží se o to, aby vývoj webových aplikací byl pro vývojáře co nejpohodlnější a nejintuitivnější. \cite{Laravel1} Framework vychází z návrhového vzoru MVC \cite{LaravelMVC}.
+	Laravel je open-source framework pro tvorbu webových aplikací v jazyce PHP. Řeší za vývojáře mnoho běžné implementovaných funkcí jako např. autentifikaci, přesměrovávání, správu session a cookies souborů, tvoření databázových migrací nebo testování aplikace. Je inspirován frameworky jako Ruby on Rails, ASP.NET MVC nebo Sinatra a snaží se o to, aby vývoj webových aplikací byl pro vývojáře co nejpohodlnější a nejintuitivnější. \cite{Laravel1} Framework vychází z návrhového vzoru MVC \cite{LaravelMVC}.
 	
 	Dále samotný Laravel disponuje velkým ekosystémem přídavků, funkcí a knihoven, díky kterým si můžeme při vývoji ještě více usnadnit práci. \cite{LaravelEco} V mém projektu ze zmíněného ekosystému využívám např. Laravel Sanctum pro autentifikaci single-page aplikací.
 	

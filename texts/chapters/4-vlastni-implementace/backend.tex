@@ -315,28 +315,50 @@
 			Při úspěchu je vrácena odpověď s identifikátorem nově vzniklého formuláře (duplikátu). Ten je určen pro frontendovou část projektu k přesměrování.
 			
 			\subsubsubsection{Vrácení informací o formuláři majiteli}
-			Metoda s názvem \textit{showWithAuth}
+			Metoda s názvem \textit{showWithAuth} má za účel vrátit celý formulář a data s ním spojená pro jeho vlastníka. Tato data poté slouží k hydrataci stránky s přehledem informací o formuláři.
 			
-			\subsubsubsection{Zveřejnění výsledků formuláře} %% přesunout?
-			Metoda s názvem \textit{publishResults}
+			Funkce nejprve zkontroluje, zda je uživatel přihlášen. Pokud není, je navrácen stavový kód 401. V případě, že je uživatel přihlášen, se v databázi vyhledává formulář na základě předaného identifikátoru \textit{slug}. Pokud formulář není nalezen, je vrácen stavový kód 404, a pokud nepatří přihlášenému uživateli, je vrácen kód 401. 
+			
+			Po zmíněných kontrolách se k objektu formuláře připojují tři atributy: \textit{is\_expired} (rovná se \textit{true}, pokud je serverový čas dále v čase než čas ukončení zveřejnění), \textit{was\_already\_published} (rovná se \textit{true}, pokud je serverový čas dále v čase než čas zveřejnění formuláře) a \textit{is\_opened} (rovná se \textit{true}, když neplatí \textit{is\_expired} a zároveň platí \textit{was\_already\_published} - tzn. když je formulář dostupný k vyplnění). Po připojení těchto vlastností je celý formulář s příslušnými vlastnosti vrácen.
+			
+			Pokud je formulář nastaven jako privátní, tak jsou k celému objektu formuláře ještě připojeny záznamy o privátních tokenech. Tyto záznamy slouží pro vlastníka formuláře k výpisu emailů, kterým byla poslána pozvánka a které mají v době vykonávání této metody oprávnění k vyplnění formuláře. Připojené záznamy o tokenech samotný token neobsahují (resp. je skrytý pro vlastníka formuláře) - to slouží k tomu, aby nebylo možné dohledat, který token patří ke kterému emailu. Zároveň to znemožňuje jednoduše odpovědět za člověka, kterému byla odeslána pozvánka k vyplnění.
+			
+			\subsubsubsection{Zveřejnění výsledků formuláře}
+			Metoda s názvem \textit{publishResults} slouží k modifikaci přístupu k výsledkům formuláře pro běžnou veřejnost. Zde lze nastavit, zda jsou výsledky veřejné či nikoliv. Pokud jsou výsledky zveřejněny, lze zvolit, které otázky jsou skryté a které jsou zveřejněné.
+			
+			Funkce nejprve zkontroluje, zda požadavek obsahuje vůbec nějaká data (pokud ne, je vrácen stavový kód 400). Poté kontroluje přihlášení uživatele (pokud není přihlášen, je vrácen stavový kód 401) a zda požadovaný formulář s příslušným vlastníkem existuje (pokud ne, je vrácen stavový kód 404). Po těchto kontrolách jsou validována předaná data v požadavku na server.
+			
+			V rámci zmíněných dat se nejprve validuje předaný atribut \textit{has\_public\_results}, který stanovuje, zda má formulář veřejné výsledky - tzn. zda má platnou hodnotu. Poté, pokud je předchozí hodnota \textit{true} (tzn. výsledky budou zveřejněny), jsou procházena a validována všechna data z uživatelova požadavku, která představují jednotlivé otázky a jejich atribut zveřejnění. Zde se kontroluje, zda otázky vůbec náleží požadovanému formuláři (pomocí \textit{id}) - pokud ano, jsou dále předávány společně s informací, zda mají být tyto otázky veřejné, nebo ne (neplatná data v této části jsou ignorována). Zároveň musí platit, že v případě zveřejnění výsledků formuláře musí být alespoň jedna otázka veřejná (pokud toto neplatí, je vrácen stavový kód 400).
+			
+			Poté se metoda pokouší tato data uložit do databáze. Nejprve přepisuje atribut formuláře \textit{has\_public\_results}, poté, na základě tohoto atributu, manipuluje s jednotlivými elementy. Pokud je zmíněný atribut \textit{true}, tak jsou jednotlivé elementy modifikovány podle zvalidovaných dat (tzn. pokud mají být veřejné, je jim nastaven stejnojmenný atribut \textit{has\_public\_results} na true, v opačném případě na \textit{false}). Pokud je ale zmíněný atribut formuláře \textit{false}, je všem elementům zmíněný atribut zveřejnění nastaven na \textit{false} (tzn. všechny odpovědi jsou skryty). Celý proces probíhá v transakci.
 			
 			\subsubsubsection{Úprava formuláře}
 			Metoda s názvem \textit{update}
 			
 			\subsubsubsection{Úprava dostupnosti formuláře}
-			Metoda s názvem \textit{updateAccess}
+			Metoda s názvem \textit{updateAccess} slouží k úpravě dostupnosti formuláře. V ní lze nastavit, zda je formulář veřejný, nebo privátní (s tím je možné nastavit, na které emaily lze dodatečně poslat pozvánku či kterým emailům s pozvánkou odebrat přístup ve formě invalidace tokenu).
+			
+			V rámci zpracování dat je nejprve kontrolováno, zda požadavek obsahuje vůbec nějaká data (pokud ne, je vrácen stavový kód 400). Poté se kontroluje přihlášení uživatele (pokud není přihlášen, je vrácen stavový kód 401) a zda požadovaný formulář s příslušným vlastníkem existuje (pokud ne, je vrácen stavový kód 404). Další akce jsou prováděny jen pokud existuje v požadavku uživatele atribut \textit{has\_private\_token} s platnou hodnotou (pokud neexistuje, je vrácen stavový kód 400). Po těchto kontrolách se dále celý proces dělí na dvě logické větve. 
+			
+			První větev je podmíněna tím, že se zmíněný předaný atribut \textit{has\_private\_token} se rovná \textit{true} (tzn. formulář bude privátní). V takovém případě se nejprve zvalidují předané emaily, na které má být odeslána nová pozvánka (pokud dojde k chybě ve validaci samotných emailů, je vrácen kód 400). Poté, pokud byl měněný formulář veřejný (tzn. před tímto úkonem se jeho hodnota \textit{has\_private\_token} rovnala \textit{false}), se formuláři v databázi přepisuje zmíněný atribut \textit{has\_private\_token} na \textit{true} a vytváří se nové tokeny pro předané emaily, na které je poté rozeslána pozvánka. Pokud byl ale měněný formulář už privátní, tak jsou, společně s vytvořením nových tokenů a rozesláním pozvánek, zneplatněny pozvánky, které byly zaslané na majitelem předané emaily - tzn. po validaci těchto dat jsou z databáze vymazány tokeny, ke kterým jsou vázány příslušné emaily z uživatelského požadavku. Uživatelům, kterým byla pozvánka zneplatněna, se žádný oznamovací email nezasílá.
+			
+			Druhá větev je podmíněna tím, že zmíněný předaný atribut \textit{has\_private\_token} se rovná \textit{false} a atribut požadovaného formuláře \textit{has\_private\_token} se rovná \textit{false} (tzn. formulář bude převeden na veřejný). V takovém případě proběhne triviální smazání všech privátních tokenů, které se na příslušný formulář váží. Žádný oznamovací email se uživatelům s pozvánkou neposílá.
+			
+			Veškeré databázové operace spojené se zmíněnými úkony probíhají pro zachování integrity dat v transakcích.
 			
 			\subsubsubsection{Mazání formuláře}
-			Metoda s názvem \textit{destroy}
+			Metoda s názvem \textit{destroy} slouží k odstranění formuláře a jeho přidružených elementů.
 			
-		\subsubsection{Manipulace s výsledky formuláře}
+			V koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401), zda vůbec formulář s předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete()} smazán.
+			
+		\subsubsection{Interakce s výsledky formuláře}
 			\subsubsubsection{Vrácení všech výsledků}
 			\subsubsubsection{Vrácení veřejných výsledků}
 			\subsubsubsection{Export výsledků}
 			\subsubsubsection{Zaznamenávání odpovědi na veřejný formulář}
 			\subsubsubsection{Zaznamenávání odpovědi na privátní formulář}
 		
-		\subsubsection{Manipulace s uživateli}
+		\subsubsection{Interakce s uživateli}
 			\subsubsubsection{Registrace uživatele}
 			\subsubsubsection{Přihlášení uživatele}
 			\subsubsubsection{Odhlášení uživatele}

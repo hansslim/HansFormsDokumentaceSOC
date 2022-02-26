@@ -1,5 +1,5 @@
 \section{Backend}
-	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno dále.
+	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně backend náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno dále.
 	
 	Zde jsou zobecněné základní úkony, které v mé implementaci právě backend vykonává:
 	
@@ -65,7 +65,7 @@
 		\label{fig:routes_api} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Zmíněné cesty jsou rozděleny do dvou skupin - s veřejným přístupem (bez přihlášení) nebo s privátním přístupem (s přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s příslušnými daty odeslány údaje o přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček Laravel Sanctum pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarovaný v přiděleném kontroléru. 
+	Zmíněné cesty jsou rozděleny do dvou skupin - s veřejným přístupem (bez přihlášení) nebo s privátním přístupem (s přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s příslušnými daty odeslány údaje o přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček Laravel Sanctum pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarován v příslušném kontroléru. 
 	
 	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
 	
@@ -226,7 +226,7 @@
 	Poslední věcí, která byla nutná k zachování referenční integrity dat v databázi pro implementaci projektu, bylo u několika tabulek specifikovat chování při smazání řádku z tabulky, který je provázán s jinou tabulkou. K tomu slouží vlastnost \textit{onDelete}, kde toto chování deklarujeme. V tomto projektu je použit způsob chování \uv{kaskáda}. Ta funguje v případě mazání tak, že pokud je smazán rodičovský (nadřazený) objekt, tak jsou smazány všichni potomci (podřazené objekty) \cite{CascadeDel}.
 		
 		\subsubsection{Testovací data}
-		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k těmto účelům v Laravelu existují tzv. Factories a Seeders.
+		K tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k~těmto účelům v Laravelu existují tzv. Factories a Seeders.
 		
 		Factories (volně přeloženo jako Továrny) slouží k vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z továren.
 	
@@ -280,22 +280,54 @@
 		Tato část popisuje veškerou administrativu nad formuláři.
 		
 			\subsubsubsection{Vrácení všech formulářů}
-			Metoda (s názvem \textit{index}) nejprve ověří, zda je uživatel přihlášen. Pokud přihlášen je, vrátí uživateli všechny jeho formuláře bez elementů formuláře a bez dat o uživateli, které se obecně k datům připojují. Tento set formulářů je seřazen podle doby vytvoření formuláře sestupně. Pokud přihlášen není, je vrácen stavový kód 401.
+			Metoda s názvem \textit{index} je určena k vrácení všech formulářů, které patří přihlášenému uživateli. To slouží k hydrataci úvodní stránky uživatele - jedná se o přehled všech vlastněných formulářů. 
 			
-			Metoda slouží k hydrataci úvodní stránky uživatele - jedná se o přehled všech vlastněných formulářů.
+			Tato funkce nejprve ověří, zda je uživatel přihlášen. Pokud přihlášen je, vrátí uživateli všechny jeho formuláře bez elementů formuláře a bez dat o uživateli, které se obecně k datům připojují. Tento set formulářů je seřazen podle doby vytvoření formuláře sestupně. Pokud přihlášen není, je vrácen stavový kód 401. 
 			
 			\subsubsubsection{Vytvoření formuláře}
+			Metoda s názvem \textit{store}
 			
+			\subsubsubsection{Vrácení konkrétního veřejného formuláře}\label{sec:form_show}
+			Metoda s názvem \textit{show} je určena k vrácení konkrétního veřejného formuláře. To slouží k hydrataci stránky určené k vyplnění veřejného formuláře - obsahuje veškeré náležitosti s tímto úkonem spojené.
 			
-			\subsubsubsection{Vrácení konkrétního veřejného formuláře}
+			V rámci celého procesu funkce nejprve ověří, zda v databázi existuje formulář s požadovaným identifikátorem \textit{slug}. Pokud ne, je vrácen stavový kód 404. Pokud ale nalezen je, provádí se několik kontrol - když kontrolami projde, je navrácen formulář s příslušnými elementy.
+			
+			První se kontroluje, zda zadaný identifikátor neukazuje na privátní formulář - na tento formulář lze přistoupit jen přes token, nikoliv přes zmíněný identifikátor. Pokud se potvrdí přístup přes identifikátor, odešle se jen stavový kód 400.
+			
+			Dalším faktorem je čas, kdy k formuláři chce uživatel přistoupit. Ověřuje se podle uložených dat o formuláři z databáze, zda je už formulář zveřejněn (pokud není, je vrácen stavový kód 423) nebo zda už formulář neexpiroval (pokud expiroval, je vrácen stavový kód 410). Aktuální čas se bere podle serveru, na kterém je aplikace nasazena.
+			
 			\subsubsubsection{Vrácení konkrétního privátního formuláře}
+			Metoda s názvem \textit{privateShow} funguje podobně jako metoda popsána v sekci \ref{sec:form_show}. Místo identifikátoru \textit{slug} se nejprve vyhledává uživatelem předaný token v databázi. Pokud nalezen není, je vrácen stavový kód 400. Pokud nalezen je, provádí se stejné kontroly časů jako v metodě v sekci \ref{sec:form_show}. Liší se ale v kontrole tokenu - zde je zjišťováno, zda není token už expirovaný resp. zda už pro tento token nebyla zaznamenána odpověď. Pokud expirovaný je, tak se odesílá jen stavový kód 410. Pokud požadavek na privátní formulář projde bez chyby, je odeslán formulář s příslušnými elementy - identifikátor \textit{slug} se pro koncového uživatele skrývá.
+			
+			Metoda slouží k hydrataci stránky určené k vyplnění privátního formuláře.
+			
 			\subsubsubsection{Duplikování formuláře}
+			Metoda s názvem \textit{duplicateWithAuth} slouží k duplikování formuláře - tzn. lze vytvořit nový formulář, který obsahuje stejné otázky a vlastnosti (tj. jméno formuláře, datum zveřejnění, datum ukončení zveřejnění,...), jako formulář, u kterého byla požadována duplikace. Zmíněné vlastnosti při tomto procesu lze modifikovat, otázky ne.
+			
+			Metoda funguje tak, že prvně ověří, zda je uživatel přihlášen (pokud ne, vrátí stavový kód 401), poté zkontroluje zda požadovaný formulář existuje a zda patří přihlášenému uživateli. Dále jsou validovány všechny předané hodnoty vlastností formuláře, které již byly zmíněné - tzn. zda vůbec v požadavku na duplikaci existují a zda jsou správného typu (v případě jakékoliv očekávané chyby je vrácen kód 400). 
+			
+			U hodnot pro čas zveřejnění a ukončení zveřejnění se validuje příslušný formát data, zda není čas zveřejnění větší (déle v čase) než čas ukončení zveřejnění či zda není vytvářen už expirovaný formulář (tzn. aktuální serverový čas je déle v čase než čas ukončení zveřejnění). 
+			
+			Poté probíhá kontrola nastavení přístupnosti formuláře - při duplikaci lze změnit tento atribut. Pokud je tento atribut nastaven jako \textit{true} (tzn. formulář je privátní, lze k němu přistupovat jen s tokenem), kontrolují se předané emaily (zda mají validní tvar), na které se bude rozesílat pozvánka.
+			
+			Nakonec se vygeneruje nový identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4 a metoda se pokouší příslušná data uložit do databáze. Zde vzniká nový objekt formuláře, kterému jsou předány příslušné vlastnosti (tj. ID uživatele, vygenerovaný identifikátor, data z požadavku duplikace). S tím podobně vznikají i příslušné objekty pro uložení jednotlivých elementů formuláře (tj. otázky nebo nové stránky), jejichž vlastnosti jsou přebírány a kopírovány z duplikovaného formuláře. Nakonec, pokud je formulář nastaven jako privátní, jsou rozeslány pozvánky na zvalidované emaily. Tento proces probíhá pro předejití poškození integrity dat v transakci.
+			
+			Při úspěchu je vrácena odpověď s identifikátorem nově vzniklého formuláře (duplikátu). Ten je určen pro frontendovou část projektu k přesměrování.
+			
 			\subsubsubsection{Vrácení informací o formuláři majiteli}
+			Metoda s názvem \textit{showWithAuth}
+			
 			\subsubsubsection{Zveřejnění výsledků formuláře} %% přesunout?
+			Metoda s názvem \textit{publishResults}
+			
 			\subsubsubsection{Úprava formuláře}
+			Metoda s názvem \textit{update}
+			
 			\subsubsubsection{Úprava dostupnosti formuláře}
+			Metoda s názvem \textit{updateAccess}
+			
 			\subsubsubsection{Mazání formuláře}
-			\subsubsubsection{Export dat}
+			Metoda s názvem \textit{destroy}
 			
 		\subsubsection{Manipulace s výsledky formuláře}
 			\subsubsubsection{Vrácení všech výsledků}

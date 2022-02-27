@@ -279,12 +279,12 @@
 		\subsubsection{Manipulace s formuláři}
 		Tato část popisuje veškerou administrativu nad formuláři.
 		
-			\subsubsubsection{Vytvoření formuláře}
+			\subsubsubsection{Vytvoření formuláře}\label{sec:form_store}
 			Metoda s názvem \textit{store} slouží k vytvoření a uložení formuláře s jeho elementy do databáze. Kromě samotného vytvoření se stará o integritu formátu jednotlivých otázek a validitu příslušných atributů formuláře. Při chybě validace předaných dat (pokud není chyba cíleně ignorována) je nejčastěji vrácen stavový kód 400.
 			
 			Prvním krokem, co funkce provádí, je ověření, zda je uživatel přihlášen (pokud není, je vrácen stavový kód 401). Poté se provádí rozsáhlá validace, která sestává z kontroly základních informací o formuláři (např. název formuláře či data zveřejněni a ukončení zveřejnění), samotných elementů formuláře a dalších parametrů validního formuláře. Před těmito úkony je zkontrolováno, zda požadavek od uživatele vůbec obsahuje nějaká data.
 			
-			Validace základních informací kontroluje název a popisek formuláře (zda obsahují validní řetězec, u názvu samotné vyplnění - jedná se o povinný atribut), data zveřejnění a ukončení zveřejnění formuláře (zda mají hodnoty správný formát, zda datum ukončení zveřejnění je dále v čase než datum zveřejnění a zda se netvoří už expirovaný formulář s časem ukončení zveřejnění dříve v čase než je aktuální serverový čas), hodnotu vyjadřující dostupnost formuláře (zda bude veřejný nebo privátní) a zda požadavek vůbec obsahuje kolekci otázek. U privátního formuláře jsou také validovány emaily, na které se rozešle pozvánka (tzn. jejich formát).
+			Validace základních informací kontroluje název a popisek formuláře (zda obsahují validní řetězec, u názvu samotné vyplnění - jedná se o povinný atribut), data zveřejnění a ukončení zveřejnění formuláře (zda mají hodnoty správný formát, zda datum ukončení zveřejnění je dále v čase než datum zveřejnění a zda se netvoří už expirovaný formulář s časem ukončení zveřejnění dříve v čase než je aktuální serverový čas), hodnotu vyjadřující přístupnost formuláře (zda bude veřejný nebo privátní) a zda požadavek vůbec obsahuje kolekci otázek. U privátního formuláře jsou také validovány emaily, na které se rozešle pozvánka (tzn. jejich formát).
 			
 			Další částí je validace elementů. Ty jsou procházeny cyklem, ve kterém se nejprve zjišťuje, zda je vybraný element elementem otázky nebo nové stránky, a kontroluje se správné pořadí na základě vlastnosti \textit{order}. Pokud se jedná o novou stránku, přeskakuje se validace atributů otázky, a pokud má stránka validní hodnotu pro pořadí, je rovnou přemístěna mezi validní elementy. 
 			
@@ -296,10 +296,16 @@
 			
 			Po validaci zmíněných přichází na řadu kontrola dalších parametrů. Tím je validace pořadí (elementy musí mít v atributu pořadí číslo, které s ostatními tvoří posloupnost 0,1,2,3,...) a kontrola, zda v kolekci otázek existuje alespoň jedna otázka povinná. Dále je zavedena kontrola umístění elementů nové stránky - pro ty platí, že nesmí stát na začátku a na konci kolekce elementů a že v kolekci nesmí stát dva a více vedle sebe. V případě výskytu chyby je vrácen příslušný chybový stavový kód.
 			
-			Pokud jsou všechna data validní, tak se začne vykonávat kód v databázové transakci, kde je v případě tvoření formuláře nejprve vygenerován unikátní identifikátor ve tvaru UUID4. Poté se postupně vytváří příslušné objekty pro jednotlivé prvky formuláře, kterým se předávají zvalidovaná data. Po tomto úkonu se v případě privátního formuláře rozešlou pozvánky na příslušné emaily.
+			Pokud jsou všechna data validní, tak se začne vykonávat kód pro předejití poškození integrity dat v databázové transakci, kde je v případě tvoření formuláře nejprve vygenerován unikátní identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4. Poté se postupně vytváří příslušné objekty pro jednotlivé prvky formuláře, kterým se předávají zvalidovaná data. Po tomto úkonu se v případě privátního formuláře rozešlou pozvánky na příslušné emaily.
 			
 			\subsubsubsection{Úprava formuláře}
-			Metoda s názvem \textit{update}
+			Metoda s názvem \textit{update} slouží k editaci formuláře, který zatím nebyl zveřejněn. Díky této metodě lze kromě základních informací měnit i samotné otázky. Co v této metodě ale nelze provést je úprava přístupnosti formuláře a případné přidání emailů k rozeslání pozvánky (k tomu slouží metoda v sekci \ref{sec:form_accessibility}).
+			
+			Při volání metody se nejprve ověří, zda je uživatel přihlášen (pokud není, je vrácen stavový kód 401) a zda požadovaný formulář existuje (pokud ne, je vrácen stavový kód 404). Poté přichází na řadu kontrola časů - kontroluje se, zda už nebyl formulář zveřejněn na základě data zveřejnění formuláře (atribut musí být dále v čase než je serverový čas). Pokud tato podmínka není splněna, je vrácen stavový kód 400.
+			
+			Dále je spuštěna databázová transakce, ve které se nejprve vygeneruje dočasný identifikátor \textit{slug} formuláře ve tvaru UUID4. Poté se všechna data z požadavku uživatele předají metodě \textit{store} (popsána v sekci \ref{sec:form_store}), která přidá do databáze formulář s předanými úpravami. Kromě dat z požadavku se metodě poskytnou i další data: dočasný identifikátor, který slouží k identifikaci přidaného upraveného formuláře a informace o tom, zda byl upravovaný formulář veřejný nebo privátní. Dočasný identifikátor je použit místo vygenerovaného identifikátoru použitého přímo v metodě \textit{store}. Předávaná informace o přístupnosti slouží k tomu, aby upravený formulář tuto vlastnost neztratil a aby nebyly znovu rozeslány pozvánky na příslušné emaily, což je nativní chování metody \textit{store}. 
+			
+			Poté, pokud nebyl uživatelský požadavek validní dle metody pro přidání formuláře, je vrácen příslušný stavový kód pocházející přímo ze zmíněné metody. Pokud ale vše v metodě \textit{store} proběhlo bez problému, následují další činnosti. Pokud se jedná o veřejný formulář, původní (neupravený) formulář (a s ním i další objekty na něj navázané) je smazán pomocí metody \textit{destroy} (popsána v sekci \ref{sec:form_destroy}) a u upraveného formuláře je přepsán identifikátor na hodnotu identifikátoru, kterou disponoval neupravený formulář. V případě, že je upravený formulář privátní, se prvně do dočasné proměnné uloží všechny přístupové tokeny. Poté se původní formulář smaže a nahradí se identifikátor stejně jako u veřejného formuláře. Nakonec se vytvoří kopie tokenů na základě dat v dočasné proměnné zmíněné dříve, které se liší jen v hodnotě ID formuláře (to, jelikož byl de facto vytvořen nový formulář, musí odkazovat na upravený formulář). Na neočekávané chyby je vrácen stavový kód 500.
 			
 			\subsubsubsection{Duplikování formuláře}
 			Metoda s názvem \textit{duplicateWithAuth} slouží k duplikování formuláře - tzn. lze vytvořit nový formulář, který obsahuje stejné otázky a vlastnosti (tj. jméno formuláře, datum zveřejnění, datum ukončení zveřejnění,...), jako formulář, u kterého byla požadována duplikace. Zmíněné vlastnosti při tomto procesu lze modifikovat, otázky ne.
@@ -310,12 +316,12 @@
 			
 			Poté probíhá kontrola nastavení přístupnosti formuláře - při duplikaci lze změnit tento atribut. Pokud je tento atribut nastaven jako \textit{true} (tzn. formulář je privátní, lze k němu přistupovat jen s tokenem), kontrolují se předané emaily (zda mají validní tvar), na které se bude rozesílat pozvánka.
 			
-			Nakonec se vygeneruje nový identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4 a metoda se pokouší příslušná data uložit do databáze. Zde vzniká nový objekt formuláře, kterému jsou předány příslušné vlastnosti (tj. ID uživatele, vygenerovaný identifikátor, data z požadavku duplikace). S tím podobně vznikají i příslušné objekty pro uložení jednotlivých elementů formuláře (tj. otázky nebo nové stránky), jejichž vlastnosti jsou přebírány a kopírovány z duplikovaného formuláře. Nakonec, pokud je formulář nastaven jako privátní, jsou rozeslány pozvánky na zvalidované emaily. Tento proces probíhá pro předejití poškození integrity dat v transakci.
+			Nakonec se vygeneruje nový identifikátor ve tvaru UUID4 a metoda se pokouší příslušná data uložit do databáze. Zde vzniká nový objekt formuláře, kterému jsou předány příslušné vlastnosti (tj. ID uživatele, vygenerovaný identifikátor, data z požadavku duplikace). S tím podobně vznikají i příslušné objekty pro uložení jednotlivých elementů formuláře (tj. otázky nebo nové stránky), jejichž vlastnosti jsou přebírány a kopírovány z duplikovaného formuláře. Nakonec, pokud je formulář nastaven jako privátní, jsou rozeslány pozvánky na zvalidované emaily. Tento proces probíhá v databázové transakci.
 			
 			Při úspěchu je vrácena odpověď s identifikátorem nově vzniklého formuláře (duplikátu). Ten je určen pro frontendovou část projektu k přesměrování.
 								
-			\subsubsubsection{Úprava dostupnosti formuláře}
-			Metoda s názvem \textit{updateAccess} slouží k úpravě dostupnosti formuláře. V ní lze nastavit, zda je formulář veřejný, nebo privátní (s tím je možné nastavit, na které emaily lze dodatečně poslat pozvánku či kterým emailům s pozvánkou odebrat přístup ve formě invalidace tokenu).
+			\subsubsubsection{Úprava přístupnosti formuláře}\label{sec:form_accessibility}
+			Metoda s názvem \textit{updateAccess} slouží k úpravě přístupnosti formuláře. V ní lze nastavit, zda je formulář veřejný, nebo privátní (s tím je možné nastavit, na které emaily lze dodatečně poslat pozvánku či kterým emailům s pozvánkou odebrat přístup ve formě invalidace tokenu).
 			
 			V rámci zpracování dat je nejprve kontrolováno, zda požadavek obsahuje vůbec nějaká data (pokud ne, je vrácen stavový kód 400). Poté se kontroluje přihlášení uživatele (pokud není přihlášen, je vrácen stavový kód 401) a zda požadovaný formulář s příslušným vlastníkem existuje (pokud ne, je vrácen stavový kód 404). Další akce jsou prováděny jen pokud existuje v požadavku uživatele atribut \textit{has\_private\_token} s platnou hodnotou (pokud neexistuje, je vrácen stavový kód 400). Po těchto kontrolách se dále celý proces dělí na dvě logické větve. 
 			
@@ -334,10 +340,10 @@
 			
 			Poté se metoda pokouší tato data uložit do databáze. Nejprve přepisuje atribut formuláře \textit{has\_public\_results}, poté, na základě tohoto atributu, manipuluje s jednotlivými elementy. Pokud je zmíněný atribut \textit{true}, tak jsou jednotlivé elementy modifikovány podle zvalidovaných dat (tzn. pokud mají být veřejné, je jim nastaven stejnojmenný atribut \textit{has\_public\_results} na true, v opačném případě na \textit{false}). Pokud je ale zmíněný atribut formuláře \textit{false}, je všem elementům zmíněný atribut zveřejnění nastaven na \textit{false} (tzn. všechny odpovědi jsou skryty). Celý proces probíhá v transakci.
 			
-			\subsubsubsection{Mazání formuláře}
+			\subsubsubsection{Mazání formuláře}\label{sec:form_destroy}
 			Metoda s názvem \textit{destroy} slouží k odstranění formuláře a jeho přidružených elementů.
 			
-			V koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401), zda vůbec formulář s předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete()} smazán.
+			V koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401), zda vůbec formulář s předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete()} smazán. Tento proces také probíhá v transakci.
 			
 			\subsubsubsection{Vrácení všech formulářů uživateli}
 			Metoda s názvem \textit{index} je určena k vrácení všech formulářů, které patří přihlášenému uživateli. To slouží k hydrataci úvodní stránky uživatele - jedná se o přehled všech vlastněných formulářů. 

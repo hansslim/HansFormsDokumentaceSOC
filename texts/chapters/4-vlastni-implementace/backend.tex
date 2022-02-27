@@ -372,12 +372,31 @@
 			Metoda s názvem \textit{privateShow} funguje podobně jako metoda popsána v sekci \ref{sec:form_show}. Místo identifikátoru \textit{slug} se nejprve vyhledává uživatelem předaný token v databázi. Pokud nalezen není, je vrácen stavový kód 400. Pokud nalezen je, provádí se stejné kontroly časů jako v metodě v sekci \ref{sec:form_show}. Liší se ale v kontrole tokenu - zde je zjišťováno, zda není token už expirovaný resp. zda už pro tento token nebyla zaznamenána odpověď. Pokud expirovaný je, tak se odesílá jen stavový kód 410. Pokud požadavek na privátní formulář projde bez chyby, je odeslán formulář s příslušnými elementy - identifikátor \textit{slug} se pro koncového uživatele skrývá.
 			
 			Metoda slouží k hydrataci stránky určené k vyplnění privátního formuláře.
-		\subsubsection{Interakce s výsledky formuláře}
+		\subsubsection{Interakce s odpovědmi na formuláře}
+		Tato část popisuje veškerou administrativu nad zaznamenáváním odpovědí k formuláři.
+		
+			\subsubsubsection{Zaznamenávání odpovědi na veřejný formulář}\label{sec:form_comp_public}
+			Metoda s názvem \textit{store} slouží k zaznamenání všech odpovědí na příslušný veřejný formulář. V případě očekávané chyby je nejčastěji vrácen chybový kód 400.
+			
+			První věcí, která se provádí, je ověření, zda existuje formulář, na který lze odpovědět, na základě předaného identifikátoru \textit{slug} (v případě této chyby je vrácen stavový kód 404). Také se kontroluje, zda se nejedná o privátní formulář - na ten nelze přes identifikátor odpovědět (k tomu je určena metoda \textit{privateStore} popsána v sekci \ref{sec:form_comp_private}). Dále se kontroluje, zda je formulář už zveřejněný a zároveň zda není expirovaný (serverový čas v okamžiku, kdy je odeslána odpověď, musí být v intervalu mezi datem zveřejnění a datem ukončení zveřejnění). Po těchto operacích je formulář uložen v dočasné proměnné pro další úkony popsané níže.
+			
+			Poté je deklarována po zmíněné validaci vnitřní metoda \textit{getCorrespondingValue} sloužící k ucelení formátu předaných dat z požadavku na server. Té jsou předávány tyto parametry: \textit{request} (celý požadavek od uživatele), \textit{type} (řetězec identifikující typ otázky) a \textit{specificInputId} (\textit{id} otázky, pro kterou je hledána odpověď). Ta na základě předaných dat projde celý požadavek, ve kterém jednotlivé záznamy odpovědí zpracuje (tzn. zkontroluje jejich formát). Pokud je formát platný, testují se proti sobě příslušná data z požadavku a předaná data v parametrech metody (tzn. zda se typ a ID otázky z požadavku a z parametru rovnají). Pokud je nalezena taková shoda, jsou vrácena data (tj. ID otázky, typ otázky a předaná hodnota/odpověď) připravená ve formátu asociativního pole určená k další validaci. Pokud shoda nalezena není, jsou vrácena stejná data, jen bez předané hodnoty (pro případy otázek, u kterých není odpověď povinná).
+			
+			Dále jsou cyklem procházeny všechny elementy zodpovězeného formuláře. Cyklus postupně zkouší najít příslušnou hodnotu pro každou otázku. Krok cyklu je větven do několika částí, které se odvíjejí od typu otázky. V každé větvi je poté, na základě známého typu otázky, prohledáván požadavek od uživatele pomocí metody \textit{getCorrespondingValue} k nalezení příslušné odpovědi, která je převedena do pracovního formátu. Ta je poté validována podle předepsaných pravidel příslušné otázky, jež byla deklarována při tvoření formuláře (např. maximální délka předané textové odpovědi) v metodě \textit{store} ze sekce \ref{sec:form_store} - tzn. pokud je povinná, musí mít platnou hodnotu, pokud povinná není, může mít kromě platné hodnoty hodnotu \textit{null}. Komplikovanější, ale v podstatě stejná, je validace vstupu pro odpověď z výběru předepsaných možných odpovědí, kde se podobně jako v metodě \textit{getCorrespondingValue} v dalším vnořeném cyklu testují i příslušné možnosti odpovědi (zda vůbec k formuláři patří).
+			
+			Po tomto validačním procesu následuje databázová transakce, ve které se celá odpověď ukládá do databáze. Pro celou odpověď je nejprve vytvořen záznam o vyplnění formuláře, kterému je předán ID formuláře, na který byla odpověď směřována. Poté se vytváří na základě validního setu odpovědí k příslušným vstupům příslušné databázové objekty, které jsou zaobaleny záznamem o vyplnění formuláře.
+			
+			\subsubsubsection{Zaznamenávání odpovědi na privátní formulář}\label{sec:form_comp_private}
+			
+			
 			\subsubsubsection{Vrácení všech výsledků}
+			
+			
 			\subsubsubsection{Vrácení veřejných výsledků}
+			
+			
 			\subsubsubsection{Export výsledků}
-			\subsubsubsection{Zaznamenávání odpovědi na veřejný formulář}
-			\subsubsubsection{Zaznamenávání odpovědi na privátní formulář}
+			
 		
 		\subsubsection{Interakce s uživateli}
 			\subsubsubsection{Registrace uživatele}

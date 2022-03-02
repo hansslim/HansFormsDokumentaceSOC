@@ -1,7 +1,7 @@
-\section{Backend}
-	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně backend náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno dále.
+\section{Backend}\label{sec:impl_backend}
+	V rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně backend náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o které je psáno v sekci \ref{sec:impl_frontend}.
 	
-	Zde jsou zobecněné základní úkony, které v mé implementaci právě backend vykonává:
+	Zde jsou zobecněné základní úkony, které v této implementaci právě backend vykonává:
 	
 	\begin{itemize}
 		\item Zpracování a vyřizování požadavků z webové frontendové části
@@ -13,7 +13,7 @@
 	 
 	V následující části jsou popsány jednotlivé backendové komponenty a principy, díky kterým je celý projekt implementován.
 	
-	\subsection{Obecná struktura Laravel projektu}
+	\subsection{Obecná struktura Laravel projektu}\label{sec:strukura_laravel}
 	Prvně je nutné rozebrat obecnou strukturu Laravel projektu. 
 		\begin{figure}[H]
 			\centering %% příkaz, který ti obrázek zarovná na střed
@@ -42,7 +42,7 @@
 		\item Soubor webpack.mix.js obsahující informace pro kompilaci souborů pro frontend \cite{LaravelJSCSS}
 	\end{itemize}
 
-	\subsection{Cesty} %%Routes
+	\subsection{Cesty}\label{sec:routes} %%Routes
 	Cesty (volně přeložen původní název Routes) jsou využívány abstraktně k rozdělení aplikace - to je myšleno tak, že na každé cestě lze provádět jen úkon, který jí je přiřazen. Tyto cesty mají tvar URL adresy - skládají se z názvu výchozí domény, který je rozšířen o příslušnou cestu (ve formě textového řetězce děleného lomítky), a jsou využívány např. v prohlížeči pro přístup na specifickou stránku. Příkladem může být cesta vytvoření formuláře s příkladovou výchozí doménou \textit{localhost} s portem 8000 \textit{\uv{localhost:8000/forms/create}}. Po zadání této cesty do webového prohlížeče se za splnění podmínek jako spuštění lokálního serveru s aplikací a přihlášení do uživatelského účtu zobrazí požadovaná stránka.
 	
 	Běžně se v Laravelu tyto cesty definují v souboru \textit{web.php} - v tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v aplikaci dostat, jsou definovány ve frontendové části - to také vyplývá z předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v prohlížeči vykreslena - k tomu slouží frontendová část ve VueJS. K těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v části Pohledy), který je pak doplněn o příslušný obsah, který zajišťuje oddělený frontend (viz obrázek \ref{fig:routes_web}). Jedinou výjimkou jsou zde cesty pro resetování hesla předdefinované pro samotný Laravel.

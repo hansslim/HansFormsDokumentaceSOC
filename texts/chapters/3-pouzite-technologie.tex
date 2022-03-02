@@ -12,7 +12,7 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	Psát web v čistém Javascriptu dnes v souvislosti s pokročilejšími webovými aplikacemi s největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen níže.
 	
 	\subsection{VueJS}
-	VueJS je open-source progresivní framework určený k tvorbě uživatelských rozhraní. Jedná se framework psaný v jazyce Javascript, ale lze ho psát i v Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v něm např. programovat chování serveru. \cite{VueJS1}
+	VueJS je progresivní open-source framework určený k tvorbě uživatelských rozhraní. Jedná se framework psaný v jazyce Javascript, ale lze ho psát i v Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v něm např. programovat chování serveru. \cite{VueJS1}
 	
 	Svou popularitu si získal především tím, že je vyvíjen komunitou, a strukturou kódu, ve kterém je psán. Kód jednotlivých komponent je tvořen třemi základními částmi:
 	
@@ -26,6 +26,13 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	
 	\subsection{Bootstrap}
 	Bootstrap je open-source framework určený především pro stylování běžných komponent webových aplikací. Styly se aplikují na HTML ve formě tříd, kterým jsou interně předepsány parametry, jakým způsobem má být daný element nastylován. Také obsahuje předem hotové styly pro běžné komponenty jako jsou např. formuláře a jejich prvky, navigační lišty, modální okna atp. \cite{Bootstrap1}  \cite{Bootstrap2}  \cite{Bootstrap3}
+	
+	\subsection{NPM}\label{sec:npm}
+	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k přidávání komunitou vytvořených balíčků do vlastních projektů či k sdílení vlastního balíčku - ty jsou uloženy v tzv. registru, což je veřejná databáze Javascriptového softwaru. K instalaci těchto balíčků se nejčastěji používá CLI (Command Line Interface), kterým tento správce disponuje. 
+	
+	*cite https://docs.npmjs.com/about-npm*
+	
+	V tomto projektu byl využit zejména k přidání a správě balíčků na frontendové části pro VueJS.
 
 \section{Backend}
 Termínem backend označujeme část aplikace, která pro běžného uživatele zpravidla není vidět. Jedná se o administrátorskou část, ve které administrátor konfiguruje, jak se aplikace bude při jednotlivých situacích chovat. Backend, jako samostatná část aplikace, poté slouží ke zpracování dat – např. vyřizuje příchozí požadavky od frontendu nebo na frontend sama zasílá konkrétní data.
@@ -52,6 +59,13 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 		\end{itemize}
 	
 		Jeho účelem je zamezení tvorby tzv. „špagetového kódu“ – tj. dlouhý soubor, který obsahuje implementaci výše zmíněných funkcionalit (vše na jednom místě), což je v konečném důsledku velmi nepřehledné. Také nám usnadňuje myšlení při vývoji projektu – jednotlivé části kódu se umisťují tam, kam patří (např. stylování a konečný výstup pro uživatele do pohledu). \cite{MVC}
+		
+	\subsection{Composer}\label{sec:composer}
+	Composer je nástroj pro správu závislostí pro jazyk PHP. Umožňuje nám v projektu deklarovat, které cizí knihovny (resp. balíčky) budou v projektu použity. Ty poté dokáže nainstalovat nebo aktualizovat. Ve své funkcionalitě je velmi podobný jako NPM (viz sekce \ref{sec:npm}).
+	
+	*cite https://getcomposer.org/doc/00-intro.md*
+	
+	V tomto projektu byl použit primárně ke správě balíčků pro backendovou část.
 		
 \section{Úložiště dat}
 Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K těmto účelům slouží právě úložiště dat – o mnou využitých píši níže.

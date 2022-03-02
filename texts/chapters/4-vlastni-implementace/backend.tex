@@ -34,11 +34,11 @@
 		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře) \cite{LaravelDir}
 		\item Složka \textit{storage} obsahuje primárně záznamy o chodu aplikace a jiné aplikací vygenerované soubory \cite{LaravelDir}
 		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita) \cite{LaravelDir}
-		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků, které aplikace používá \cite{LaravelDir} 
+		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků spravované Composerem (viz sekce \ref{sec:composer}), které aplikace používá \cite{LaravelDir} 
 		\item Soubor .env držící veškeré důležité administrativní hodnoty jako např. přihlašovací údaje k databázi
 		\item Soubor artisan obsahující důležité příkazy pro stavbu aplikace \cite{LaravelArtisan} 
-		\item Soubor composer.json držící informace o přídavných balíčcích pro Laravel projekt \cite{ComposerpJSON}
-		\item Soubor package.json držící informace o přídavných balíčcích pro frontendovou část projektu \cite{NPMpJSON}
+		\item Soubor composer.json držící informace o přídavných balíčcích Composeru (viz sekce \ref{sec:composer}) pro Laravel projekt \cite{ComposerpJSON}
+		\item Soubor package.json držící informace o přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm}) pro frontendovou část projektu \cite{NPMpJSON}
 		\item Soubor webpack.mix.js obsahující informace pro kompilaci souborů pro frontend \cite{LaravelJSCSS}
 	\end{itemize}
 
@@ -149,9 +149,9 @@
 	\begin{itemize}
 		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k jednodušší práci s daty. Existuje mnoho metod - např. belongsTo (označuje, komu samotný model náleží) či hasOne/hasMany (označuje, které model/y samotnému modelu patří). \cite{LaravelORM}
 		\item Vlastnost \textit{fillable} - Ta určuje, do kterých atributů může být na vrstvě webové aplikace zapisováno. Nenapíšeme sem tedy např. \textit{id}, které většinou chceme doplnit až při uložení do databáze samotnou databází. \cite{LaravelORM}
-		\item Vlastnost visible - Ta určuje, které atributy jsou ve vrácených datech z databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server. \cite{LaravelORM}
-		\item Vlastnost table - Ta slouží k přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje. \cite{LaravelORM}
-		\item Vlastnost with - Ta slouží k výchozímu připojení dalších dat z jiného modelu ke stávajícímu setu dat modelu. K takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod. \cite{LaravelORM}
+		\item Vlastnost \textit{visible} - Ta určuje, které atributy jsou ve vrácených datech z databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server. \cite{LaravelORM}
+		\item Vlastnost \textit{table} - Ta slouží k přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje. \cite{LaravelORM}
+		\item Vlastnost \textit{with} - Ta slouží k výchozímu připojení dalších dat z jiného modelu ke stávajícímu setu dat modelu. K takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod. \cite{LaravelORM}
 	\end{itemize}
 
 	Každý model většinou nevyužívá všechny zmíněné činnosti, ale jen ty, které jsou pro jeho typ důležité. Příkladem je zde uveden poměrně rozsáhlý model formuláře \textit{Form}. Podobným způsobem jsou vytvořeny i ostatní modely.

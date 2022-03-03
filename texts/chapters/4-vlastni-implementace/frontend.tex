@@ -74,7 +74,16 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 			\item Balíček \uv{vue-toasted} je použit pro zobrazování zpráv o průběhu různých činností (např. zobrazení chybových hlášek).
 		\end{itemize}
 	
-		Dále frontend obsahuje reference na automaticky přidané balíčky, které nejsou předmětem této práce. Lze z nich ale vyjmout např. \uv{vuex} (správa držení dat v prohlížeči), \uv{vue-router} (správa cest mezi jednotlivými částmi aplikace - směrovač) či \uv{axios} (komunikace s API).
+		Dále frontend obsahuje reference na automaticky přidané balíčky, které nejsou předmětem této práce. Lze z nich ale vyjmout např. \uv{vuex} a \uv{vuex-persist} (správa držení dat v prohlížeči), \uv{vue-router} (správa cest mezi jednotlivými částmi aplikace - směrovač) či \uv{axios} (komunikace s API).
+	
+	\subsection{Komunikace s Laravel API}
+	Komunikace mezi frontendovou aplikací a Laravel API je pro celkovou funkčnost projektu klíčová - bez ní by nedávala existence této části žádný smysl. K těmto účelům je do projektu přidán balíček \uv{axios} - ten se stará o veškerou komunikaci mezi klientskou a serverovou stranou tzn. data dokáže odesílat i přijímat. Komunikace probíhá tak, že nějaký frontendový prvek (obvykle pohled) volá na metody zastřešené tímto balíčkem a na základě odpovědi ze serveru dostává data.
+	
+	Všechny tyto metody a soubory spojené s komunikací se nachází ve složce \textit{apis}. Zde je klíčový soubor \textit{Api.js}, ve kterém nejprve inicializujeme objekt, který celou komunikaci zastřešuje (ten pochází ze zmíněného balíčku) - tomu je vhodné přiřadit výchozí cestu, ze které bude později tvořit absolutní cesty, na které bude posílat specifické požadavky (v případě této implementace název domény + řetězec \textit{/api/}). Poté mu deklarujeme, co má provést v případě příchozí odpovědi ze serveru bez chyby a s chybou. V případě úspěšné akce (tedy navrácení dat bez chyby - obvykle s kódem 200) jsou data bez jakýchkoli úprav předána komponentě, která si je žádala. V opačném případě (tedy při chybě) je kromě vrácení obsahu příchozí zprávy také do konzole vypsána příslušná chyba. Vrácení příchozích dat s chybou tímto způsobem je určeno pro vytvoření chybového oznámení pro uživatele - aby uživatel věděl, proč daná operace selhala. Zároveň to slouží např. samotným pohledům - na základě chybové hlášky nebo chybového stavového kódu přizpůsobí své chování. Výpis do konzole sloužil primárně k vývoji aplikace - ničemu ale nevadil, proto byl v aplikaci ponechán. 
+	
+	Speciálním případem je situace, kdy se vyskytne chyba se stavovým kódem 401 nebo 419 (uživatel pravděpodobně chce přistoupit k obsahu, ke kterému nemá v současnou chvíli oprávnění např. protože mu vypršela relace přihlášení). V takovém případě se aplikace pokusí uživateli zneplatnit přihlášení a odstranit o něm záznam z prohlížeče a uživatele automaticky přesměrovat na pohled pro přihlášení.
+	
+	Další soubory ve zmíněném adresáři jsou \textit{Form.js} a \textit{User.js}. Ty obsahují konkrétní funkce s referencí na objekt deklarovaný v souboru \textit{Api.js}, přednastavenou metodu komunikace (ta musí korelovat s metodami na API viz sekce \ref{sec:routes}) a relativní cestu, na kterou budou požadavek směrovat (ta je spojena s předem definovanou výchozí cestou). Funkci je samozřejmě možné předat parametr (obvykle set dat), který je poté předán na server. Jak už z názvů souborů vyplývá - \textit{Form.js} zaštiťuje komunikaci týkající se manipulace s formuláři nebo s odpověďmi na formulář a \textit{User.js} zajišťuje komunikaci v rámci veškeré administrativy nad uživateli.
 	
 	\subsection{Komponenty}
 	Komponenty jsou v podstatě \uv{díly k složení celé aplikace}. Díky nim nemusíme např. stránku pro vytvoření formuláře psát do jednoho nepřehledného a obrovského souboru, ale můžeme tento kód rozdělit. Výhodou také je, že když budeme tento komponentový styl zápisu kódu dodržovat, lze jeho části v jiných místech opětovně využít - předcházíme tím redundantnímu kódu, který zbytečně znepřehledňuje celý projekt. Všechny zmíněné komponenty jsou zapsány v souborech s koncovkou \textit{.vue} a disponují stejným jménem jako samotný soubor.
@@ -114,7 +123,7 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 			
 			Před inicializací přijímá všechny otázky formuláře, hodnotu vyjadřující zda je formulář už zveřejněn a identifikátor formuláře. Poté, na základě přijatých dat, vypisuje jeho současný stav a možnosti, co lze s formulářem provést. Klíčová je hodnota vyjadřující zda jsou už výsledky veřejné - pokud se rovná \textit{false}, je zobrazeno jen prázdné zaškrtávací políčko vyjadřující, že výsledky zveřejněny nejsou. Pokud se hodnota rovná \textit{true}, jsou vypsány i všechny otázky, u kterých lze označit, která z nich bude veřejně viditelná. Zmíněnou hodnotu můžeme pomocí zaškrtávacího políčka samozřejmě měnit - s tím se i dynamicky změní rozložení okna. Poté, co navolíme příslušné parametry a klikneme na tlačítko pro uložení nastavení, je na server poslán požadavek s příslušnými údaji. Ten je zpracován metodou \textit{publishResults}, která je popsána v sekci \ref{sec:form_publish_results}. Po úspěšném provedení činnosti se okno zavírá a celá stránka je přenačtena.
 			
-			\subsubsubsection{Manipulace s celým formulářem}
+			\subsubsubsection{Manipulace s celým formulářem}\label{sec:modalni_okna_man_form}
 			Posledním adresářem je \textit{FormReview}. Ten obsahuje dvě modální okna použitá v pohledu pro zobrazení souhrnu informací o formuláři. Jedná se o komponenty \textit{FormAccessibilityModal} a \textit{FormDuplicationModal}.
 			
 			Komponenta \textit{FormAccessibilityModal} slouží k úpravě přístupnosti formuláře. Je také tvořena především komponentami z balíčku \uv{VueFormulate} a ke svému správnému chodu potřebuje při vytvoření nejprve dostat hodnotu vyjadřující současnou přístupnost (zda je formulář veřejný nebo privátní) a identifikátor formuláře - pokud se jedná o privátní formulář, musí být předány i emaily, na které byla už zaslána pozvánka. Na základě těchto dat je vykresleno příslušné rozložení modálního okna - toto rozložení lze měnit na základě změny hodnoty vyjadřující přístupnost. Pokud je zmíněná hodnota \textit{false}, zobrazí se jen související prázdné zaškrtávací políčko. Pokud se ale rovná \textit{true}, zobrazují se zde i další dva ovládací prvky. V prvním lze vidět emaily, na které již byla zaslána pozvánka - ty lze pro zneplatnění pozvánky označit. V druhém můžeme zase přidat emaily, na které bude poslána nová pozvánka k vyplnění formuláře. Nakonec (po kliknutí na tlačítko vyjadřující provedení změny) se příslušná data pošlou na server. Ta jsou zpracována metodou \textit{updateAccess}, která je popsána v sekci \ref{sec:form_accessibility}. Modální okno se poté zavře a stránka je přenačtena.
@@ -130,20 +139,39 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 		
 		\subsubsection{Komponenta karty formuláře}
 		Jednoduchá komponenta, kterou nebylo možné zařadit mezi ostatní výše, s názvem \textit{FormCard} slouží jako předpis pro vykreslování karty formuláře. Ta je použita v pohledu úvodní stránky v případě, že je uživatel přihlášen a že už nějaké formuláře vlastní. Po kliknutí na kartu se přihlášený uživatel dostane na pohled se zobrazením souhrnu informací o požadovaném formuláři. Sama o sobě karta zobrazuje název a popisek formuláře či data spuštění a ukončení zveřejnění formuláře.
-		
-	\subsection{Komunikace s Laravel API}
 	
+	\subsection{Směrovač}\label{sec:fe_router} %%Router
+	K tomu, abychom mohli přecházet mezi částmi aplikace, je nutné, aby v aplikaci existoval nějaký komplexní systém, který by nad tímto problémem měl kontrolu. To zde řeší tzv. směrovač (běžně známý pod anglickým názvem Router), který je importován z balíčku \uv{vue-router}. Tento směrovač má za úkol na základě definovaných možných cest v aplikaci vracet příslušný pohled uživateli.
 	
-	\subsection{Směrovač} %%Router
+	Směrovač implementovaný v tomto projektu je umístěn ve složce \textit{router} v souboru \textit{index.js}. V tomto souboru jsou nejprve vydefinovány všechny relativní cesty, ke kterým je přiřazen hlavně příslušný pohled, který je při vstupu na nějakou z cest vrácen uživateli - některé mohou disponovat i metadaty (např. zda cesta vyžaduje pro vykreslení přihlášení uživatele). Poté je inicializován objekt tohoto směrovače, kterému jsou předány především data jako výchozí cesta (v této implementaci název domény), ke které jsou relativní cesty ve výsledku připojeny, a samotná kolekce vydefinovaných cest. 
 	
+	Nakonec lze určit i specifické chování pro zmíněná metadata u cest, což je zde také využito a popsáno níže:
+	\begin{itemize}
+		\item Pokud cesta vyžaduje přístup bez přihlášení a uživatel je přihlášen, je přesměrován na domovskou stránku (např. pokus o přístup na přihlašovací stránku). Pokud není přihlášen, je přesměrován na stránku na zvolené cestě.
+		\item Pokud cesta vyžaduje přístup s přihlášením a uživatel je přihlášen, je přesměrován na stránku na zvolené cestě. Pokud není, je přesměrován na pohled pro přihlášení (např. pokus o přístup na pohled zobrazující souhrn informací o formuláři, který je určen jen přihlášenému majiteli formuláře).
+		\item Pokud nemá cesta žádná známá metadata, je uživatel přesměrován na stránku na zvolené cestě.
+	\end{itemize}
+
 	\subsection{Držení dat v prohlížeči} %% Store
+	Možnost držení dat v prohlížeči je další ze základních atributů pro správnou funkčnost aplikace. Ať už se jedná o soubory cookies nebo o dočasné úložiště v paměti alokované přímo Javascriptem - jednoduše je to potřeba. V tomto projektu byly využity oba zmíněné přístupy.
 	
+	Soubory spojené s držením dat pomocí Javascriptu (označovány jako Stores) jsou umístěné ve složce \textit{store} - jedná se o soubor \textit{index.js} a soubor \textit{MyStoreClass.js}.
 	
 		\subsubsection{Přihlášení uživatele}
+		V rámci přihlášení uživatele lze držení dat rozdělit na dvě větve: pomocí cookies a pomocí držení dat v Javascriptu za využití balíčku \uv{vuex}. 
 		
+		V cookies jsou drženy šifrované tokeny, které jsou spravované přímo backendovým balíčkem pro zabezpečení single-page aplikací \uv{Laravel Sanctum} a slouží k ověřování přihlášení (jsou autonomně posílány společně s každým požadavkem na server - ten na základě jejich platnosti provede požadovaný úkon). 
+		
+		Naproti tomu přihlášení drženo pomocí \uv{vuex} je zde primárně pro funkčnost metadat u směrovače (viz sekce \ref{sec:fe_router}) - na základě tohoto drženého stavu může přihlášený uživatel přistupovat na stránky, které jsou přístupné pouze s přihlášením. Toto je definováno v souboru \textit{index.js}, kde probíhá inicializace objektu z balíčku \uv{vuex}, který má deklarován příslušné proměnné držící stav (states), metody pro vrácení hodnot proměnných držících stav (getters), metody pro cílenou změnu hodnot (mutations) a další procedury ve formě metod (actions - např. procedura pro přihlášení uživatele). K tomu, aby data nebyla smazána při přenačtení stránky, musí být přidán zmíněnému objektu plugin \textit{VuexPersistence} z balíčku \uv{vuex-persist}, který toto chování zprostředkovává.
 		
 		\subsubsection{Data pro manipulaci s formuláři}\label{sec:data_prohlizec_form}
+		K tomu, abychom mohli vytvářet, upravovat nebo duplikovat formuláře, bylo nutné jejich data dočasně (do odeslání požadavku na server) držet v prohlížeči. K těmto účelům vznikla tři dočasná \uv{skladiště} dat - \textit{createFormStore}, \textit{createFormChoicesStore} a \textit{duplicateFormStore}.
 		
+		První dva zmíněné objekty (tedy \textit{createFormStore} a \textit{createFormChoicesStore}) jsou určené pro vytváření a úpravu formuláře a jsou ve své podstatě naprosto identické, jelikož se jedná o instance pro projekt vytvořené třídy \textit{MyStore}, která se nachází v souboru \textit{MyStoreClass.js}. Třída \textit{MyStore} obsahuje proměnnou pro ukládání dat, což je objekt, ve kterém je vytvořeno pole pro ukládání hodnot kolekce dat. Kromě této proměnné třída disponuje různými metodami: \textit{getItems} vrací všechny prvky kolekce, \textit{addItem} ukládá předaná data z parametru do kolekce, \textit{refreshItemsOrder} obnovuje hodnotu pořadí každému prvku v kolekci (tzv. postupně očísluje prvky), \textit{sortItemsByOrder} řadí prvky v kolekci podle hodnoty pořadí, \textit{changeItem} dokáže nahradit existující prvek v kolekci na základě shody ID, \textit{deleteItem} smaže prvek z kolekce na základě ID, \textit{clearStore} vymaže všechny prvky z kolekce a \textit{setItems} přepíše celou kolekci předanou kolekcí.
+		
+		Třetí objekt (\textit{duplicateFormStore}) slouží k držení dat pro duplikaci formuláře. Oproti zmíněným instancím se jedná o \uv{skladiště}, které je připraveno pro konkrétní data související s duplikací. V rámci proměnných, ve kterých dočasně drží data, jsou zde vlastně deklarovány pole pro příslušné ovládací prvky modálního okna pro duplikaci (viz sekce \ref{sec:modalni_okna_man_form}). Dále obsahuje standardní metody pro smazání, přepsání a vrácení uložených dat (\textit{clearData}, \textit{setData} a \textit{getData}), ale také metodu pro validaci těchto dat (\textit{validateData}, která na vrací případnou chybovou hlášku pro zobrazení v modálním okně) či metodu pro zjištění, zda je úložiště prázdné neboli ve výchozím stavu (\textit{isStoreEmpty}).
+		
+		Lze namítat, že pro ukládání těchto dočasných dat je možné využít lokální úložiště Vue komponenty \textit{data} - zde to ale možné nebylo, jelikož bylo potřeba předávat data mezi více komponentami. Zároveň, díky tomuto přístupu, jsem mohl s daty manipulovat v určitých situacích jednodušeji za pomocí předpřipravených metod.
 	
 	\subsection{Pohledy}
 		

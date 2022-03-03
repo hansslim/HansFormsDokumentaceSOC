@@ -410,7 +410,7 @@
 			
 			Tato metoda funguje velmi podobně jako metoda \textit{index} popsaná v sekci \ref{sec:form_comp_private_index}. Oproti zmíněné metodě nekontroluje přihlášení uživatele, ale zda jsou výsledky dotazovaného formuláře nastaveny jako veřejné. Z podstaty věci také omezuje viditelnost vybraných otázek na základě hodnoty \textit{has\_public\_results}, kterou musí disponovat všechny otázky - pokud je nastavena na \textit{false}, tak je otázka z výstupního setu odebrána. Pokud jsou všechny nastaveny jako skryté, odesílá se stejný stavový kód jako při situaci, kdy neexistuje žádná odpověď na formulář. Jinak se tato metoda oproti zmíněné neliší.
 			
-			\subsubsubsection{Export výsledků}
+			\subsubsubsection{Export výsledků}\label{sec:form_comp_export}
 			Metoda s názvem \textit{export} je určena k exportování všech odpovědí do souboru formátu MS Excel (s příponou .xlsx). Tato data mají sloužit při správném nastavení formuláře a jeho odpovědí např. ke korelační analýze (především u škálových typů otázek). K tomuto úkonu je použit přídavný balíček \uv{maatwebsite/excel} (především třídu \textit{Excel}), který po předání příslušných dat celý exportní proces obstarává (viz sekce \ref{sec:exports}).
 			
 			Metoda funguje tak, že nejprve volá metodu \textit{index} (popsána v sekci \ref{sec:form_comp_private_index}), které předává identifikátor formuláře z uživatelského požadavku. Poté, pokud je ze zmíněné metody navrácen objekt formuláře (tzn. že celý proces proběhl úspěšně - byla předána platná kolekce odpovědí), jsou příslušná data předána metodě \textit{download} na statické třídě \textit{Excel}, která vygeneruje příslušný soubor. Pokud je z metody \textit{index} vrácen jen stavový kód, tak je uživateli předán společně s příslušnou chybovou hláškou.

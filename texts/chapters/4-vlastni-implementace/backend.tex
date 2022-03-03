@@ -65,7 +65,7 @@
 		\label{fig:routes_api} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Zmíněné cesty jsou rozděleny do dvou skupin - s veřejným přístupem (bez přihlášení) nebo s privátním přístupem (s přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s příslušnými daty odeslány údaje o přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček Laravel Sanctum pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarován v příslušném kontroléru. 
+	Zmíněné cesty jsou rozděleny do dvou skupin - s veřejným přístupem (bez přihlášení) nebo s privátním přístupem (s přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s příslušnými daty odeslány údaje o přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček \uv{Laravel Sanctum} pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarován v příslušném kontroléru. 
 	
 	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
 	

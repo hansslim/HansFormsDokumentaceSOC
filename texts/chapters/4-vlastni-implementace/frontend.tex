@@ -20,25 +20,22 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 	Jak můžeme na obrázku \ref{fig:vuejs_str} vidět, celý projekt je složen z mnoha složek a souborů. Podrobný rozbor všech souborů a složek není předmětem této práce, proto jsou nejdůležitější zmíněné části popsány níže jen obecně.
 	
 	\begin{itemize}
-		\item Složka \textit{dist} obsahuje zkompilovaný kód aplikace
-		\item Složka \textit{node\_modules} obsahuje závislosti a soubory přídavných balíčků NPM (viz sekce \ref{sec:npm}), které aplikace používá
-		\item Složka \textit{public} obsahuje obecně veřejné soubory (např. favicon)
-		\item Složka \textit{src} obsahuje všechny soubory se zdrojovým kódem, ze kterých se poté tvoří zkompilovaný kód celé aplikace
-		\item Soubor \textit{package.json} obsahuje informace o přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm})
+		\item Složka \textit{dist} obsahuje zkompilovaný kód aplikace. \cite{FEDistFolder}
+		\item Složka \textit{node\_modules} obsahuje závislosti a soubory přídavných balíčků NPM (viz sekce \ref{sec:npm}), které aplikace používá. \cite{VueJSFolder}
+		\item Složka \textit{public} obsahuje obecně veřejné soubory (např. favicon). \cite{VueJSFolder}
+		\item Složka \textit{src} obsahuje všechny soubory se zdrojovým kódem, ze kterých se poté tvoří zkompilovaný kód celé aplikace. \cite{VueJSFolder}
+		\item Soubor \textit{package.json} obsahuje informace o přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm}). \cite{VueJSFolder}
 	\end{itemize}
-
-	*cite https://5balloons.info/project-tour-of-vue-cli-app/*
-	*cite https://stackoverflow.com/questions/22842691/what-is-the-meaning-of-the-dist-directory-in-open-source-projects*
 	
 	Popsaná struktura výše je standardní pro oddělenou frontendovou aplikaci. To v implementaci tohoto projektu ale neplatí, jelikož je frontend přímo zaintegrován v Laravel projektu (viz sekce \ref{sec:strukura_laravel}). Jsou zde tyto rozdíly:
 	
 	\begin{itemize}
-		\item Složka \textit{src} je nahrazena složkou \textit{js} ve složce \textit{resources}
-		\item Složka \textit{public} je umístěna v kořenovém adresáři Laravel projektu a je sloučena se složkou \textit{dist}
-		\item Složka \textit{node\_modules} společně se souborem \textit{package.json} je také umístěna v kořenovém adresáři Laravel projektu
+		\item Složka \textit{src} je nahrazena složkou \textit{js} ve složce \textit{resources}.
+		\item Složka \textit{public} je umístěna v kořenovém adresáři Laravel projektu a je sloučena se složkou \textit{dist}.
+		\item Složka \textit{node\_modules} společně se souborem \textit{package.json} je také umístěna v kořenovém adresáři Laravel projektu.
 	\end{itemize}
 	
-	Celkovou administrativu nad celým Vue projektem poté zajišťuje modul Laravel Mix podle konfiguračního souboru webpack.mix.js. Ten je také umístěn v kořenovém adresáři projektu. *cite https://laravel-mix.com/docs/6.0/vue* Díky celému tomuto přístupu může backend i frontend běžet jako jedna aplikace na jedné doméně.
+	Celkovou administrativu nad celým Vue projektem poté zajišťuje modul Laravel Mix podle konfiguračního souboru webpack.mix.js \cite{LaravelMixVue}. Ten je také umístěn v kořenovém adresáři projektu. Díky celému tomuto přístupu může backend i frontend běžet jako jedna aplikace na jedné doméně.
 	
 	Jak již bylo zmíněno, zdrojový kód, tedy nejdůležitější část frontendové aplikace, leží standardně ve složce \textit{src} - v tomto projektu ve zmíněné složce \textit{js}. Oproti běžné samostatné Vue aplikaci je zde (ve složce \textit{js}) největší rozdíl v pojmenování souborů - soubor \textit{main.js} byl přejmenován pro potřeby Laravelu na \textit{app.js}. Také se navíc v této složce nachází Laravelem vygenerovaný soubor bootstrap.js pro další konfiguraci při kompilaci. Nakonec byla kvůli nevyužití odebrána složka \textit{assets} a pro další účely přidána složka \textit{apis} (viz obrázek \ref{fig:zdroj_kod_vue_rozdily}).
 	
@@ -53,13 +50,13 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 
 	Každý soubor a složka ve zmíněném adresáři \textit{js} má určitý význam. Ty jsou představeny níže (soubor bootstrap.js byl již popsán výše). Další rozbor jednotlivých souborů ve zmíněných složkách je obsažen v dalších sekcích této práce.
 	\begin{itemize}
-		\item Složka \textit{apis} obsahuje prostředky pro komunikaci s API (tedy s backendem)
-		\item Složka \textit{components} obsahuje všechny komponenty, které jsou využívány v celé aplikaci
-		\item Složka \textit{router} obsahuje prostředky pro přesměrovávání a definování cest ve frontendové aplikaci
-		\item Složka \textit{store} obsahuje nástroje pro držení dat ve webovém prohlížeči
-		\item Složka \textit{views} obsahuje veškeré pohledy, na které se můžeme pomocí definované cesty dostat
-		\item Soubor \textit{app.js} je kořenový soubor aplikace shromažďující všechny reference na ostatní soubory (zabaluje celou aplikaci)
-		\item Soubor \textit{App.vue} je kořenová šablona, která přijímá pohledy na základě cesty, které poté vykresluje (tvoří aplikační kostru HTML)
+		\item Složka \textit{apis} obsahuje prostředky pro komunikaci s API (tedy s backendem).
+		\item Složka \textit{components} obsahuje všechny komponenty, které jsou využívány v celé aplikaci.
+		\item Složka \textit{router} obsahuje prostředky pro přesměrovávání a definování cest ve frontendové aplikaci.
+		\item Složka \textit{store} obsahuje nástroje pro držení dat ve webovém prohlížeči.
+		\item Složka \textit{views} obsahuje veškeré pohledy, na které se můžeme pomocí definované cesty dostat.
+		\item Soubor \textit{app.js} je kořenový soubor aplikace shromažďující všechny reference na ostatní soubory (zabaluje celou aplikaci).
+		\item Soubor \textit{App.vue} je kořenová šablona, která přijímá pohledy na základě cesty, které poté vykresluje (tvoří aplikační kostru HTML).
 	\end{itemize}
 
 		\subsubsection{Souhrn využitých balíčků}\label{sec:fe_packages}
@@ -68,24 +65,24 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 		\begin{itemize}
 			\item Balíček \uv{@braid/vue-formulate} (dále jako VueFormulate) je použit pro veškeré formulářové prvky. Kromě zprostředkování hotových komponent pro jednotlivé elementy formuláře také nabízí např. validaci dat.
 			\item Balíček \uv{vue-chartjs} (zastřešující populární balíček \uv{chart.js}) je použit pro grafické vyobrazení dat ve formě grafů.
-			\item Balíček \uv{randomcolor} je použit pro generování náhodných barev (využito u grafů k dynamickému rozlišení dat)
-			\item Balíček \uv{uuid} je použit pro generování unikátního identifikátoru (především funkce \textit{uuidv4}, např. u vytváření formuláře k označování vytvořených otázek)
+			\item Balíček \uv{randomcolor} je použit pro generování náhodných barev (využito u grafů k dynamickému rozlišení dat).
+			\item Balíček \uv{uuid} je použit pro generování unikátního identifikátoru (především funkce \textit{uuidv4}, např. u vytváření formuláře k označování vytvořených otázek).
 			\item Balíček \uv{vue-js-modal} je použit k vytváření a správě modálních oken.
 			\item Balíček \uv{vue-toasted} je použit pro zobrazování zpráv o průběhu různých činností (např. zobrazení chybových hlášek).
 		\end{itemize}
 	
 		Dále frontend obsahuje reference na automaticky přidané balíčky, které nejsou předmětem této práce. Lze z nich ale vyjmout např. \uv{vuex} a \uv{vuex-persist} (správa držení dat v prohlížeči), \uv{vue-router} (správa cest mezi jednotlivými částmi aplikace - směrovač) či \uv{axios} (komunikace s API).
 	
-	\subsection{Komunikace s Laravel API}
+	\subsection{Komunikace s Laravel API}\label{sec:komunikace_s_api}
 	Komunikace mezi frontendovou aplikací a Laravel API je pro celkovou funkčnost projektu klíčová - bez ní by nedávala existence této části žádný smysl. K těmto účelům je do projektu přidán balíček \uv{axios} - ten se stará o veškerou komunikaci mezi klientskou a serverovou stranou tzn. data dokáže odesílat i přijímat. Komunikace probíhá tak, že nějaký frontendový prvek (obvykle pohled) volá na metody zastřešené tímto balíčkem a na základě odpovědi ze serveru dostává data.
 	
 	Všechny tyto metody a soubory spojené s komunikací se nachází ve složce \textit{apis}. Zde je klíčový soubor \textit{Api.js}, ve kterém nejprve inicializujeme objekt, který celou komunikaci zastřešuje (ten pochází ze zmíněného balíčku) - tomu je vhodné přiřadit výchozí cestu, ze které bude později tvořit absolutní cesty, na které bude posílat specifické požadavky (v případě této implementace název domény + řetězec \textit{/api/}). Poté mu deklarujeme, co má provést v případě příchozí odpovědi ze serveru bez chyby a s chybou. V případě úspěšné akce (tedy navrácení dat bez chyby - obvykle s kódem 200) jsou data bez jakýchkoli úprav předána komponentě, která si je žádala. V opačném případě (tedy při chybě) je kromě vrácení obsahu příchozí zprávy také do konzole vypsána příslušná chyba. Vrácení příchozích dat s chybou tímto způsobem je určeno pro vytvoření chybového oznámení pro uživatele - aby uživatel věděl, proč daná operace selhala. Zároveň to slouží např. samotným pohledům - na základě chybové hlášky nebo chybového stavového kódu přizpůsobí své chování. Výpis do konzole sloužil primárně k vývoji aplikace - ničemu ale nevadil, proto byl v aplikaci ponechán. 
 	
 	Speciálním případem je situace, kdy se vyskytne chyba se stavovým kódem 401 nebo 419 (uživatel pravděpodobně chce přistoupit k obsahu, ke kterému nemá v současnou chvíli oprávnění např. protože mu vypršela relace přihlášení). V takovém případě se aplikace pokusí uživateli zneplatnit přihlášení a odstranit o něm záznam z prohlížeče a uživatele automaticky přesměrovat na pohled pro přihlášení.
 	
-	Další soubory ve zmíněném adresáři jsou \textit{Form.js} a \textit{User.js}. Ty obsahují konkrétní funkce s referencí na objekt deklarovaný v souboru \textit{Api.js}, přednastavenou metodu komunikace (ta musí korelovat s metodami na API viz sekce \ref{sec:routes}) a relativní cestu, na kterou budou požadavek směrovat (ta je spojena s předem definovanou výchozí cestou). Funkci je samozřejmě možné předat parametr (obvykle set dat), který je poté předán na server. Jak už z názvů souborů vyplývá - \textit{Form.js} zaštiťuje komunikaci týkající se manipulace s formuláři nebo s odpověďmi na formulář a \textit{User.js} zajišťuje komunikaci v rámci veškeré administrativy nad uživateli.
+	Další soubory ve zmíněném adresáři jsou \textit{Form.js} a \textit{User.js}. Ty obsahují konkrétní funkce s referencí na objekt deklarovaný v souboru \textit{Api.js}, přednastavenou metodu komunikace (ta musí korelovat s metodami na API viz sekce \ref{sec:routes}) a relativní cestu, na kterou budou požadavek směrovat (ta je spojena s předem definovanou výchozí cestou). Zmíněné cesty samozřejmě musí odkazovat na existující cesty definované serverem (viz tabulky \ref{tab:verejne_cesty} a \ref{tab:cesty_s_prihlasenim}). Funkci je samozřejmě možné předat parametr (obvykle set dat), který je poté předán na server. Jak už z názvů souborů vyplývá - \textit{Form.js} zaštiťuje komunikaci týkající se manipulace s formuláři nebo s odpověďmi na formulář a \textit{User.js} zajišťuje komunikaci v rámci veškeré administrativy nad uživateli.
 	
-	\subsection{Komponenty}
+	\subsection{Komponenty}\label{sec:komponenty}
 	Komponenty jsou v podstatě \uv{díly k složení celé aplikace}. Díky nim nemusíme např. stránku pro vytvoření formuláře psát do jednoho nepřehledného a obrovského souboru, ale můžeme tento kód rozdělit. Výhodou také je, že když budeme tento komponentový styl zápisu kódu dodržovat, lze jeho části v jiných místech opětovně využít - předcházíme tím redundantnímu kódu, který zbytečně znepřehledňuje celý projekt. Všechny zmíněné komponenty jsou zapsány v souborech s koncovkou \textit{.vue} a disponují stejným jménem jako samotný soubor.
 		
 		\subsubsection{Základní komponenty} %Header, Loading, teor. App.vue
@@ -174,20 +171,38 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 		Lze namítat, že pro ukládání těchto dočasných dat je možné využít lokální úložiště Vue komponenty \textit{data} - zde to ale možné nebylo, jelikož bylo potřeba předávat data mezi více komponentami. Zároveň, díky tomuto přístupu, jsem mohl s daty manipulovat v určitých situacích jednodušeji za pomocí předpřipravených metod.
 	
 	\subsection{Pohledy}
+	Pohledy (anglicky Views) jsou v rámci struktury kódu stejné jako komponenty, které jsou popsány v sekci \ref{sec:komponenty}. Nacházejí se ve složce \textit{views} a ve své podstatě i oni jsou komponentami - rozdíl je jen ve využití, jelikož pohledy jsou skládány ze zmíněných komponent. Poté, co je pohled složen z těchto komponent, je vykreslen jako plnohodnotná stránka. U samostatných komponent nemá význam, aby byly vykreslovány samostatně - potřebují data ke zpracování, která jim předává právě pohled. 
+	
+	Jak již bylo řečeno, pohled musí podřadným komponentám, které implementuje, dodat data ke správné funkčnosti. Tato data získává pomocí komunikace s API na základě volané metody a předaných dat (viz sekce \ref{sec:komunikace_s_api}). Poté, co získá odpověď ze serveru, tak před předáním komponentám data obvykle zpracuje do takového formátu, který komponenty očekávají. Zároveň řeší i situace, kdy dojde k chybě při přijmu dat - pohled musí dát samozřejmě uživateli vědět příslušným způsobem, co se v aplikaci stalo resp. proč např. nedostal data, která požadoval. Zároveň pohled obsahuje příslušné ovládací prvky, které nám umožňuji se pohybovat mezi pohledy - toto je zajištěno směrovačem, který je popsán v sekci \ref{sec:fe_router}.
+	
+	V této části jsou obecně popsány všechny komponenty a jejich účel. V částech, kde jsou použity vstupní ovládací prvky (např. pro zadání textové hodnoty), jsou data před posláním na sever také náležitě validována (např. validací, kterou poskytují komponenty z balíčku \uv{VueFormulate}). %% haló, metadata
 		
-		\subsubsection{Přihlašování a profil}
+		\subsubsection{Domovská stránka} %% Home
+		První pohled, který je zobrazen uživateli především při prvním použití aplikace nebo ihned po přihlášení, je právě pohled domovské stránky. 
+	
+		\subsubsection{Správa uživatele} %% Login, Register, Profile, ChangePassword, ResetPassword, ForgotPassword
+		Co se týče administrativy nad uživatelem, existuje zde šest pohledů, které slouží k různým účelům. Jedná se o pohledy \textit{Login}, \textit{Register}, \textit{Profile}, \textit{ChangePassword}, \textit{ForgotPassword} a \textit{ResetPassword}.
 		
-		\subsubsection{Domovská stránka}
+		Pohled \textit{Login}, jak už z názvu vyznívá, slouží k přihlášení uživatele. Disponuje vstupními poli pro email a heslo. Poté, co uživatel klikne na tlačítko přihlášení, je na server poslán požadavek se získanými daty ze vstupních polí (na metodu \textit{login} viz sekce \ref{sec:user_login}). Pohled pak čeká na odpověď serveru - pokud obsahuje stavový kód 200, je přihlášený uživatel přesměrován na úvodní stránku aplikace. V opačném případě je upozorněn na chybu, která se vyskytla (nejčastěji zpráva o chybných údajích). Stránka také disponuje odkazem na stránku pro obnovu hesla. Díky metadatům na tento pohled nelze po přihlášení uživatele přistoupit.
 		
-		\subsubsection{Formulář}
+		Oproti předchozímu pohledu pohled \textit{Register} slouží k registraci uživatele. Obsahuje vstupní pole pro uživatelské jméno, email a heslo společně s jeho ověřením. Po kliknutí na tlačítko pro registraci je poslán požadavek na server - konkrétně metodě \textit{register} (viz sekce \ref{sec:user_register}). Pokud je registrace úspěšná, je uživatel přesměrován na přihlašovací stránku. Pokud není, je mu vráceno oznámení s chybou. Stejně jako v pohledu \textit{Login} nelze po přihlášení uživatele na tento pohled přistoupit. 
 		
-		\subsubsection{Tvorba formuláře}
+		Dalším pohledem je \textit{Profile}, který obsahuje náležité údaje o přihlášeném uživateli (pokud uživatel není přihlášen, nelze k němu přistoupit). Data o uživateli získává ze serveru při načtení stránky pomocí metody \textit{show} (viz sekce \ref{sec:user_show}). Na tomto pohledu lze také změnit heslo (obsahuje tlačítko pro přesměrování na pohled pro změnu hesla) nebo celý účet smazat (při kliknutí na příslušné tlačítko po vyplnění hesla pro ověření se odešle požadavek na server na metodu \textit{destroy} viz sekce \ref{sec:user_destroy}).
 		
-		\subsubsection{Úprava formuláře}
+		Již zmíněný pohled pro změnu hesla se jmenuje \textit{ChangePassword}. Na ten lze přistoupit pouze s přihlášením. Obsahuje pole pro staré heslo, a pole pro heslo nové s ověřením. Po kliknutí na příslušné tlačítko pro změnu hesla se odešle požadavek na server na metodu \textit{changePassword} viz sekce \ref{sec:user_changepassword}. Následně, na základě serverové odezvy, při úspěchu akce uživatele přesměruje na pohled \textit{Profile}. V opačném případě je uživatel vyzván k úpravě vyplněných údajů.
 		
-		\subsubsection{Souhrn informací o formuláři}
+		Předposlední pohled v této sekci je \textit{ForgotPassword}. Jedná se o stánku, na kterou lze přistoupit z pohledu \textit{Login}. Jak už z názvu vyplývá, na tomto pohledu lze v případě zapomenutého hesla požádat o resetování - obsahuje vstupní pole pro vyplnění emailu, ke kterému je vázán účet se zapomenutým heslem, a tlačítko pro odeslání požadavku na server. Žádost o obnovení se zasílá na metodu \textit{forgotPassword}, která je popsána v sekci \ref{sec:user_reset_forgot_password}. Pokud vše proběhne bez problému, je uživatel přesměrován na domovskou stránku. Pokud se vyskytne chyba, je uživatel upozorněn.
 		
-		\subsubsection{Výsledky formuláře}
+		Posledním pohledem je \textit{ResetPassword}, který slouží k resetování hesla tím, že se zvolí heslo nové. K pohledu se přistupuje především prostřednictvím odkazu, který uživatel dostane na email (nelze k pohledu přistoupit, když je uživatel přihlášen). V pohledu je zobrazen email, ke kterému se vztahuje obnovení přístupu, kolonky pro vyplnění nového hesla s potvrzením a příslušné tlačítko k potvrzení úkonu - tedy k odeslání požadavku na server. Po zpracování požadavku metodou \textit{resetPassword} (viz sekce \ref{sec:user_reset_forgot_password}) je vrácen příslušný stavový kód, na základě kterého je buď uživatel přesměrován (tj. v případě úspěchu - kód 200) nebo upozorněn na chybu (tj. v případě neúspěchu).
 		
-		\subsubsection{Ostatní pohledy}
-		%% not found, about
+		\subsubsection{Formulář} %% Form
+		
+		\subsubsection{Tvorba formuláře} %% CreateForm
+		
+		\subsubsection{Úprava formuláře} %% UpdateForm
+		
+		\subsubsection{Souhrn informací o formuláři} %% FormPreview
+		
+		\subsubsection{Výsledky formuláře} %% FormResults
+		
+		\subsubsection{Ostatní pohledy} %% NotFound, About

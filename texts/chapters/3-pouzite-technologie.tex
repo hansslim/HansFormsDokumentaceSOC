@@ -28,11 +28,9 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	Bootstrap je open-source framework určený především pro stylování běžných komponent webových aplikací. Styly se aplikují na HTML ve formě tříd, kterým jsou interně předepsány parametry, jakým způsobem má být daný element nastylován. Také obsahuje předem hotové styly pro běžné komponenty jako jsou např. formuláře a jejich prvky, navigační lišty, modální okna atp. \cite{Bootstrap1}  \cite{Bootstrap2}  \cite{Bootstrap3}
 	
 	\subsection{NPM}\label{sec:npm}
-	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k přidávání komunitou vytvořených balíčků do vlastních projektů či k sdílení vlastního balíčku - ty jsou uloženy v tzv. registru, což je veřejná databáze Javascriptového softwaru. K instalaci těchto balíčků se nejčastěji používá CLI (Command Line Interface), kterým tento správce disponuje. 
+	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k přidávání komunitou vytvořených balíčků do vlastních projektů či k sdílení vlastního balíčku - ty jsou uloženy v tzv. registru, což je veřejná databáze Javascriptového softwaru. K instalaci těchto balíčků se nejčastěji používá CLI (Command Line Interface), kterým tento správce disponuje. \cite{NPM}
 	
-	*cite https://docs.npmjs.com/about-npm*
-	
-	V tomto projektu byl využit zejména k přidání a správě balíčků na frontendové části pro VueJS.
+	V tomto projektu byl využit zejména k přidání a správě balíčků na frontendové části společně s VueJS.
 
 \section{Backend}
 Termínem backend označujeme část aplikace, která pro běžného uživatele zpravidla není vidět. Jedná se o administrátorskou část, ve které administrátor konfiguruje, jak se aplikace bude při jednotlivých situacích chovat. Backend, jako samostatná část aplikace, poté slouží ke zpracování dat – např. vyřizuje příchozí požadavky od frontendu nebo na frontend sama zasílá konkrétní data.
@@ -61,9 +59,7 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 		Jeho účelem je zamezení tvorby tzv. „špagetového kódu“ – tj. dlouhý soubor, který obsahuje implementaci výše zmíněných funkcionalit (vše na jednom místě), což je v konečném důsledku velmi nepřehledné. Také nám usnadňuje myšlení při vývoji projektu – jednotlivé části kódu se umisťují tam, kam patří (např. stylování a konečný výstup pro uživatele do pohledu). \cite{MVC}
 		
 	\subsection{Composer}\label{sec:composer}
-	Composer je nástroj pro správu závislostí pro jazyk PHP. Umožňuje nám v projektu deklarovat, které cizí knihovny (resp. balíčky) budou v projektu použity. Ty poté dokáže nainstalovat nebo aktualizovat. Ve své funkcionalitě je velmi podobný jako NPM (viz sekce \ref{sec:npm}).
-	
-	*cite https://getcomposer.org/doc/00-intro.md*
+	Composer je nástroj pro správu závislostí pro jazyk PHP. Umožňuje nám v projektu deklarovat, které cizí knihovny (resp. balíčky) budou v projektu použity. Ty poté dokáže nainstalovat nebo aktualizovat. Ve své funkcionalitě je velmi podobný jako NPM (viz sekce \ref{sec:npm}). \cite{Composer}
 	
 	V tomto projektu byl použit primárně ke správě balíčků pro backendovou část.
 		
@@ -91,10 +87,10 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 	Databáze můžeme dělit podle modelu, který svou strukturou a funkcionalitou splňují. Základní modely jsou uvedeny níže: \cite{DBModel}
 		
 	\begin{itemize}
-		\item \textbf{Hierarchický model} – data jsou uspořádána do stromové struktury, kde jsou omezena vztahem „jeden k více“ (záznam z vyšší úrovně lze spojit jen se záznamy nižší úrovně), jsou identifikovány tzv. ukazatelem (ten ukazuje na místo v databázi, kde jsou data uložena) \cite{HierarchDB}
-		\item \textbf{Síťový model} – data jsou uspořádána jako uzly rovinného grafu, jsou identifikovány tzv. ukazatelem; oproti hierarchickému modelu lze spojovat záznamy libovolně \cite{SitDB} 
-		\item \textbf{Relační model} – data jsou uspořádána v tabulkách do relací (tj. spojení dat, která obsahují nějaký společný atribut), jsou identifikovány primárním klíčem \cite{RelacDB}
-		\item \textbf{Objektově orientovaný model} – data jsou reprezentována jako objekty, které vychází z objektově-orientovaného programování \cite{OOPDB}
+		\item \textbf{Hierarchický model} – data jsou uspořádána do stromové struktury, kde jsou omezena vztahem „jeden k více“ (záznam z vyšší úrovně lze spojit jen se záznamy nižší úrovně), jsou identifikovány tzv. ukazatelem (ten ukazuje na místo v databázi, kde jsou data uložena). \cite{HierarchDB}
+		\item \textbf{Síťový model} – data jsou uspořádána jako uzly rovinného grafu, jsou identifikovány tzv. ukazatelem; oproti hierarchickému modelu lze spojovat záznamy libovolně. \cite{SitDB} 
+		\item \textbf{Relační model} – data jsou uspořádána v tabulkách do relací (tj. spojení dat, která obsahují nějaký společný atribut), jsou identifikovány primárním klíčem. \cite{RelacDB}
+		\item \textbf{Objektově orientovaný model} – data jsou reprezentována jako objekty, které vychází z objektově-orientovaného programování. \cite{OOPDB}
 	\end{itemize}
 	
 	K zajištění možnosti ovládání databáze musí být také zajištěn způsob, jakým lze s databází komunikovat. K těmto účelům vznikly tzv. dotazovací jazyky, které právě slouží ke komunikaci uživatele s příslušným programem \cite{DotazJazyk} - zde databázovým systémem. Mezi nejpoužívanější jazyky tohoto druhu patří jazyk SQL, který je primárně používán s relačními databázemi \cite{SQL}.

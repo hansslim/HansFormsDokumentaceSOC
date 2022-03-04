@@ -134,7 +134,7 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 		
 		Nelze opomenout komponentu \textit{DetailedResultsTable}, která slouží jako alternativní zobrazení všech výsledků formuláře. (ve výchozím nastavení se zobrazují data ve zmíněných grafech nebo v tabulce pro každou otázku). V podstatě data zobrazuje v podobném formátu, jako jsou vysázeny při exportu dat (tzn. v tabulce viz sekce \ref{sec:form_comp_export}). Oproti exportu se vyobrazení dat liší v tom, že v buňkách, kde není žádná hodnota (\textit{null}), tam je umístěn znak pomlčky (\uv{-}).
 		
-		\subsubsection{Komponenta karty formuláře}
+		\subsubsection{Komponenta karty formuláře}\label{sec:fe_komp_karta_form}
 		Jednoduchá komponenta, kterou nebylo možné zařadit mezi ostatní výše, s názvem \textit{FormCard} slouží jako předpis pro vykreslování karty formuláře. Ta je použita v pohledu úvodní stránky v případě, že je uživatel přihlášen a že už nějaké formuláře vlastní. Po kliknutí na kartu se přihlášený uživatel dostane na pohled se zobrazením souhrnu informací o požadovaném formuláři. Sama o sobě karta zobrazuje název a popisek formuláře či data spuštění a ukončení zveřejnění formuláře.
 	
 	\subsection{Směrovač}\label{sec:fe_router} %%Router
@@ -178,7 +178,9 @@ V následující části jsou popsány jednotlivé frontendové komponenty a pri
 	V této části jsou obecně popsány všechny komponenty a jejich účel. V částech, kde jsou použity vstupní ovládací prvky (např. pro zadání textové hodnoty), jsou data před posláním na sever také náležitě validována (např. validací, kterou poskytují komponenty z balíčku \uv{VueFormulate}). %% haló, metadata
 		
 		\subsubsection{Domovská stránka} %% Home
-		První pohled, který je zobrazen uživateli především při prvním použití aplikace nebo ihned po přihlášení, je právě pohled domovské stránky. 
+		První pohled, který je zobrazen uživateli především při prvním použití aplikace nebo ihned po přihlášení, je právě pohled domovské stránky. Tento pohled je rozdělen na dva způsoby vykreslení - bez přihlášení a s přihlášením.
+		
+		Pokud uživatel přihlášený není, je zobrazena úvodní stránka, která obsahuje jen odkazy na přihlášení či na registraci - ta nedisponuje ničím speciálním tzn. jedná se o statickou stránku. Pokud ale uživatel přihlášený je, jsou dvě možnosti, jak je pohled vykreslen. Pokud ještě nevlastní žádný formulář, je mu zde poskytnut odkaz na část aplikace, kde formulář může vytvořit. Pokud už ale nějaké formuláře vlastní, jsou mu na úvodní stránce všechny vrácené ve formě katalogu karet za použití kompnenty \textit{FormCard} ze sekce \ref{sec:fe_komp_karta_form}. Data těchto formulářů jsou získána ze serveru po ověření přihlášení pomocí metody \textit{index} ze sekce \ref{sec:form_index}.
 	
 		\subsubsection{Správa uživatele} %% Login, Register, Profile, ChangePassword, ResetPassword, ForgotPassword
 		Co se týče administrativy nad uživatelem, existuje zde šest pohledů, které slouží k různým účelům. Jedná se o pohledy \textit{Login}, \textit{Register}, \textit{Profile}, \textit{ChangePassword}, \textit{ForgotPassword} a \textit{ResetPassword}.

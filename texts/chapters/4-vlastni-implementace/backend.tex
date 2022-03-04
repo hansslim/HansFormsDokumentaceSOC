@@ -24,22 +24,22 @@
 	%% obrázek struktury složky
 	Jak můžeme na obrázku \ref{fig:laravel_str} vidět, celý projekt je složen z mnoha složek a souborů. Jelikož podrobný rozbor jednotlivých částí není předmětem této práce, tak jsou nejdůležitější části pro implementaci projektu popsány níže jen obecně.
 	\begin{itemize}
-		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery) \cite{LaravelDir}
-		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace \cite{LaravelDir}
-		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace \cite{LaravelDir}
-		\item Složka \textit{database} obsahuje soubory spojené s prací s databázi \cite{LaravelDir}
-		\item Složka \textit{lang} obsahuje soubory jazyků a překladů (zde nevyužita) \cite{LaravelDir}
-		\item Složka \textit{public} obsahuje soubory, které jsou veřejně dostupné při uživatelské interakci s aplikací (např. při načtení webu v prohlížeči) \cite{LaravelDir}
-		\item Složka \textit{resources} obsahuje pohledy a nezkompilované soubory pro celý frontend \cite{LaravelDir}
-		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře) \cite{LaravelDir}
-		\item Složka \textit{storage} obsahuje primárně záznamy o chodu aplikace a jiné aplikací vygenerované soubory \cite{LaravelDir}
-		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita) \cite{LaravelDir}
-		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků spravované Composerem (viz sekce \ref{sec:composer}), které aplikace používá \cite{LaravelDir} 
-		\item Soubor .env držící veškeré důležité administrativní hodnoty jako např. přihlašovací údaje k databázi
-		\item Soubor artisan obsahující důležité příkazy pro stavbu aplikace \cite{LaravelArtisan} 
-		\item Soubor composer.json držící informace o přídavných balíčcích Composeru (viz sekce \ref{sec:composer}) pro Laravel projekt \cite{ComposerpJSON}
-		\item Soubor package.json držící informace o přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm}) pro frontendovou část projektu \cite{NPMpJSON}
-		\item Soubor webpack.mix.js obsahující informace pro kompilaci souborů pro frontend \cite{LaravelJSCSS}
+		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery). \cite{LaravelDir}
+		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace. \cite{LaravelDir}
+		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace. \cite{LaravelDir}
+		\item Složka \textit{database} obsahuje soubory spojené s prací s databázi. \cite{LaravelDir}
+		\item Složka \textit{lang} obsahuje soubory jazyků a překladů (zde nevyužita). \cite{LaravelDir}
+		\item Složka \textit{public} obsahuje soubory, které jsou veřejně dostupné při uživatelské interakci s aplikací (např. při načtení webu v prohlížeči). \cite{LaravelDir}
+		\item Složka \textit{resources} obsahuje pohledy a nezkompilované soubory pro celý frontend. \cite{LaravelDir}
+		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře). \cite{LaravelDir}
+		\item Složka \textit{storage} obsahuje primárně záznamy o chodu aplikace a jiné aplikací vygenerované soubory. \cite{LaravelDir}
+		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita). \cite{LaravelDir}
+		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků spravované Composerem (viz sekce \ref{sec:composer}), které aplikace používá. \cite{LaravelDir}
+		\item Soubor .env drží veškeré důležité administrativní hodnoty jako např. přihlašovací údaje k databázi.
+		\item Soubor artisan obsahuje důležité příkazy pro stavbu aplikace. \cite{LaravelArtisan}
+		\item Soubor composer.json drží informace o přídavných balíčcích Composeru (viz sekce \ref{sec:composer}) pro Laravel projekt. \cite{ComposerpJSON}
+		\item Soubor package.json drží informace o přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm}) pro frontendovou část projektu. \cite{NPMpJSON}
+		\item Soubor webpack.mix.js obsahuje informace pro kompilaci souborů pro frontend. \cite{LaravelJSCSS}
 	\end{itemize}
 
 	\subsection{Cesty}\label{sec:routes} %%Routes
@@ -298,7 +298,7 @@
 			
 			Pokud jsou všechna data validní, tak se začne vykonávat kód pro předejití poškození integrity dat v databázové transakci, kde je v případě tvoření formuláře nejprve vygenerován unikátní identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4. Poté se postupně vytváří příslušné objekty pro jednotlivé prvky formuláře, kterým se předávají zvalidovaná data. Po tomto úkonu se v případě privátního formuláře rozešlou pozvánky na příslušné emaily.
 			
-			\subsubsubsection{Úprava formuláře}
+			\subsubsubsection{Úprava formuláře}\label{sec:form_update}
 			Metoda s názvem \textit{update} slouží k editaci formuláře, který zatím nebyl zveřejněn. Díky této metodě lze kromě základních informací měnit i samotné otázky. Co v této metodě ale nelze provést je úprava přístupnosti formuláře a případné přidání emailů k rozeslání pozvánky (k tomu slouží metoda v sekci \ref{sec:form_accessibility}).
 			
 			Při volání metody se nejprve ověří, zda je uživatel přihlášen (pokud není, je vrácen stavový kód 401) a zda požadovaný formulář existuje (pokud ne, je vrácen stavový kód 404). Poté přichází na řadu kontrola časů - kontroluje se, zda už nebyl formulář zveřejněn na základě data zveřejnění formuláře (atribut musí být dále v čase než je serverový čas). Pokud tato podmínka není splněna, je vrácen stavový kód 400.
@@ -345,12 +345,12 @@
 			
 			V koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401), zda vůbec formulář s předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete()} smazán. Tento proces také probíhá v transakci.
 			
-			\subsubsubsection{Vrácení všech formulářů uživateli}
+			\subsubsubsection{Vrácení všech formulářů uživateli}\label{sec:form_index}
 			Metoda s názvem \textit{index} je určena k vrácení všech formulářů, které patří přihlášenému uživateli. To slouží k hydrataci úvodní stránky uživatele - jedná se o přehled všech vlastněných formulářů. 
 			
 			Tato funkce nejprve ověří, zda je uživatel přihlášen. Pokud přihlášen je, vrátí uživateli všechny jeho formuláře bez elementů formuláře a bez dat o uživateli, které se obecně k datům připojují. Tento set formulářů je seřazen podle doby vytvoření formuláře sestupně. Pokud přihlášen není, je vrácen stavový kód 401. 
 			
-			\subsubsubsection{Vrácení informací o formuláři majiteli}
+			\subsubsubsection{Vrácení informací o formuláři majiteli}\label{sec:form_showwithauth}
 			Metoda s názvem \textit{showWithAuth} má za účel vrátit celý formulář a data s ním spojená pro jeho vlastníka. Tato data poté slouží k hydrataci stránky s přehledem informací o formuláři.
 			
 			Funkce nejprve zkontroluje, zda je uživatel přihlášen. Pokud není, je navrácen stavový kód 401. V případě, že je uživatel přihlášen, se v databázi vyhledává formulář na základě předaného identifikátoru \textit{slug}. Pokud formulář není nalezen, je vrácen stavový kód 404, a pokud nepatří přihlášenému uživateli, je vrácen kód 401. 
@@ -368,7 +368,7 @@
 			
 			Dalším faktorem je čas, kdy k formuláři chce uživatel přistoupit. Ověřuje se podle uložených dat o formuláři z databáze, zda je už formulář zveřejněn (pokud není, je vrácen stavový kód 423) nebo zda už formulář neexpiroval (pokud expiroval, je vrácen stavový kód 410). Aktuální čas se bere podle serveru, na kterém je aplikace nasazena.
 			
-			\subsubsubsection{Vrácení konkrétního privátního formuláře}
+			\subsubsubsection{Vrácení konkrétního privátního formuláře}\label{sec:form_privateshow}
 			Metoda s názvem \textit{privateShow} funguje podobně jako metoda popsána v sekci \ref{sec:form_show}. Místo identifikátoru \textit{slug} se nejprve vyhledává uživatelem předaný token v databázi. Pokud nalezen není, je vrácen stavový kód 400. Pokud nalezen je, provádí se stejné kontroly časů jako v metodě v sekci \ref{sec:form_show}. Liší se ale v kontrole tokenu - zde je zjišťováno, zda není token už expirovaný resp. zda už pro tento token nebyla zaznamenána odpověď. Pokud expirovaný je, tak se odesílá jen stavový kód 410. Pokud požadavek na privátní formulář projde bez chyby, je odeslán formulář s příslušnými elementy - identifikátor \textit{slug} se pro koncového uživatele skrývá.
 			
 			Metoda slouží k hydrataci stránky určené k vyplnění privátního formuláře.
@@ -442,30 +442,30 @@
 			
 			V rámci funkčnosti metoda nejdříve přijme požadavek od uživatele, ve kterém očekává určité parametry (přezdívka uživatele, email, heslo a potvrzení hesla). Pokud tyto parametry dostane a jsou platné (tzn. že splňují požadavky jako že se jedná o platné textové hodnoty, že email musí být u uživatele unikátní a že je heslo alespoň 8 znaků dlouhé), vytvoří se hash hesla (to je zašifrováno pomocí funkce \textit{bcrypt}) a všechna data o uživateli se uloží do databáze. 
 			
-			\subsubsubsection{Přihlášení uživatele}
+			\subsubsubsection{Přihlášení uživatele}\label{sec:user_login}
 			Metoda \textit{login} slouží k přihlášení uživatele k uživatelskému účtu. 
 			
 			Funkce funguje tak, že nejprve (podobně jako v metodě \textit{register} v sekci \ref{sec:user_register}) zvaliduje příchozí data (zde email a heslo) a až poté, co se ověří, že jsou údaje platné (pomocí statické třídy \textit{Auth}), se odesílá objekt s daty o přihlášeném uživateli.
 			
-			\subsubsubsection{Odhlášení uživatele}
+			\subsubsubsection{Odhlášení uživatele}\label{sec:user_logout}
 			Metoda \textit{logout} slouží k odhlášení uživatele - tedy k invalidování relace. Obsahuje jen volání metody \textit{logout} na statické třídě \textit{Auth}, která zařizuje veškerou administrativu nad přihlášenými uživateli a tedy i nad tímto úkonem.
 			
-			\subsubsubsection{Vrácení informací o uživateli}
+			\subsubsubsection{Vrácení informací o uživateli}\label{sec:user_show}
 			Metoda \textit{show} přihlášenému uživateli vrátí data o jeho účtu resp. jeho osobní údaje jako je např. přezdívka nebo email.
 			
 			Funguje tak, že pokud je uživatel přihlášen, jsou jednoduše vrácena jeho osobní data z databáze. Pokud není přihlášen, je vrácen stavový kód 401.
 			
-			\subsubsubsection{Vymazání účtu uživatele}
+			\subsubsubsection{Vymazání účtu uživatele}\label{sec:user_destroy}
 			Metoda \textit{destroy} slouží k odstranění uživatelského účtu na základě požadavku vlastníka účtu. Vlastník k tomuto úkonu samozřejmě musí být přihlášen.
 			
 			Jelikož k tomuto úkonu musí být předáno současné heslo k účtu, je prvně kontrolováno právě to resp. jestli se jedná o validní textový řetězec. Poté je zjišťováno, zda je vůbec nějaký uživatel přihlášen (pokud není, je vrácen stavový kód 400). Pokud ano, je kontrolováno, zda se heslo shoduje s heslem v databázi (pokud ne, je vrácen stavový kód 400). Pokud se hesla shodují, je uživatel z databáze smazán.
 			
-			\subsubsubsection{Změna hesla}
+			\subsubsubsection{Změna hesla}\label{sec:user_changepassword}
 			Metoda \textit{changePassword} slouží ke změně hesla za předpokladu, že uživatel stávající heslo zná.
 			
 			V rámci průběhu celého úkonu metody, prvně se kontroluje, zda je vůbec nějaký uživatel přihlášen. Pokud není, je vrácen stavový kód 401. Pokud ale přihlášen je, tak nejprve dochází k validaci dat (podobně jako v sekci \ref{sec:user_register}). Dále se kontroluje, zda je původní heslo shodné s předaným původním heslem, zda není staré a nové heslo stejně a zda je nové heslo shodné s potvrzením tohoto hesla. Pokud všemi kontrolami projde, dochází k vytvoření nového hashe hesla a ten přepisuje starý hash uživatele.
 			
-			\subsubsubsection{Resetování zapomenutého hesla uživatele}
+			\subsubsubsection{Resetování zapomenutého hesla uživatele} \label{sec:user_reset_forgot_password}
 			Tento proces je obhospodařován dvěma metodami - \textit{forgotPassword} a \textit{resetPassword}. Celý proces resetování hesla probíhá tak, že uživatel odešle požadavek na metodu \textit{forgotPassword}, která mu na jeho email pošle odkaz k resetování hesla - ten vede na stránku, kde si zvolí nové heslo. Poté, co heslo vyplní, odesílá požadavek na metodu \textit{resetPassword}, která heslo za splnění všech podmínek (tj. validace dat a správnost obnovovacího tokenu) změní. 
 			
 			Metoda \textit{forgotPassword} tedy v požadavku přijímá jen email, který je nejprve validován. Poté je na něj odeslán odkaz k resetování hesla. Pokud se odeslání nezdaří, je vrácen stavový kód 400.

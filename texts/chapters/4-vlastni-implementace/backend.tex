@@ -387,7 +387,7 @@
 			Po tomto validačním procesu následuje databázová transakce, ve které se celá odpověď ukládá do databáze. Pro celou odpověď je nejprve vytvořen záznam o vyplnění formuláře, kterému je předán ID formuláře, na který byla odpověď směřována. Poté se vytváří na základě validního setu odpovědí k příslušným vstupům příslušné databázové objekty, které jsou zaobaleny záznamem o vyplnění formuláře a uloženy.
 			
 			\subsubsubsection{Zaznamenávání odpovědi na privátní formulář}\label{sec:form_comp_private}
-			Metoda s názvem \textit{store} slouží k zaznamenání všech odpovědí na privátní formulář.
+			Metoda s názvem \textit{privateStore} slouží k zaznamenání všech odpovědí na privátní formulář.
 			
 			V rámci funkčnosti je tato metoda opravdu velmi spjatá s metodou popsanou v sekci \ref{sec:form_comp_public}. Prvním krokem je ověření, zda použitý přístupový token existuje (pokud ne, je vrácen stavový kód 400) a zda pomocí tohoto tokenu už nebyla zaznamenána odpověď (pokud ano, je vrácen stavový kód 410). Poté se na základě předaného tokenu musí vyhledat formulář, kterému náleží, a z něj získat jeho identifikátor \textit{slug}. Následuje použití metody \textit{store} ze sekce \ref{sec:form_comp_public} - té je předán celý uživatelský požadavek, identifikátor nalezený v předchozím kroku a informace o tom, že se odpovídá na privátní formulář (metoda standardně počítá s tím, že se odpovídá na veřejný formulář, takže bez předání této informace by odpověď blokovala). Na základě stavového kódu z vnitřně volané metody \textit{store} se provádí další činnosti. 
 			
@@ -405,7 +405,7 @@
 				\label{fig:vraceni_vsech_vysledku}
 			\end{figure}
 			
-			\subsubsubsection{Vrácení veřejných výsledků}
+			\subsubsubsection{Vrácení veřejných výsledků}\label{sec:form_comp_public_index}
 			Metoda s názvem \textit{publicIndex} slouží k vypsání všech odpovědí na formulář. Tento výpis je dostupný jen v případě, že majitel formuláře tuto funkci aktivoval (popsáno v sekci \ref{sec:form_publish_results}) - poté jsou vybrané výsledky dostupné pro kohokoliv. 
 			
 			Tato metoda funguje velmi podobně jako metoda \textit{index} popsaná v sekci \ref{sec:form_comp_private_index}. Oproti zmíněné metodě nekontroluje přihlášení uživatele, ale zda jsou výsledky dotazovaného formuláře nastaveny jako veřejné. Z podstaty věci také omezuje viditelnost vybraných otázek na základě hodnoty \textit{has\_public\_results}, kterou musí disponovat všechny otázky - pokud je nastavena na \textit{false}, tak je otázka z výstupního setu odebrána. Pokud jsou všechny nastaveny jako skryté, odesílá se stejný stavový kód jako při situaci, kdy neexistuje žádná odpověď na formulář. Jinak se tato metoda oproti zmíněné neliší.

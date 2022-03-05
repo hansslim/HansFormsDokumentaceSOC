@@ -13,8 +13,11 @@
 
 \usepackage[top=2.5cm, bottom=2.5cm, left=3.5cm, right=1.5cm]{geometry} %% nastaví okraje, left -- vnitřní okraj, right -- vnější okraj
 \usepackage{booktabs}
-\usepackage{url}
-\usepackage{pdfpages} %% Balíček umožňující vkládat stránky z PDF souborů, 
+
+\usepackage{url} %% Balíček pro URL adresy
+\def\UrlFont{} %% Nastavené "žádného" stylu u URL adres
+
+\usepackage{pdfpages} %% Balíček umožňující vkládat stránky z PDF souborů
 \usepackage{float} %% formátování obrázků
 \usepackage[czech]{babel} %% balík babel pro sazbu v češtině
 \usepackage[utf8]{inputenc} %% balíky pro kódování textu
@@ -25,18 +28,13 @@
 \usepackage{hyperref} %% balíček, který v PDF vytváří odkazy
 \usepackage{etoolbox}
 
-%\renewcommand{\k}{k \nolinebreak}
-
-%\usepackage{array}
-%\usepackage{placeins}
-%\usepackage{needspace}
-
 \patchcmd{\thebibliography}{*}{}{}{} %% přidání číslování pro nadpis zdrojů
 \patchcmd{\listoffigures}{*}{}{}{} %% přidání číslování pro nadpis seznamu obrázků
 \patchcmd{\listoftables}{*}{}{}{} %% přidání číslování pro nadpis seznamu tabulek
 
 %% styly kapitol a sekcí
-	\usepackage[pagestyles,nobottomtitles*]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
+\usepackage[pagestyles,nobottomtitles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
+	
 	%% definování nové sekce resp. jeho příkazu (5.)
 	\titleclass{\subsubsubsection}{straight}[\subsection]
 	\newcounter{subsubsubsection}[subsubsection]
@@ -72,6 +70,10 @@
 \setlength{\parskip}{0,7em}
 
 \linespread{1.15} %% řádkování
+
+%% nastavení předcházení samotnému řádku textu na nové stránce
+\widowpenalty10000
+\clubpenalty10000
 
 %% Začátek dokumentu
 %%%%%%%%%%%%%%%%%%%%

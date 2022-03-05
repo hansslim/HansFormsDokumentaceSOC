@@ -2,7 +2,7 @@
 Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někde uchovávány. Webová aplikace (tj. VueJS frontend a Laravel backend) je nasazena pomocí služby \uv{App Platform} od poskytovatele DigitalOcean. PostgreSQL databáze pro administraci nad uživatelskými daty a formuláři, jejíž struktura bude rozebrána v~této části, je nasazena na Heroku serveru. 
 
 	\subsection{Struktura databáze}
-	K~tomu, aby byla struktura databáze vysvětlena, je v~příloze přiloženo vygenerované schéma pomocí programu DataGrip (viz příloha \nameref{fig:db_diagram}), které by mělo sloužit pro lepší vizualizaci. 
+	K~tomu, aby byla struktura databáze vysvětlena, je v~příloze přiloženo vygenerované schéma pomocí programu DataGrip (viz \nameref{fig:db_diagram}), které by mělo sloužit pro lepší vizualizaci. 
 	
 	Ze schématu vyplývá, že je databáze tvořena tabulkami, které jsou provázány určitými relacemi. Všechny tabulky (kromě tabulky \textit{password\_resets} atribut \textit{id}) mají unikátní primární klíč, kterým lze identifikovat jednotlivé instance. Většina z~nich má také tzv. cizí klíč, který slouží k~propojení s~jinou tabulkou na základě shody tohoto klíče s~cizím primárním klíčem. Také většina obsahuje předgenerované atributy timestamps (v~překladu časová razítka) \textit{created\_at} a \textit{updated\_at}, které nám umožňují sledovat, kdy byla položka vytvořena či upravena.
 	

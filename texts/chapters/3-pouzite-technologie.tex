@@ -9,17 +9,17 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	\subsection{Javascript}
 	JavaScript je multiplatformní, objektově orientovaný, událostmi řízený skriptovací jazyk, který je používán primárně při tvorbě webových stránek. Je určen především pro tvorbu klientské strany, ale např. díky prostředí Node.js lze v~něm dnes psát i serverovou část aplikace. \cite{JS1}\cite{JS2}
 	
-	Psát web v~čistém Javascriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen níže.
+	Psát web v~čistém Javascriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen v sekci \ref{sec:vuejs}.
 	
-	\subsection{VueJS}
-	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se framework psaný v~jazyce Javascript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
+	\subsection{VueJS}\label{sec:vuejs}
+	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se o framework psaný v~jazyce Javascript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
 	
 	Svou popularitu si získal především tím, že je vyvíjen komunitou, a strukturou kódu, ve kterém je psán (viz obrázek \ref{fig:vue_kod_komponenty}). Kód jednotlivých komponent je tvořen třemi základními částmi:
 	
 	\begin{itemize}
-		\item \textbf{Template}: část určená pro návrh struktury komponenty v~HTML
-		\item \textbf{Script}: část určená pro tvoření logiky a manipulaci s~daty v~komponentě v~Javascriptu
-		\item \textbf{Style}: část určená pro stylování komponenty v~CSS
+		\item \textbf{Template} - část určená pro návrh struktury komponenty v~HTML
+		\item \textbf{Script} - část určená pro tvoření logiky a manipulaci s~daty v~komponentě v~Javascriptu
+		\item \textbf{Style} - část určená pro stylování komponenty v~CSS
 	\end{itemize}
 
 	Nutno zmínit, že se jedná o~framework, který je vytvořen právě pro práci s~komponentami – znamená to, že je vhodné jednotlivé části aplikace rozdělovat na jednotlivé komponenty, které lze použít později v~jiném místě aplikace. Tento přístup vede k~udržitelnosti aplikace. \cite{VueJSSyntax}\cite{VueJS2}
@@ -35,9 +35,9 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	Bootstrap je open-source framework určený především pro stylování běžných komponent webových aplikací. Styly se aplikují na HTML ve formě tříd, kterým jsou interně předepsány parametry, jakým způsobem má být daný element nastylován. Také obsahuje předem hotové styly pro běžné komponenty jako jsou např. formuláře a jejich prvky, navigační lišty, modální okna atp. \cite{Bootstrap1}\cite{Bootstrap2}\cite{Bootstrap3}
 	
 	\subsection{NPM}\label{sec:npm}
-	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k~přidávání komunitou vytvořených balíčků do vlastních projektů či k~sdílení vlastního balíčku - ty jsou uloženy v~tzv. registru, což je veřejná databáze Javascriptového softwaru. K~instalaci těchto balíčků se nejčastěji používá CLI (Command Line Interface), kterým tento správce disponuje. \cite{NPM}
+	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k~přidávání komunitou vytvořených balíčků do vlastních projektů či k~sdílení vlastních balíčků - ty jsou uloženy v~tzv. registru, což je veřejná databáze Javascriptového softwaru. K~instalaci balíčků se nejčastěji používá CLI (Command Line Interface), kterým správce NPM disponuje. \cite{NPM}
 	
-	V~tomto projektu byl využit zejména k~přidání a správě balíčků na frontendové části společně s~VueJS.
+	V~projektu byl využit zejména k~přidání a správě balíčků na frontendové části společně s~VueJS.
 
 \section{Backend}
 Termínem backend označujeme část aplikace, která pro běžného uživatele zpravidla není vidět. Jedná se o~administrátorskou část, ve které administrátor konfiguruje, jak se aplikace bude při jednotlivých situacích chovat. Backend, jako samostatná část aplikace, poté slouží ke zpracování dat – např. vyřizuje příchozí požadavky od frontendu nebo na frontend sama zasílá konkrétní data.
@@ -50,7 +50,7 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 	Hlavním důvodem, proč byl pro tento projekt jazyk PHP vybrán, byla jednoduchost syntaxe jazyka a obecně nižší provozní náklady. V~jazyce PHP je napsán framework Laravel, ve kterém je tvořena backendová část projektu.
 	
 	\subsection{Laravel}
-	Laravel je open-source framework pro tvorbu webových aplikací v~jazyce PHP. Řeší za vývojáře mnoho běžné implementovaných funkcí jako např. autentifikaci, přesměrovávání, správu session a cookies souborů, tvoření databázových migrací nebo testování aplikace. Je inspirován frameworky jako Ruby on Rails, ASP.NET MVC nebo Sinatra a snaží se o~to, aby vývoj webových aplikací byl pro vývojáře co nejpohodlnější a nejintuitivnější. \cite{Laravel1} Framework vychází z~návrhového vzoru MVC \cite{LaravelMVC}.
+	Laravel je open-source framework pro tvorbu webových aplikací v~jazyce PHP. Řeší za vývojáře mnoho běžně implementovaných funkcí jako např. autentifikaci, přesměrovávání, správu sessions a cookies souborů, tvoření databázových migrací nebo testování aplikace. Je inspirován frameworky jako Ruby on Rails, ASP.NET MVC nebo Sinatra a snaží se o~to, aby vývoj webových aplikací byl pro vývojáře co nejpohodlnější a nejintuitivnější. \cite{Laravel1} Framework vychází z~návrhového vzoru MVC \cite{LaravelMVC}.
 	
 	Dále samotný Laravel disponuje velkým ekosystémem přídavků, funkcí a knihoven, díky kterým si můžeme při vývoji ještě více usnadnit práci. \cite{LaravelEco} V~mém projektu ze zmíněného ekosystému využívám např. Laravel Sanctum pro autentifikaci single-page aplikací.
 	
@@ -78,12 +78,12 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 	V~tomto projektu byl použit primárně ke správě balíčků pro backendovou část.
 		
 \section{Úložiště dat}
-Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~mnou využitých píši níže.
+Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~využitých úložištích v tomto projektu je psáno níže.
 
 	\subsection{Webhosting}
 	Webhosting je služba, díky které si můžeme pronajmout prostor na cizím vzdáleném serveru pro naše webové stránky. Poskytovatelé těchto služeb většinou nabízí i služby spojené s~provozem databází nebo e-mailové schránky. Hlavní výhodou této služby je fakt, že nemusíme fyzicky vlastnit žádný server a že nemusíme řešit administrativní úkony s~ním spojené (např. instalace specializovaného softwaru na serveru). \cite{Webhosting}
 	
-	Pro účely tohoto projektu bylo potřeba mít jak webový server pro nahrání celé aplikace, tak i databázový server pro uchovávání dat. O~mnou využitých poskytovatelích těchto služeb je psáno v~práci dále. 
+	Pro účely tohoto projektu bylo potřeba mít jak webový server pro nahrání celé aplikace, tak i databázový server pro uchovávání dat. O~využitých poskytovatelích těchto služeb je psáno v~práci dále. 
 	
 		\subsubsection{DigitalOcean}
 		DigitalOcean je americký poskytovatel cloudových služeb s~datovými centry po celém světě. Nabízí obrovské množství technologií a služeb – např. správu webového serveru, virtuální stroje či možnost zprostředkování databázového serveru. Celkově se společnost snaží především o~poskytnutí služeb, které budou uživatelsky přívětivé. \cite{DO1}\cite{DO2}
@@ -114,10 +114,10 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 	Dalším důležitým faktorem je spolehlivost databáze. K~tomuto účelu slouží tzv. zásady ACID - ty garantují, že data po jednotlivých úkonech nebo transakcích (zjednodušeně skupiny úkonů \cite{Transakce}) - např. aktualizace dat - budou přesná a konzistentní i při selhání systému. Zkratku ACID lze rozdělit na tyto části:
 	
 	\begin{itemize}
-		\item \textbf{Atomicity} (v~překladu Atomicita) - buď se transakce provede celá, nebo se data nijak nezmění
-		\item \textbf{Consistency} (v~překladu Konzistence) - data musí být validní a konzistentní - tzn. že musí splňovat požadavky databázového systému např. platný typ vstupní hodnoty pro určitý atribut
-		\item \textbf{Isolation} (v~překladu Izolace) - všechny transakce musí na sobě být nezávislé a nesmí se nějak ovlivňovat
-		\item \textbf{Durability} (v~překladu Odolnost) - po provedení transakce musí být data permanentně uložena v~databázi
+		\item \textbf{Atomicity} (v~překladu Atomicita) – buď se transakce provede celá, nebo se data nijak nezmění
+		\item \textbf{Consistency} (v~překladu Konzistence) – data musí být validní a konzistentní - tzn. že musí splňovat požadavky databázového systému např. platný typ vstupní hodnoty pro určitý atribut
+		\item \textbf{Isolation} (v~překladu Izolace) – všechny transakce musí na sobě být nezávislé a nesmí se nějak ovlivňovat
+		\item \textbf{Durability} (v~překladu Odolnost) – po provedení transakce musí být data permanentně uložena v~databázi
 		\cite{ACID}
 	\end{itemize}
 	

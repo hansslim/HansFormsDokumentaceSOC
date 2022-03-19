@@ -6,7 +6,7 @@ Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někd
 	
 	Ze schématu vyplývá, že je databáze tvořena tabulkami, které jsou provázány určitými relacemi. Všechny tabulky (kromě tabulky \textit{password\_resets}) mají unikátní primární klíč (atribut \textit{id}), kterým lze identifikovat jednotlivé instance. Většina z~nich má také tzv. cizí klíč, který slouží k~propojení s~jinou tabulkou na základě shody tohoto klíče s~cizím primárním klíčem. Také většina obsahuje předgenerované atributy timestamps (v~překladu časová razítka) \textit{created\_at} a \textit{updated\_at}, které nám umožňují sledovat, kdy byla položka vytvořena či upravena.
 	
-	V~práci nebudou popsány tabulky \textit{personal\_access\_tokens}, \textit{failed\_jobs}, \textit{migrations} a \textit{password\_resets}, jelikož se jedná o~předgenerované tabulky Laravelem. Výjimkou je tabulka \textit{users}, která byla cíleně využita.
+	V~práci nebudou popsány tabulky \textit{personal\_access\_tokens}, \textit{failed\_jobs}, \textit{migrations} a \textit{pass\-word\_resets}, jelikož se jedná o~předgenerované tabulky Laravelem. Výjimkou je tabulka \textit{users}, která byla cíleně využita.
 	
 	\subsubsection{Uživatelé}
 	Základním objektem databáze je samotný uživatel (tabulka \textit{users}), který obsahuje standardní vlastnosti jako jsou: uživatelské jméno (\textit{name}), emailovou adresu (\textit{email}), která také slouží jako identifikátor (musí být unikátní), heslo v~zašifrované podobě (\textit{password}) a další předgenerované atributy, které jsou využívány primárně samotným frameworkem Laravel. V~rámci relací pro uživatele platí, že může mít více formulářů.

@@ -150,12 +150,12 @@ V~následující části jsou popsány jednotlivé frontendové komponenty a pri
 	\end{itemize}
 
 	\subsection{Držení dat v~prohlížeči} %% Store
-	Možnost držení dat v~prohlížeči je další ze základních atributů pro správnou funkčnost aplikace. Ať už se jedná o~soubory cookies nebo o~dočasné úložiště v~paměti alokované přímo Javascriptem - jednoduše je to potřeba. V~tomto projektu byly využity oba zmíněné přístupy.
+	Možnost držení dat v~prohlížeči je další ze základních atributů pro správnou funkčnost aplikace. Ať už se jedná o~soubory cookies nebo o~dočasné úložiště v~paměti alokované přímo JavaScriptem - jednoduše je to potřeba. V~tomto projektu byly využity oba zmíněné přístupy.
 	
-	Soubory spojené s~držením dat pomocí Javascriptu (označovány jako Stores) jsou umístěné ve složce \textit{store} - jedná se o~soubor \textit{index.js} a soubor \textit{MyStoreClass.js}.
+	Soubory spojené s~držením dat pomocí JavaScriptu (označovány jako Stores) jsou umístěné ve složce \textit{store} - jedná se o~soubor \textit{index.js} a soubor \textit{MyStoreClass.js}.
 	
 		\subsubsection{Přihlášení uživatele}
-		V~rámci přihlášení uživatele lze držení dat rozdělit na dvě větve: pomocí cookies a pomocí držení dat v~Javascriptu za využití balíčku \uv{vuex}. 
+		V~rámci přihlášení uživatele lze držení dat rozdělit na dvě větve: pomocí cookies a pomocí držení dat v~JavaScriptu za využití balíčku \uv{vuex}. 
 		
 		V~cookies jsou drženy šifrované tokeny, které jsou spravované přímo backendovým balíčkem pro zabezpečení single-page aplikací \uv{Laravel Sanctum} a slouží k~ověřování přihlášení (jsou autonomně posílány společně s~každým požadavkem na server - ten na základě jejich platnosti provede požadovaný úkon). 
 		

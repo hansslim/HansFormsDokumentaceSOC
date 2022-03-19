@@ -6,19 +6,19 @@ Za frontend je v~souvislosti s~programováním a návrhem aplikace považováno 
 
 Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena primárně pro běžnou a intuitivní obsluhu lidmi, kteří nemusí a ani nepotřebují rozumět technologiím, na kterých tato část funguje. \cite{FEvsBE}
 
-	\subsection{Javascript}
+	\subsection{JavaScript}
 	JavaScript je multiplatformní, objektově orientovaný, událostmi řízený skriptovací jazyk, který je používán primárně při tvorbě webových stránek. Je určen především pro tvorbu klientské strany, ale např. díky prostředí Node.js lze v~něm dnes psát i serverovou část aplikace. \cite{JS1}\cite{JS2}
 	
-	Psát web v~čistém Javascriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém Javascriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen v sekci \ref{sec:vuejs}.
+	Psát web v~čistém JavaScriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém JavaScriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen v sekci \ref{sec:vuejs}.
 	
 	\subsection{VueJS}\label{sec:vuejs}
-	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se o framework psaný v~jazyce Javascript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné část aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
+	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se o framework psaný v~jazyce JavaScript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné části aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
 	
 	Svou popularitu si získal především tím, že je vyvíjen komunitou, a strukturou kódu, ve kterém je psán (viz obrázek \ref{fig:vue_kod_komponenty}). Kód jednotlivých komponent je tvořen třemi základními částmi:
 	
 	\begin{itemize}
 		\item \textbf{Template} - část určená pro návrh struktury komponenty v~HTML
-		\item \textbf{Script} - část určená pro tvoření logiky a manipulaci s~daty v~komponentě v~Javascriptu
+		\item \textbf{Script} - část určená pro tvoření logiky a manipulaci s~daty v~komponentě v~JavaScriptu
 		\item \textbf{Style} - část určená pro stylování komponenty v~CSS
 	\end{itemize}
 
@@ -35,7 +35,7 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	Bootstrap je open-source framework určený především pro stylování běžných komponent webových aplikací. Styly se aplikují na HTML ve formě tříd, kterým jsou interně předepsány parametry, jakým způsobem má být daný element nastylován. Také obsahuje předem hotové styly pro běžné komponenty jako jsou např. formuláře a jejich prvky, navigační lišty, modální okna atp. \cite{Bootstrap1}\cite{Bootstrap2}\cite{Bootstrap3}
 	
 	\subsection{NPM}\label{sec:npm}
-	NPM je rozsáhlý open-source správce balíčků pro Javascript. Je využíván zejména k~přidávání komunitou vytvořených balíčků do vlastních projektů či k~sdílení vlastních balíčků - ty jsou uloženy v~tzv. registru, což je veřejná databáze Javascriptového softwaru. K~instalaci balíčků se nejčastěji používá CLI (Command Line Interface), kterým správce NPM disponuje. \cite{NPM}
+	NPM je rozsáhlý open-source správce balíčků pro JavaScript. Je využíván zejména k~přidávání komunitou vytvořených balíčků do vlastních projektů či k~sdílení vlastních balíčků - ty jsou uloženy v~tzv. registru, což je veřejná databáze javascriptového softwaru. K~instalaci balíčků se nejčastěji používá CLI (Command Line Interface), kterým správce NPM disponuje. \cite{NPM}
 	
 	V~projektu byl využit zejména k~přidání a správě balíčků na frontendové části společně s~VueJS.
 
@@ -45,7 +45,7 @@ Termínem backend označujeme část aplikace, která pro běžného uživatele 
 Backend může být také zamýšlen jako prostředí pro správu např. obsahu webu. Příkladem může být e-shop, kde na backendu bude moci administrátor např. přidávat jednotlivé zboží nebo spravovat veškeré objednávky.  \cite{BE1}\cite{BE2}
 	
 	\subsection{PHP}
-	PHP (zkr. pro Hypertext Preprocessor) je open-source multiplatformní skriptovací jazyk. Je používán především pro vývoj webových aplikací a může být vložen přímo v~souborech HTML. V~rámci základních informací lze zmínit, že podporuje procedurální i objektově-orientované programování a dokáže pracovat s~velkým množstvím databázových systémů. Oproti Javascriptu je kód spouštěn přímo na serveru, kde generuje HTML, které je předáváno dále na klientskou stranu uživateli. \cite{PHP1}\cite{PHP2}
+	PHP (zkr. pro Hypertext Preprocessor) je open-source multiplatformní skriptovací jazyk. Je používán především pro vývoj webových aplikací a může být vložen přímo v~souborech HTML. V~rámci základních informací lze zmínit, že podporuje procedurální i objektově-orientované programování a dokáže pracovat s~velkým množstvím databázových systémů. Oproti JavaScriptu je kód spouštěn přímo na serveru, kde generuje HTML, které je předáváno dále na klientskou stranu uživateli. \cite{PHP1}\cite{PHP2}
 	
 	Hlavním důvodem, proč byl pro tento projekt jazyk PHP vybrán, byla jednoduchost syntaxe jazyka a obecně nižší provozní náklady. V~jazyce PHP je napsán framework Laravel, ve kterém je tvořena backendová část projektu.
 	

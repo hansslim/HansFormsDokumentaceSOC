@@ -232,9 +232,9 @@
 		Factories (volně přeloženo jako Továrny) slouží k~vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použity v~Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z~továren.
 	
 	\subsection{Pohledy}\label{sec:be_pohledy}
-	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \uv{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. Javascript nebo CSS soubory. 
+	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \uv{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. JavaScript nebo CSS soubory. 
 	
-	V~tomto projektu (jak již bylo zmíněno) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jediný oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce v sekci \ref{sec:impl_frontend}.
+	V~tomto projektu (jak již bylo zmíněno) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jediný oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce v sekci \ref{sec:impl_frontend}.
 	
 	\begin{figure}[h]
 		\centering

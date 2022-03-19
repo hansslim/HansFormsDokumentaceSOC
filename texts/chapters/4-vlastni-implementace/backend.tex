@@ -1,11 +1,11 @@
 \section{Backend}\label{sec:impl_backend}
-	V~rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta a na ně backend náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o~které je psáno v~sekci \ref{sec:impl_frontend}.
+	V~rámci backendové nebo-li serverové části projektu je prvně nutné zmínit, že funguje na principu API - tzn. že na ní přicházejí požadavky od klienta, na které náležitě odpovídá. Nevrací ani nijak nespravuje vizualizaci dat - jen předává data na frontendovou část, o~které je psáno v~sekci \ref{sec:impl_frontend}.
 	
 	Zde jsou zobecněné základní úkony, které v~této implementaci právě backend vykonává:
 	
 	\begin{itemize}
 		\item Zpracování a vyřizování požadavků z~webové frontendové části
-		\item Administraci databáze - tzn. vytváření, úpravu, mazání a čtení jednotlivých objektů a migrace databáze (tj. automatizovaná deklarace struktury databázového objektu)
+		\item Administraci databáze - tzn. vytváření, úpravu, mazání a čtení jednotlivých objektů a migrace databáze (tj. automatizovaná deklarace struktury databázových objektu)
 		\item Rozesílání emailů (např. pozvánky na neveřejný formulář)
 		\item Exportování dat do Excel tabulek
 		\item Autentifikaci uživatele
@@ -24,28 +24,28 @@
 	%% obrázek struktury složky
 	Jak můžeme na obrázku \ref{fig:laravel_str} vidět, celý projekt je složen z~mnoha složek a souborů. Jelikož podrobný rozbor jednotlivých částí není předmětem této práce, tak jsou nejdůležitější části pro implementaci projektu popsány níže jen obecně.
 	\begin{itemize}
-		\item Složka \textit{app} obsahuje většinu tříd jádra aplikace (obsahuje např. modely či kontrolery). \cite{LaravelDir}
+		\item Složka \textit{app} obsahuje většinu souborů jádra aplikace (obsahuje např. modely či kontrolery). \cite{LaravelDir}
 		\item Složka \textit{bootstrap} obsahuje soubory pro zavedení a spuštění aplikace. \cite{LaravelDir}
 		\item Složka \textit{config} obsahuje konfigurace jednotlivých částí aplikace. \cite{LaravelDir}
-		\item Složka \textit{database} obsahuje soubory spojené s~prací s~databázi. \cite{LaravelDir}
+		\item Složka \textit{database} obsahuje soubory spojené s~prací s~databází. \cite{LaravelDir}
 		\item Složka \textit{lang} obsahuje soubory jazyků a překladů (zde nevyužita). \cite{LaravelDir}
 		\item Složka \textit{public} obsahuje soubory, které jsou veřejně dostupné při uživatelské interakci s~aplikací (např. při načtení webu v~prohlížeči). \cite{LaravelDir}
 		\item Složka \textit{resources} obsahuje pohledy a nezkompilované soubory pro celý frontend. \cite{LaravelDir}
-		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku vytvoření nového formuláře). \cite{LaravelDir}
+		\item Složka \textit{routes} obsahuje všechny definice cest aplikace (např. cestu \textit{/api/forms/create} pro vyřízení požadavku na vytvoření nového formuláře). \cite{LaravelDir}
 		\item Složka \textit{storage} obsahuje primárně záznamy o~chodu aplikace a jiné aplikací vygenerované soubory. \cite{LaravelDir}
 		\item Složka \textit{tests} obsahuje automatizované testy aplikace (zde nevyužita). \cite{LaravelDir}
 		\item Složka \textit{vendor} obsahuje závislosti a soubory přídavných balíčků spravované Composerem (viz sekce \ref{sec:composer}), které aplikace používá. \cite{LaravelDir}
 		\item Soubor .env drží veškeré důležité administrativní hodnoty jako např. přihlašovací údaje k~databázi.
-		\item Soubor artisan obsahuje důležité příkazy pro stavbu aplikace. \cite{LaravelArtisan}
+		\item Soubor artisan obsahuje důležité příkazy pro sestavení a spuštění aplikace. \cite{LaravelArtisan}
 		\item Soubor composer.json drží informace o~přídavných balíčcích Composeru (viz sekce \ref{sec:composer}) pro Laravel projekt. \cite{ComposerpJSON}
 		\item Soubor package.json drží informace o~přídavných balíčcích spravovaných pomocí NPM (viz sekce \ref{sec:npm}) pro frontendovou část projektu. \cite{NPMpJSON}
 		\item Soubor webpack.mix.js obsahuje informace pro kompilaci souborů pro frontend. \cite{LaravelJSCSS}
 	\end{itemize}
 
 	\subsection{Cesty}\label{sec:routes} %%Routes
-	Cesty (volně přeložen původní název Routes) jsou využívány abstraktně k~rozdělení aplikace - to je myšleno tak, že na každé cestě lze provádět jen úkon, který jí je přiřazen. Tyto cesty mají tvar URL adresy - skládají se z~názvu výchozí domény, který je rozšířen o~příslušnou cestu (ve formě textového řetězce děleného lomítky), a jsou využívány např. v~prohlížeči pro přístup na specifickou stránku. Příkladem může být cesta vytvoření formuláře s~příkladovou výchozí doménou \textit{localhost} s~portem 8000 \textit{\uv{localhost:8000/forms/create}}. Po zadání této cesty do webového prohlížeče se za splnění podmínek jako spuštění lokálního serveru s~aplikací a přihlášení do uživatelského účtu zobrazí požadovaná stránka.
+	Cesty (volně přeložen původní název Routes) jsou abstraktně využívány k~rozdělení aplikace - to je myšleno tak, že na každé cestě lze provádět jen úkon, který jí je přiřazen. Tyto cesty mají tvar URL adresy - skládají se z~názvu výchozí domény, který je rozšířen o~příslušnou cestu (ve formě textového řetězce děleného lomítky), a jsou využívány např. v~prohlížeči pro přístup na specifickou stránku. Příkladem může být cesta vytvoření formuláře s~příkladovou výchozí doménou \textit{localhost} s~portem 8000 \textit{\uv{localhost:8000/forms/create}}. Po zadání této cesty do webového prohlížeče se za splnění podmínek jako spuštění lokálního serveru s~aplikací a přihlášení do uživatelského účtu zobrazí požadovaná stránka.
 	
-	Běžně se v~Laravelu tyto cesty definují v~souboru \textit{web.php} - v~tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v~aplikaci dostat, jsou definovány ve frontendové části - to také vyplývá z~předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v~prohlížeči vykreslena - k~tomu slouží frontendová část ve VueJS. K~těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v~části Pohledy), který je pak doplněn o~příslušný obsah, který zajišťuje oddělený frontend (viz obrázek \ref{fig:routes_web}). Jedinou výjimkou jsou zde cesty pro resetování hesla předdefinované pro samotný Laravel.
+	Běžně se v~Laravelu tyto cesty definují v~souboru \textit{web.php} - v~tomto projektu tomu tak ale úplně není, jelikož cesty, kam se uživatel může v~aplikaci dostat, jsou definovány ve frontendové části (viz sekce \ref{sec:fe_router}) - to také vyplývá z~předem dané koncepce aplikace - Laravel má sloužit jen jako API, proto neřeší, jaká data budou v~prohlížeči vykreslena - k~tomu slouží frontendová část ve VueJS. K~těmto účelům je ve zmíněném souboru deklarováno, že na jakékoli cestě se má vrátit prázdný pohled \textit{app} (popsán v~části \ref{sec:be_pohledy}), který je pak doplněn o~příslušný obsah, který zajišťuje oddělený frontend (viz obrázek \ref{fig:routes_web}). Jedinou výjimkou jsou zde předdefinované cesty pro resetování hesla pro samotný~Laravel.
 	
 	\begin{figure}[H]
 		\centering %% příkaz, který ti obrázek zarovná na střed
@@ -54,7 +54,7 @@
 		\label{fig:routes_web} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Cesty, které Laravel specificky obsluhuje, jsou v~souboru \textit{api.php} (viz. obrázek \ref{fig:routes_api}). Na tyto cesty uživatel v~adresním řádku webového prohlížeče vůbec nepřistupuje - jsou využívány ve frontendové části na pozadí. Až zde je vlastně definováno abstraktní rozdělení aplikace - dle cesty se vykonává určitý úkon. 
+	Cesty, které Laravel specificky obsluhuje, jsou v~souboru \textit{api.php} (viz. obrázek \ref{fig:routes_api}). Na tyto cesty uživatel v~adresním řádku webového prohlížeče vůbec nepřistupuje - jsou využívány ve frontendové části na pozadí (viz sekce \ref{sec:komunikace_s_api}). Až zde je vlastně definováno abstraktní rozdělení aplikace - dle cesty se vykonává určitý úkon. 
 	
 	Tyto API cesty jsou oproti běžným cestám aplikace rozlišeny tak, že mezi výchozí doménu a cestu k~dané službě je vložen řetězec \textit{\uv{/api/}} - to je výchozí chování cest v~souboru \textit{api.php}. K~tomu, aby tyto cesty fungovaly s~dalšími službami, bylo nutné je specifikovat v~konfiguračních souborech \textit{sanctum.php} a \textit{cors.php}.
 	
@@ -65,11 +65,11 @@
 		\label{fig:routes_api} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Zmíněné cesty jsou rozděleny do dvou skupin - s~veřejným přístupem (bez přihlášení) nebo s~privátním přístupem (s~přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s~příslušnými daty odeslány údaje o~přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček \uv{Laravel Sanctum} pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon, který je deklarován v~příslušném kontroléru. 
+	Zmíněné cesty jsou rozděleny do dvou skupin - s~veřejným přístupem (bez přihlášení) nebo s~privátním přístupem (s~přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s~příslušnými daty odeslány údaje o~přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček \uv{Laravel Sanctum} pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon (tj. funkce obsahující, co se má s požadavkem provést), který je deklarován v~příslušném kontroléru. 
 	
 	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V~této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
 	
-	V~rámci popisu aplikace jsou zde tabulky s~jednotlivými cestami a jejich úkony - tabulka \ref{tab:verejne_cesty} obsahuje veřejné cesty, tabulka \ref{tab:cesty_s_prihlasenim} obsahuje cesty s~přihlášením. Hodnoty u~cest ve složených závorkách značí určitou proměnnou přenášenou přes URL adresu (např. \textit{slug} jako identifikátor formuláře).
+	V~rámci popisu aplikace jsou zde tabulky s~jednotlivými cestami a jejich úkony - tabulka \ref{tab:verejne_cesty} obsahuje veřejné cesty a tabulka \ref{tab:cesty_s_prihlasenim} obsahuje cesty s~přihlášením. Hodnoty u~cest ve složených závorkách značí určitou proměnnou přenášenou přes URL adresu (např. \textit{slug} jako identifikátor formuláře).
 	
 	\newpage
 	\begin{table}[H]
@@ -144,19 +144,19 @@
 	\subsection{Modely}
 	Modely slouží k~mapování jednotlivých dat z~databáze a jsou zprostředkovány pomocí objektově-relačního mapovacího balíčku Eloquent. Pro správnou funkčnost musí být zajištěno, že má každá tabulka v~databázi vlastní model. Díky tomuto přístupu lze s~daty manipulovat tak, že vytvoříme instanci příslušné třídy a na ní voláme příslušné metody (např. \textit{update} pro změnu záznamů) - nemusíme tedy vytvářet jednotlivé SQL příkazy pro všechny požadované úkony \cite{LaravelORM}.
 	
-	V~rámci tohoto projektu vzniklo mnoho modelů, které mapují většinu tabulek databáze (v~kontextu mnou vytvořených modelů nejsou vytvořeny modely např. pro předgenerované tabulky jako \textit{migrations} nebo \textit{failed\_jobs}). Kromě samotné funkce mapování dat z~databáze jim můžeme přiřazovat různé vlastnosti a metody, díky kterým lze měnit např. chování při předávání dat. Nejdůležitější a v~projektu použité jsou v~následujícím seznamu:
+	V~rámci tohoto projektu vzniklo mnoho modelů, které mapují většinu tabulek databáze (v~kontextu mnou vytvořených modelů nejsou vytvořeny modely např. pro předgenerované tabulky jako \textit{migrations} nebo \textit{failed\_jobs}). Kromě samotné funkce mapování dat z~databáze jim můžeme přiřazovat různé vlastnosti a metody, díky kterým lze měnit např. chování při předávání dat uživateli. Nejdůležitější a v~projektu použité jsou v~následujícím seznamu:
 	
 	\begin{itemize}
-		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k~jednodušší práci s~daty. Existuje mnoho metod - např. belongsTo (označuje, komu samotný model náleží) či hasOne/hasMany (označuje, které model/y samotnému modelu patří). \cite{LaravelORM}
-		\item Vlastnost \textit{fillable} - Ta určuje, do kterých atributů může být na vrstvě webové aplikace zapisováno. Nenapíšeme sem tedy např. \textit{id}, které většinou chceme doplnit až při uložení do databáze samotnou databází. \cite{LaravelORM}
-		\item Vlastnost \textit{visible} - Ta určuje, které atributy jsou ve vrácených datech z~databáze viditelné a tedy poslané dále (myšleno na frontend aplikace). Např. z~bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server. \cite{LaravelORM}
+		\item Metody vytvářející vazby mezi modely - Ty určují jednotlivé vztahy mezi modely a slouží k~jednodušší práci s~daty. Existuje mnoho metod - např. \textit{belongsTo} (označuje, komu samotný model náleží) či \textit{hasOne}/\textit{hasMany} (označují, které model/y samotnému modelu patří). \cite{LaravelORM}
+		\item Vlastnost \textit{fillable} - Ta určuje, do kterých atributů může být na vrstvě webové aplikace zapisováno. Nenapíšeme sem tedy např. atribut \textit{id}, který většinou chceme doplnit až při uložení do databáze samotnou databází. \cite{LaravelORM}
+		\item Vlastnost \textit{visible} - Ta určuje, které atributy jsou ve vrácených datech z~databáze viditelné a tedy poslané dále (myšleno na frontendovou část aplikace). Např. z~bezpečnostního hlediska sem nenapíšeme atribut uživatelského hesla, který by neměl být obecně předáván mimo server. \cite{LaravelORM}
 		\item Vlastnost \textit{table} - Ta slouží k~přesnému určení tabulky pomocí jejího jména, ke které se vytvořený model vztahuje. \cite{LaravelORM}
-		\item Vlastnost \textit{with} - Ta slouží k~výchozímu připojení dalších dat z~jiného modelu ke stávajícímu setu dat modelu. K~takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod. \cite{LaravelORM}
+		\item Vlastnost \textit{with} - Ta slouží k~výchozímu připojení dalších dat z~jiného modelu ke stávajícímu setu dat modelu. K~takovému úkonu je nutné mít vytvořené vazby pomocí příslušných metod zmíněných výše. \cite{LaravelORM}
 	\end{itemize}
 
 	Každý model většinou nevyužívá všechny zmíněné činnosti, ale jen ty, které jsou pro jeho typ důležité. Příkladem je zde uveden poměrně rozsáhlý model formuláře \textit{Form}. Podobným způsobem jsou vytvořeny i ostatní modely.
 	
-	Třída modelu Form reprezentuje jednotlivé formuláře. Odkazuje se na stejnojmennou tabulku \textit{forms}, ze které přebírá data. Má definované vlastnosti (viz obrázek \ref{fig:model_vlastnosti}): \textit{fillable} (např. jméno formuláře, popis formuláře, čas spuštění, ID uživatele, kterému formulář patří,...), \textit{visible} (např. atributy jako jméno formuláře, odkaz na formulář či popis formuláře, ale také názvy atributů, které jsou přidávány v~průběhu práce s~daty, a názvy metod vytvářejících vazby mezi některými dalšími modely (viz obrázek \ref{fig:model_metody}) jako např. pro model uživatele, pro kterého platí, že mu formulář musí náležet) a \textit{with} (zde jen název vazbové metody pro model elementu formuláře, u~kterého platí, že musí formuláři náležet a že jednomu formuláři může náležet i více elementů). Samotná definice provázání modelu s~tabulkou v~databázi pomocí vlastnosti table zde není potřeba - Laravel umí u~jednoduše pojmenovaných modelů vygenerovaných pomocí Artisan skriptů tuto vlastnost vnitřně doplnit.
+	Třída modelu \textit{Form} reprezentuje jednotlivé formuláře. Odkazuje se na stejnojmennou tabulku \textit{forms}, ze které přebírá data. Má definované vlastnosti (viz obrázek \ref{fig:model_vlastnosti}): \textit{fillable} (např. jméno formuláře, popis formuláře, čas spuštění, ID uživatele, kterému formulář patří,...), \textit{visible} (např. atributy jako jméno formuláře, odkaz na formulář či popis formuláře, ale také názvy atributů, které jsou vytvářeny a přidávány v~průběhu práce s~daty, a názvy metod vytvářejících vazby mezi některými dalšími modely (viz obrázek \ref{fig:model_metody}) jako např. pro model uživatele, pro který platí, že mu formulář musí náležet) a \textit{with} (zde jen název vazbové metody pro model elementu formuláře, u~kterého platí, že musí formuláři náležet a že jednomu formuláři může náležet i více elementů). Samotná definice provázání modelu s~tabulkou v~databázi pomocí vlastnosti \textit{table} zde není potřeba - Laravel umí u~jednoduše pojmenovaných modelů vygenerovaných pomocí Artisan skriptů tuto vlastnost vnitřně doplnit.
 	
 	%%obrázek modelu php
 	%%\newpage
@@ -183,16 +183,17 @@
     \begin{figure}[H]
     	\centering
     	\includegraphics[width=0.85\textwidth]{img/kontroler.png}
-    	\caption{Ukázka části kódu kontroléru (Kontrolér formuláře)}
+    	\caption{Ukázka části kódu kontroléru formuláře}
     	\label{fig:kontroler}
     \end{figure}
     
-    Konkrétní postupy, jak se jednotlivé činnosti provádí, jsou popsány v~jiné sekci práce.
+    Konkrétní postupy, jak se jednotlivé činnosti provádí, jsou popsány v sekci \ref{sec:be_prubeh_jednotl_cinnosti}.
+    
 		\subsubsection{Kontrolér formuláře}
 		Kontrolér formuláře, jak už z~názvu vyplývá, pracuje s~daty jednotlivých formulářů. Kromě výše zmíněných běžných metod obsahuje metodu pro vrácení privátního formuláře, metodu pro duplikaci formuláře, metodu pro vrácení formuláře s~dodatečnými daty pro majitele formuláře, metodu pro nastavení veřejných výsledků či metodu pro úpravu přístupu k~formuláři (nastavení veřejného nebo privátního formuláře).
 		
 		\subsubsection{Kontrolér vyplnění formuláře}
-		Kontrolér vyplnění formuláře je oproti předchozímu kontroléru chudší. V~rámci běžných metod neobsahuje např. metodu pro úpravu či smazání odpovědi. Oproti tomu ale disponuje speciální metodou pro export všech odpovědí do stáhnutelného formátu MS Excel, metodou pro uložení odpovědi z~privátního formuláře či metodou pro zobrazení veřejných výsledků.
+		Kontrolér vyplnění formuláře je oproti předchozímu kontroléru chudší. V~rámci běžných metod neobsahuje např. metodu pro úpravu či smazání odpovědi. Oproti tomu ale disponuje speciální metodou pro export všech odpovědí do stáhnutelného souboru ve formátu MS Excel, metodou pro uložení odpovědi z~privátního formuláře či metodou pro zobrazení veřejných výsledků.
 		
 		\subsubsection{Kontrolér uživatele}
 		Kontrolér uživatele slouží ke správě uživatelů. Obsahuje základní metody pro registraci, přihlášení a odhlášení, ale i pro změnu hesla (i při zapomenutém hesle) či smazání účtu.
@@ -200,17 +201,17 @@
 	\subsection{Exporty}\label{sec:exports}
 	Exporty, resp. jejich třídy, slouží k~definování vzhledu a způsobu uložení dat v~určitém formátu. Exportovat můžeme různá data do různých formátů (např. obrázek do formátu PNG, list nějakých záznamů do tabulky formátu CSV,...).
 	
-	V~rámci tohoto projektu byl export potřeba jen v~jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K~tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi s~tímto úkonem spojených. Jakým způsobem jsou data exportována je popsáno v~jiné sekci práce.
+	V~rámci tohoto projektu byl export potřeba jen v~jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K~tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi, které jsou s tímto úkonem spojené. Jakým způsobem jsou tato data exportována je popsáno v~sekci \ref{sec:form_comp_export}.
 	
 	\subsection{Maily}
-	Maily, resp. jejich třídy, slouží k~definování vzhledu a obsahu emailu. Poté, co se vytvoří instance této třídy, která je hydratována (tzn. naplněna daty), data jsou předána příslušnému pohledu, který je poté poslán na požadované emaily.
+	Maily, resp. jejich třídy, slouží k~definování vzhledu a obsahu emailu. Poté, co se vytvoří instance této třídy, která je hydratována (tzn. naplněna daty), jsou data předána příslušnému pohledu, který je poté poslán na požadované emaily.
 	
-	Způsoby a principy, kterými jsou emaily rozesílány, zde nejsou popsány - jednak jsou předdefinované Laravelem a zároveň nejsou předmětem této práce. Jediné, co bylo potřeba k~zprovoznění emailového klienta, bylo vyplnit příslušné konfigurační údaje (např. protokol pro přenos nebo port na emailový server) a přihlašovací údaje k~emailu, ze kterého jsou emaily rozesílány. K~těmto účelům byl v~implementaci projektu na produkční verzi použit Google Gmail.
+	Způsoby a principy, kterými jsou emaily rozesílány, zde nejsou popsány - jednak jsou předdefinované Laravelem a zároveň nejsou předmětem této práce. Jediné, co bylo potřeba k~zprovoznění emailového klienta, bylo vyplnit příslušné konfigurační údaje (např. protokol pro přenos nebo port na emailový server) a přihlašovací údaje k~emailu, ze kterého jsou emaily rozesílány. K~těmto účelům byla v~implementaci projektu na produkční verzi použita bezplatná emailová služba \uv{Google Gmail}.
 	
 	\subsection{Migrace databáze}
-	Migrace databáze jsou určeny k~deklaraci struktury jednotlivých tabulek v~databázi. Obecně mají dvě metody: \textit{up} pro vytvoření předdefinované tabulky a \textit{down} pro odstranění tabulky z~databáze. Tyto migrace se v~Laravelu běžně generují pomocí Artisan skriptů.
+	Migrace databáze jsou třídy určené k~deklaraci struktury jednotlivých tabulek v~databázi. Obecně mají dvě metody: \textit{up} pro vytvoření předdefinované tabulky a \textit{down} pro odstranění tabulky z~databáze. Tyto migrace se v~Laravelu běžně generují pomocí Artisan skriptů.~\cite{LaravelMigrace}
 	
-	V~implementaci tohoto projektu se využívala primárně metoda \textit{up}, kde se specifikovaly jednotlivé názvy a typy atributů tabulky. Těmto atributům lze přidávat další různé vlastnosti (v~migraci zapsány jako metody) jako např. \textit{nullable} (možnost vložení prázdné hodnoty \textit{null} do atributu), \textit{default} (možnost nastavení výchozí hodnoty atributu při vytvoření) či \textit{unique} (možnost nastavení unikátní hodnoty atributu ve sloupci).
+	V~implementaci tohoto projektu se využívala primárně metoda \textit{up}, kde se specifikovaly jednotlivé názvy a typy atributů tabulky (viz obrázek \ref{fig:migrace}). Těmto atributům lze přidávat další různé vlastnosti (v~migraci zapsány jako metody) jako např. \textit{nullable} (možnost vložení prázdné hodnoty \textit{null} do atributu), \textit{default} (možnost nastavení výchozí hodnoty atributu při vytvoření) či \textit{unique} (možnost nastavení unikátní hodnoty atributu ve sloupci pro celou tabulku).
 	
 	Kromě zmíněných vlastností bylo ještě nutné specifikovat tzv. cizí klíče, které slouží k~vytvoření relací mezi ostatními databázovými objekty a k~celkovému provázání dat. Jedná se o~samostatné atributy, které většinou obsahují ID jiného objektu v~databázi - tím je zaručeno, který řádek v~tabulce patří k~řádku/řádkům jiné tabulky. 
 	
@@ -228,12 +229,12 @@
 		\subsubsection{Testovací data}
 		K~tomu, aby bylo možné aplikaci rozumně testovat, je nutné mít v~databázi nějaká data. Pokud bychom vždy ručně tato data přidávali, trvalo by to enormní množství času - k~těmto účelům v~Laravelu existují tzv. Factories a Seeders.
 		
-		Factories (volně přeloženo jako Továrny) slouží k~vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použita v~Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z~továren.
+		Factories (volně přeloženo jako Továrny) slouží k~vygenerování výplňových dat, která jsou použita primárně při vývoji aplikace. Tyto továrny na vymyšlená data jsou poté použity v~Seederu (volně přeloženo jako Rozsévač), který provádí všechny úkony jako vymazání všech současných dat databáze a následné naplnění daty z~továren.
 	
-	\subsection{Pohledy}
+	\subsection{Pohledy}\label{sec:be_pohledy}
 	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \uv{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. Javascript nebo CSS soubory. 
 	
-	V~tomto projektu (jak již bylo zmíněno výše) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jen jeden oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce.
+	V~tomto projektu (jak již bylo zmíněno) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na Javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jediný oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce v sekci \ref{sec:impl_frontend}.
 	
 	\begin{figure}[h]
 		\centering
@@ -242,10 +243,10 @@
 		\label{fig:pohled_app}
 	\end{figure}
 	
-	\subsection{Průběh jednotlivých činností}
+	\subsection{Průběh jednotlivých činností}\label{sec:be_prubeh_jednotl_cinnosti}
 	V~této části jsou popsány postupy, jak se jednotlivé akce zpracovávají na serveru a jak jsou data předávána databázi či uživateli webové stránky. Úkony jsou rozděleny tak, jak jsou zapsány v~kontrolérech. Z~hlediska kódu je každý úkon metodou kontroléru.
 	
-	Každá z~těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Zde (tabulka \ref{tab:http_stavove_kody}) je seznam přímo využitých stavových kódů, které jsou serverem předávány.
+	Každá z~těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Zde (tabulka \ref{tab:http_stavove_kody}) je seznam přímo využitých stavových kódů, které jsou serverem v této implementaci obvykle předávány.
 	
 	\begin{table}[H]
 		\centering
@@ -274,7 +275,7 @@
 		\label{tab:http_stavove_kody}
 	\end{table}
 
-	Nutno zmínit, že stavový kód \uv{200 (OK)} je v~této implementaci projektu automaticky odesílán v~případě, že v~průběhu vyřizování požadavku není zaznamenána žádná chyba. Dále v~práci proto nebude jeho odesílání zmiňováno.
+	Nutno zmínit, že stavový kód \uv{200 (OK)} je v~této implementaci projektu automaticky odesílán v~případě, že není v~průběhu vyřizování požadavku zaznamenána žádná chyba. Dále v~práci proto nebude jeho odesílání zmiňováno.
 	
 		\subsubsection{Manipulace s~formuláři}
 		Tato část popisuje veškerou administrativu nad formuláři.
@@ -284,19 +285,19 @@
 			
 			Prvním krokem, který funkce provádí, je ověření, zda je uživatel přihlášen (pokud není, je vrácen stavový kód 401). Poté se provádí rozsáhlá validace, která sestává z~kontroly základních informací o~formuláři (např. název formuláře či data zveřejněni a ukončení zveřejnění), samotných elementů formuláře a dalších parametrů validního formuláře. Před těmito úkony je zkontrolováno, zda požadavek od uživatele vůbec obsahuje nějaká data.
 			
-			Validace základních informací kontroluje název a popisek formuláře (zda obsahují validní řetězec, u~názvu samotné vyplnění - jedná se o~povinný atribut), data zveřejnění a ukončení zveřejnění formuláře (zda mají hodnoty správný formát, zda datum ukončení zveřejnění je dále v~čase než datum zveřejnění a zda se netvoří už expirovaný formulář s~časem ukončení zveřejnění dříve v~čase než je aktuální serverový čas), hodnotu vyjadřující přístupnost formuláře (zda bude veřejný nebo privátní) a zda požadavek vůbec obsahuje kolekci otázek. U~privátního formuláře jsou také validovány emaily, na které se rozešle pozvánka (tzn. jejich formát).
+			Validace základních informací kontroluje název a popisek formuláře (zda obsahují validní řetězec, u~názvu samotné vyplnění - jedná se o~povinný atribut), data zveřejnění a ukončení zveřejnění formuláře (zda mají hodnoty správný formát, zda datum ukončení zveřejnění je dále v~čase než datum zveřejnění a zda se netvoří už expirovaný formulář s~časem ukončení zveřejnění dříve v~čase, než je aktuální serverový čas), hodnotu vyjadřující přístupnost formuláře (zda bude veřejný nebo privátní) a zda požadavek vůbec obsahuje kolekci otázek. U~privátního formuláře jsou také validovány emaily, na které se rozešle pozvánka (tzn. jejich formát).
 			
 			Další částí je validace elementů. Ty jsou procházeny cyklem, ve kterém se nejprve zjišťuje, zda je vybraný element elementem otázky nebo nové stránky, a kontroluje se správné pořadí na základě vlastnosti \textit{order}. Pokud se jedná o~novou stránku, přeskakuje se validace atributů otázky, a pokud má stránka validní hodnotu pro pořadí, je rovnou přemístěna mezi validní elementy. 
 			
-			V~případě elementu otázky je to komplikovanější. Kromě validace pořadí přichází na řadu kontroly vlastností, jako jsou typ samotné otázky (zda se jedná o~platný typ podporovaný systémem), samotný textový řetězec vyjadřující otázku (zda se jedná o~text), atribut vyjadřující, zda se jedná o~otázku povinnou, či nikoliv (kontrola typu). Poté, na základě typu, jsou validovány atributy související s~typem otázky. Atributy, které jednotlivé typy otázek mají, jsou rozebrány v~sekci \ref{sec:form_inputs_types} - u~některých ze samotné podstaty vyplývá, co a jak se u~nich bude validovat. 
+			V~případě elementu otázky je to komplikovanější. Kromě validace pořadí přichází na řadu kontroly vlastností, jako jsou typ samotné otázky (zda se jedná o~platný typ podporovaný systémem), samotný textový řetězec vyjadřující otázku (zda se jedná o~text) či atribut vyjadřující, zda se jedná o~otázku povinnou, či nikoliv (kontrola typu). Poté, na základě typu, jsou validovány atributy související s~typem otázky. Atributy, které jednotlivé typy otázek mají, jsou rozebrány v~sekci \ref{sec:form_inputs_types} - u~některých ze samotné podstaty vyplývá, co a jak se u~nich bude validovat. 
 			
 			Obecně platí, že u~rozsahů délky (tzn. minimální a maximální hodnoty) musí platit, že minimální hodnota je menší než maximální (a to nezávisle na typu - tzn. platí např. i pro datum - i přesto, že jsou data vkládána jako textový řetězec, musí být příslušně převedena a zvalidována). Striktní délka musí být větší než nula. U~atributů, kde má být zadána hodnota \textit{true} nebo \textit{false}, kontrolovat validní hodnotu popř. předanou hodnotu převést na validní tvar. Obvykle, pokud se nejedná o~povinnou hodnotu, se chyby ignorují - proces pokračuje dále, žádné hodnoty nejsou do těchto atributů uloženy.
 			
 			Nejkomplikovanější validace probíhá u~typu vstupu pro odpověď z~výběru předepsaných možných odpovědí. Zde musí být validovány i jednotlivé možnosti odpovědi pro otázku - u~nich se kontroluje počet (možností musí jich být více než dvě), zda se jedná o~škálu (na základě \textit{true}/\textit{false} hodnoty \textit{has\_hidden\_label} - pokud je tato hodnota \textit{true}, očekává se u~všech možností číselný popisek, který je pro danou kolekci možností unikátní), vnitřní pořadí (zda se jedná o~čísla tvořící posloupnost 0,1,2,3,...) a samotný text vyjadřující odpověď na otázku (zda se jedná o~platnou textovou hodnotu). V~případě selhání validace chyby nejsou ignorovány a je vrácen příslušný chybový stavový kód. Po této validaci už následuje jen validace rozsahu počtu odpovědí či striktního počtu odpovědí (pokud se jedná o~tzv. multiple-choice otázku) - u~těchto hodnot platí kromě dříve popsaných pravidel, že musí být v~symbióze s~počtem možností odpovědí - tzn. zadané hodnoty musí být menší než celkový počet možností.
 			
-			Po validaci zmíněných přichází na řadu kontrola dalších parametrů. Tím je validace pořadí (elementy musí mít v~atributu pořadí číslo, které s~ostatními tvoří posloupnost 0,1,2,3,...) a kontrola, zda v~kolekci otázek existuje alespoň jedna otázka povinná. Dále je zavedena kontrola umístění elementů nové stránky - pro ty platí, že nesmí stát na začátku a na konci kolekce elementů a že v~kolekci nesmí stát dva a více vedle sebe. V~případě výskytu chyby je vrácen příslušný chybový stavový kód.
+			Po validaci zmíněných dat přichází na řadu kontrola dalších parametrů. Tím je validace pořadí (elementy musí mít v~atributu pořadí číslo, které s~ostatními tvoří posloupnost 0,1,2,3,...) a kontrola, zda v~kolekci otázek existuje alespoň jedna otázka povinná. Dále je zavedena kontrola umístění elementů nové stránky - pro ty platí, že nesmí stát na začátku a na konci kolekce elementů a že v~kolekci nesmí stát dva a více vedle sebe. V~případě výskytu chyby je vrácen příslušný chybový stavový kód.
 			
-			Pokud jsou všechna data validní, tak se začne vykonávat kód pro předejití poškození integrity dat v~databázové transakci, kde je v~případě tvoření formuláře nejprve vygenerován unikátní identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4. Poté se postupně vytváří příslušné objekty pro jednotlivé prvky formuláře, kterým se předávají zvalidovaná data. Po tomto úkonu se v~případě privátního formuláře rozešlou pozvánky na příslušné emaily.
+			Pokud jsou všechna data validní, tak se začne vykonávat kód pro předejití poškození integrity dat v~databázové transakci, kde je v~případě tvoření formuláře nejprve vygenerován unikátní identifikátor pomocí balíčku \uv{ramsey/uuid} ve tvaru UUID4. Poté se postupně vytváří příslušné objekty pro jednotlivé prvky formuláře, kterým se předávají zvalidovaná data. Tyto objekty (resp. jejich data) jsou poté ukládány do databáze. Po tomto úkonu se v~případě privátního formuláře rozešlou pozvánky na příslušné emaily.
 			
 			\subsubsubsection{Úprava formuláře}\label{sec:form_update}
 			Metoda s~názvem \textit{update} slouží k~editaci formuláře, který zatím nebyl zveřejněn. Díky této metodě lze kromě základních informací měnit i samotné otázky. Co v~této metodě ale nelze provést, je úprava přístupnosti formuláře a případné přidání emailů k~rozeslání pozvánky (k~tomu slouží metoda v~sekci \ref{sec:form_accessibility}).
@@ -305,7 +306,9 @@
 			
 			Dále je spuštěna databázová transakce, ve které se nejprve vygeneruje dočasný identifikátor \textit{slug} formuláře ve tvaru UUID4. Poté se všechna data z~požadavku uživatele předají metodě \textit{store} (popsána v~sekci \ref{sec:form_store}), která přidá do databáze formulář s~předanými úpravami. Kromě dat z~požadavku se metodě poskytnou i další data: dočasný identifikátor, který slouží k~identifikaci přidaného upraveného formuláře a informace o~tom, zda byl upravovaný formulář veřejný nebo privátní. Dočasný identifikátor je použit místo vygenerovaného identifikátoru použitého přímo v~metodě \textit{store}. Předávaná informace o~přístupnosti slouží k~tomu, aby upravený formulář tuto vlastnost neztratil a aby nebyly znovu rozeslány pozvánky na příslušné emaily, což je nativní chování metody \textit{store}. 
 			
-			Poté, pokud nebyl uživatelský požadavek validní dle metody pro přidání formuláře, je vrácen příslušný stavový kód pocházející přímo ze zmíněné metody. Pokud ale vše v~metodě \textit{store} proběhlo bez problému, následují další činnosti. Pokud se jedná o~veřejný formulář, původní (neupravený) formulář (a s~ním i další objekty na něj navázané) je smazán pomocí metody \textit{destroy} (popsána v~sekci \ref{sec:form_destroy}) a u~upraveného formuláře je přepsán identifikátor na hodnotu identifikátoru, kterou disponoval neupravený formulář. V~případě, že je upravený formulář privátní, se prvně do dočasné proměnné uloží všechny přístupové tokeny. Poté se původní formulář smaže a nahradí se identifikátor stejně jako u~veřejného formuláře. Nakonec se vytvoří kopie tokenů na základě dat v~dočasné proměnné zmíněné dříve, které se liší jen v~hodnotě ID formuláře (to, jelikož byl de facto vytvořen nový formulář, musí odkazovat na upravený formulář). Na neočekávané chyby je vrácen stavový kód 500.
+			Poté, pokud nebyl uživatelský požadavek validní dle metody pro přidání formuláře, je vrácen příslušný stavový kód pocházející přímo ze zmíněné metody. Pokud ale vše v~metodě \textit{store} proběhlo bez problému, následují další činnosti. 
+			
+			Pokud se jedná o~veřejný formulář, původní (neupravený) formulář (a s~ním i další objekty na něj navázané) je smazán pomocí metody \textit{destroy} (popsána v~sekci \ref{sec:form_destroy}) a u~upraveného formuláře je přepsán identifikátor na hodnotu identifikátoru, kterou disponoval neupravený formulář. V~případě, že je upravený formulář privátní, se prvně do dočasné proměnné uloží všechny přístupové tokeny. Poté se původní formulář smaže a nahradí se identifikátor stejně jako u~veřejného formuláře. Nakonec se vytvoří kopie tokenů na základě dat v~dočasné proměnné zmíněné dříve, které se liší jen v~hodnotě ID formuláře (to, jelikož byl de facto vytvořen nový formulář, musí odkazovat na upravený formulář). Při neočekávaných chybách je vrácen stavový kód 500.
 			
 			\subsubsubsection{Duplikování formuláře}\label{sec:form_dupl}
 			Metoda s~názvem \textit{duplicateWithAuth} slouží k~duplikování formuláře - tzn. lze vytvořit nový formulář, který obsahuje stejné otázky a vlastnosti (tj. jméno formuláře, datum zveřejnění, datum ukončení zveřejnění,...), jako formulář, u~kterého byla požadována duplikace. Zmíněné vlastnosti při tomto procesu lze modifikovat, otázky ne.
@@ -316,7 +319,7 @@
 			
 			Poté probíhá kontrola nastavení přístupnosti formuláře - při duplikaci lze změnit tento atribut. Pokud je tento atribut nastaven jako \textit{true} (tzn. formulář je privátní, lze k~němu přistupovat jen s~tokenem), kontrolují se předané emaily (zda mají validní tvar), na které se bude rozesílat pozvánka.
 			
-			Nakonec se vygeneruje nový identifikátor ve tvaru UUID4 a metoda se pokouší příslušná data uložit do databáze. Zde vzniká nový objekt formuláře, kterému jsou předány příslušné vlastnosti (tj. ID uživatele, vygenerovaný identifikátor, data z~požadavku duplikace). S~tím podobně vznikají i příslušné objekty pro uložení jednotlivých elementů formuláře (tj. otázky nebo nové stránky), jejichž vlastnosti jsou přebírány a kopírovány z~duplikovaného formuláře. Nakonec, pokud je formulář nastaven jako privátní, jsou rozeslány pozvánky na zvalidované emaily. Tento proces probíhá v~databázové transakci.
+			Nakonec se vygeneruje nový identifikátor ve tvaru UUID4 a metoda se pokouší příslušná data uložit do databáze. Zde vzniká nový objekt formuláře, kterému jsou předány příslušné vlastnosti (tj. ID uživatele, vygenerovaný identifikátor a data z~požadavku duplikace). S~tím podobně vznikají i příslušné objekty pro uložení jednotlivých elementů formuláře (tj. otázky nebo nové stránky), jejichž vlastnosti jsou přebírány a kopírovány z~duplikovaného formuláře. Nakonec, pokud je formulář nastaven jako privátní, jsou rozeslány pozvánky na zvalidované emaily. Tento proces probíhá v~databázové transakci.
 			
 			Při úspěchu je vrácena odpověď s~identifikátorem nově vzniklého formuláře (duplikátu). Ten je určen pro frontendovou část projektu k~přesměrování.
 								
@@ -343,7 +346,7 @@
 			\subsubsubsection{Mazání formuláře}\label{sec:form_destroy}
 			Metoda s~názvem \textit{destroy} slouží k~odstranění formuláře a jeho přidružených elementů.
 			
-			V~koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401), zda vůbec formulář s~předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v~databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete} smazán. Tento proces také probíhá v~transakci.
+			V~koncepci je metoda velice jednoduchá - poté, co se zkontroluje, zda je uživatel přihlášen (pokud ne, je vrácen stavový kód 401) a zda vůbec formulář s~předaným \textit{slug} identifikátorem patřící přihlášenému uživateli v~databázi existuje (pokud ne, je vrácen stavový kód 404), je pomocí příslušné nativní metody \textit{delete} smazán. Tento proces také probíhá v~transakci.
 			
 			\subsubsubsection{Vrácení všech formulářů uživateli}\label{sec:form_index}
 			Metoda s~názvem \textit{index} je určena k~vrácení všech formulářů, které patří přihlášenému uživateli. To slouží k~hydrataci úvodní stránky uživatele - jedná se o~přehled všech vlastněných formulářů. 

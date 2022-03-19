@@ -73,24 +73,24 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 		\end{figure}
 		
 	\subsection{Composer}\label{sec:composer}
-	Composer je nástroj pro správu závislostí pro jazyk PHP. Umožňuje nám v~projektu deklarovat, které cizí knihovny (resp. balíčky) budou v~projektu použity. Ty poté dokáže nainstalovat nebo aktualizovat. Ve své funkcionalitě je velmi podobný jako NPM (viz sekce \ref{sec:npm}). \cite{Composer}
+	Composer je nástroj pro správu závislostí pro jazyk PHP. Umožňuje nám v~projektu deklarovat, které cizí knihovny (resp. balíčky) budou v~projektu použity. Ty poté dokáže nainstalovat nebo aktualizovat. Funkcionalitou je velmi podobný jako NPM (viz sekce~\ref{sec:npm}). \cite{Composer}
 	
 	V~tomto projektu byl použit primárně ke správě balíčků pro backendovou část.
 		
 \section{Úložiště dat}
-Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~využitých úložištích v tomto projektu je psáno níže.
+Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem, musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~využitých úložištích v tomto projektu je psáno níže.
 
 	\subsection{Webhosting}
 	Webhosting je služba, díky které si můžeme pronajmout prostor na cizím vzdáleném serveru pro naše webové stránky. Poskytovatelé těchto služeb většinou nabízí i služby spojené s~provozem databází nebo e-mailové schránky. Hlavní výhodou této služby je fakt, že nemusíme fyzicky vlastnit žádný server a že nemusíme řešit administrativní úkony s~ním spojené (např. instalace specializovaného softwaru na serveru). \cite{Webhosting}
 	
 	Pro účely tohoto projektu bylo potřeba mít jak webový server pro nahrání celé aplikace, tak i databázový server pro uchovávání dat. O~využitých poskytovatelích těchto služeb je psáno v~práci dále. 
 	
-		\subsubsection{DigitalOcean}
-		DigitalOcean je americký poskytovatel cloudových služeb s~datovými centry po celém světě. Nabízí obrovské množství technologií a služeb – např. správu webového serveru, virtuální stroje či možnost zprostředkování databázového serveru. Celkově se společnost snaží především o~poskytnutí služeb, které budou uživatelsky přívětivé. \cite{DO1}\cite{DO2}
+		\subsubsection{DigitalOcean}\label{sec:do}
+		DigitalOcean je americký poskytovatel cloudových služeb s~datovými centry po celém světě. Nabízí obrovské množství technologií a služeb – např. správu webového serveru, virtuální stroje či možnost zprostředkování databázového serveru. Celkově se společnost snaží především o~poskytování služeb, které jsou uživatelsky přívětivé. \cite{DO1}\cite{DO2}
 		
 		Z~balíčku služeb, které DigitalOcean nabízí, byla pro tento projekt použita takzvaná \uv{App Platform} \cite{DO3}, do které lze jednoduše nahrát soubory webové aplikace a následně využívat webové služby.
 		
-		\subsubsection{Heroku}
+		\subsubsection{Heroku}\label{sec:heroku}
 		Heroku je cloudová platforma, která je využívána k~nasazení, správě a škálování moderních aplikací. V~rámci nabízených služeb se velmi podobá DigitalOceanu – nabízí tedy např. možnost využití virtuálních strojů a služby s~tím spojené nebo možnost zprostředkování nejrůznějších databázových serverů. \cite{Heroku1}\cite{Heroku2}
 		
 		V~rámci této implementace byla od Heroku využita služba zprostředkovávající databázové služby – konkrétně PostgreSQL server. 
@@ -106,7 +106,7 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 		\item \textbf{Hierarchický model} – data jsou uspořádána do stromové struktury, kde jsou omezena vztahem „jeden k~více“ (záznam z~vyšší úrovně lze spojit jen se záznamy nižší úrovně), jsou identifikovány tzv. ukazatelem (ten ukazuje na místo v~databázi, kde jsou data uložena). \cite{HierarchDB}
 		\item \textbf{Síťový model} – data jsou uspořádána jako uzly rovinného grafu, jsou identifikovány tzv. ukazatelem; oproti hierarchickému modelu lze spojovat záznamy libovolně. \cite{SitDB} 
 		\item \textbf{Relační model} – data jsou uspořádána v~tabulkách do relací (tj. spojení dat, která obsahují nějaký společný atribut), jsou identifikovány primárním klíčem. \cite{RelacDB}
-		\item \textbf{Objektově orientovaný model} – data jsou reprezentována jako objekty, které vychází z~objektově-orientovaného programování. \cite{OOPDB}
+		\item \textbf{Objektově-orientovaný model} – data jsou reprezentována jako objekty, které vychází z~objektově-orientovaného programování. \cite{OOPDB}
 	\end{itemize}
 	
 	K~zajištění možnosti ovládání databáze musí být také zajištěn způsob, jakým lze s~databází komunikovat. K~těmto účelům vznikly tzv. dotazovací jazyky, které právě slouží ke komunikaci uživatele s~příslušným programem \cite{DotazJazyk} - zde databázovým systémem. Mezi nejpoužívanější jazyky tohoto druhu patří jazyk SQL, který je primárně používán s~relačními databázemi \cite{SQL}.
@@ -114,14 +114,13 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 	Dalším důležitým faktorem je spolehlivost databáze. K~tomuto účelu slouží tzv. zásady ACID - ty garantují, že data po jednotlivých úkonech nebo transakcích (zjednodušeně skupiny úkonů \cite{Transakce}) - např. aktualizace dat - budou přesná a konzistentní i při selhání systému. Zkratku ACID lze rozdělit na tyto části:
 	
 	\begin{itemize}
-		\item \textbf{Atomicity} (v~překladu Atomicita) – buď se transakce provede celá, nebo se data nijak nezmění
-		\item \textbf{Consistency} (v~překladu Konzistence) – data musí být validní a konzistentní - tzn. že musí splňovat požadavky databázového systému např. platný typ vstupní hodnoty pro určitý atribut
-		\item \textbf{Isolation} (v~překladu Izolace) – všechny transakce musí na sobě být nezávislé a nesmí se nějak ovlivňovat
-		\item \textbf{Durability} (v~překladu Odolnost) – po provedení transakce musí být data permanentně uložena v~databázi
-		\cite{ACID}
+		\item \textbf{Atomicity} (v~překladu Atomicita) – buď se transakce provede celá, nebo se data nijak nezmění \cite{ACID}
+		\item \textbf{Consistency} (v~překladu Konzistence) – data musí být validní a konzistentní - tzn. že musí splňovat požadavky databázového systému např. platný typ vstupní hodnoty pro určitý atribut \cite{ACID}
+		\item \textbf{Isolation} (v~překladu Izolace) – všechny transakce musí být vzájemně nezávislé a nesmí se nějak ovlivňovat \cite{ACID}
+		\item \textbf{Durability} (v~překladu Odolnost) – po provedení transakce musí být data permanentně uložena v~databázi \cite{ACID}
 	\end{itemize}
 	
-	V~projektu byla využita relační databáze PostgreSQL, která je popsána dále.
+	V~projektu byla využita relační databáze PostgreSQL, která je popsána v sekci \ref{sec:pgsql}.
 	
-		\subsubsection{PostgreSQL}
+		\subsubsection{PostgreSQL}\label{sec:pgsql}
 		PostgreSQL je open-source objektově-relační databáze (spojení relačního a objektově orientovaného modelu) splňující ACID zásady. Je rozšířená a oblíbená kvůli její architektuře, výkonnosti, spolehlivosti, datové integritě, rozšířitelnosti, škálovatelnosti a velkému množství funkcí. Využívá jazyk SQL, který rozšiřuje o~další funkce a syntaxi. \cite{PostgreSQL}

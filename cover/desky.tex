@@ -1,0 +1,120 @@
+\documentclass[hidelinks, 12pt, a4paper,
+%oneside,      %% -- odkomentujte, pokud chcete svou práci mít pouze jednostrannou, mezera pro hřbet pak automaticky bude pouze na levé straně
+twoside,        %% -- pro oboustranné práce, mezera pro hřbet následně střídá strany.
+openright
+]{report}
+
+%% Nutné balíčky a nastavení
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systém pro vkládání a zpracování ankety/zpětné vazby} %% -- Název tvé práce
+\author{Jan Hubený} %% -- tvé jméno
+\date{2022} %% -- rok, kdy píšeš SOČku
+
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry} %% nastaví okraje, left -- vnitřní okraj, right -- vnější okraj
+\usepackage{booktabs}
+
+\usepackage{url} %% Balíček pro URL adresy
+\def\UrlFont{} %% Nastavené "žádného" stylu u URL adres
+
+\usepackage{pdfpages} %% Balíček umožňující vkládat stránky z PDF souborů
+\usepackage{float} %% formátování obrázků
+\usepackage[czech]{babel} %% balík babel pro sazbu v češtině
+\usepackage[T1]{fontenc} %T1 kvůli češtině
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern} %% vektorový font
+\usepackage{hyphenat} %% dělení slov
+\usepackage{cmap} %% balíček zajišťující, že vytvořené PDF bude prohledávatelné a kopírovatelné
+\usepackage{graphicx} %% balík pro vkládání obrázků
+\usepackage{subfig} %% balíček pro vkládání podobrázků
+\usepackage{hyperref} %% balíček, který v PDF vytváří odkazy
+\usepackage{etoolbox}
+
+\patchcmd{\thebibliography}{*}{}{}{} %% přidání číslování pro nadpis zdrojů
+\patchcmd{\listoffigures}{*}{}{}{} %% přidání číslování pro nadpis seznamu obrázků
+\patchcmd{\listoftables}{*}{}{}{} %% přidání číslování pro nadpis seznamu tabulek
+
+%% styly kapitol a sekcí
+\usepackage[pagestyles,nobottomtitles]{titlesec} %% balíček pro úpravu stylu kapitol a sekcí
+
+%% definování nové sekce resp. jeho příkazu (5.)
+\titleclass{\subsubsubsection}{straight}[\subsection]
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\makeatletter
+\def\toclevel@subsubsubsection{4}
+\def\l@subsubsubsection{\@dottedtocline{4}{11em}{4em}}
+\makeatother
+%%
+
+%% stylování jednotlivých nadpisů sekcí
+\titleformat{\chapter}[block]{\scshape\bfseries\huge}{\thechapter}{12pt}{\vspace{0pt}}[\vspace{-34pt}]
+\titleformat{\section}[block]{\scshape\bfseries\LARGE}{\thesection}{12pt}{\vspace{-10pt}}
+\titleformat{\subsection}[block]{\bfseries\Large}{\thesubsection}{12pt}{\vspace{-8pt}}
+\titleformat{\subsubsection}[block]{\bfseries\large}{\thesubsubsection}{12pt}{\vspace{-8pt}}
+
+\titleformat{\subsubsubsection}[block]{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{12pt}{\vspace{-9pt}}
+\titlespacing*{\subsubsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+%%
+
+%% vykreslování úrovní v nadpisech a v obsahu
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{3}
+%%
+%% konec stylů kapitol a sekcí
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+
+%% formátování odstavců
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0,7em}
+
+\linespread{1.15} %% řádkování
+
+%% nastavení předcházení samotnému řádku textu na nové stránce
+\widowpenalty10000
+\clubpenalty10000
+
+%% Začátek dokumentu
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	
+	\pagestyle{empty}
+	\pagenumbering{gobble}
+	
+	\begin{titlepage}
+		\bfseries{
+			\begin{center}
+				%\LARGE{STŘEDOŠKOLSKÁ ODBORNÁ ČINNOST}
+				\fontsize{22}{2}\selectfont DELTA - Střední škola informatiky a ekonomie
+				
+				\vspace{0.08\textheight}
+				
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=0.55\textwidth]{logo.png}
+					
+				\end{figure}
+				
+				\vspace{0.22\textheight}
+				
+				
+				\huge{STŘEDOŠKOLSKÁ}
+				
+				\huge{ODBORNÁ ČINNOST}
+				
+%				\huge{
+%					Systém pro vkládání a zpracování ankety/zpětné vazby
+%				}
+				
+				\vspace{0.32\textheight}
+				
+				\noindent\LARGE{2022 \hspace{\stretch{1}}  Jan Hubený}
+				
+			\end{center}
+		}
+	\end{titlepage}
+	
+\end{document}

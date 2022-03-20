@@ -2,3 +2,7 @@ main.*
 !main.tex
 *.aux
 *.log
+/cover/*.*
+!/cover/*.tex
+!/cover/*.png
+!/cover/desky_soc.pdf

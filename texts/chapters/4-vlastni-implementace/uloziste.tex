@@ -19,7 +19,7 @@ Jak již bylo zmíněno, uživatelská data a samotná aplikace musí být někd
 	
 	Jedním ze zmíněných meziprvků elementu formuláře je element označující novou stránku (tabulka \textit{new\_pages}). Jeho využití je prosté - odděluje od sebe elementy pro uživatelský vstup, což při vykreslování formuláře slouží ke stránkování. Má jedinou vazbu - musí náležet elementu formuláře (tabulka \textit{form\_elements}).
 	
-	Dále přichází na řadu objekt elementu pro uživatelský vstup (tabulka \textit{input\_elements}), jehož účelem je hlavně zaobalení jednotlivých typů uživatelských vstupů. Také ale obsahuje atributy jako samotnou otázku (\textit{header}), proměnnou popisující, zda musí být otázka povinně vyplněna (\textit{is\_mandatory}), a proměnnou ukazující, zda jsou veřejně publikovány výsledky zodpovězení příslušné otázky (\textit{has\_public\_results}). Kromě vazby, že jako element nové stránky náleží elementu formuláře, mu musí náležet příslušný objekt typu vstupu (např. objekt z tabulky \textit{text\_inputs}).
+	Dále přichází na řadu objekt elementu pro uživatelský vstup (tabulka \textit{input\_elements}), jehož účelem je hlavně zaobalení jednotlivých typů uživatelských vstupů. Také ale obsahuje atributy jako samotnou otázku (\textit{header}), proměnnou popisující, zda musí být otázka povinně vyplněna (\textit{is\_mandatory}), a proměnnou ukazující, zda jsou veřejně publikovány výsledky zodpovězení příslušné otázky (\textit{has\_public\_results}). Kromě vazby, že jako element nové stránky náleží elementu formuláře, mu musí náležet příslušný objekt typu vstupu (např. objekt z~tabulky \textit{text\_inputs}).
 	
 	\subsubsection{Typy vstupů}
 	\label{sec:form_inputs_types}

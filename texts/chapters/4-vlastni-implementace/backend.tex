@@ -65,7 +65,7 @@
 		\label{fig:routes_api} %% označení až budeš chtít na obrázek odkazovat
 	\end{figure}
 	
-	Zmíněné cesty jsou rozděleny do dvou skupin - s~veřejným přístupem (bez přihlášení) nebo s~privátním přístupem (s~přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s~příslušnými daty odeslány údaje o~přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček \uv{Laravel Sanctum} pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon (tj. funkce obsahující, co se má s požadavkem provést), který je deklarován v~příslušném kontroléru. 
+	Zmíněné cesty jsou rozděleny do dvou skupin - s~veřejným přístupem (bez přihlášení) nebo s~privátním přístupem (s~přihlášením). Veřejné cesty jsou obslouženy vždy, privátní cesty jsou obslouženy jen pokud jsou společně s~příslušnými daty odeslány údaje o~přihlášení (tj. autorizační tokeny) - ty si autonomně spravuje balíček \uv{Laravel Sanctum} pro zabezpečení single-page aplikací. Ke každé cestě je přidělen úkon (tj. funkce obsahující, co se má s~požadavkem provést), který je deklarován v~příslušném kontroléru. 
 	
 	Zmíněné cesty mají také deklarováno, jakou metodu komunikace používají. V~této implementaci byly využity zejména tyto metody: standardní GET a POST, ale také PUT pro aktualizaci dat nebo DELETE pro mazání dat.
 	
@@ -187,7 +187,7 @@
     	\label{fig:kontroler}
     \end{figure}
     
-    Konkrétní postupy, jak se jednotlivé činnosti provádí, jsou popsány v sekci \ref{sec:be_prubeh_jednotl_cinnosti}.
+    Konkrétní postupy, jak se jednotlivé činnosti provádí, jsou popsány v~sekci \ref{sec:be_prubeh_jednotl_cinnosti}.
     
 		\subsubsection{Kontrolér formuláře}
 		Kontrolér formuláře, jak už z~názvu vyplývá, pracuje s~daty jednotlivých formulářů. Kromě výše zmíněných běžných metod obsahuje metodu pro vrácení privátního formuláře, metodu pro duplikaci formuláře, metodu pro vrácení formuláře s~dodatečnými daty pro majitele formuláře, metodu pro nastavení veřejných výsledků či metodu pro úpravu přístupu k~formuláři (nastavení veřejného nebo privátního formuláře).
@@ -201,7 +201,7 @@
 	\subsection{Exporty}\label{sec:exports}
 	Exporty, resp. jejich třídy, slouží k~definování vzhledu a způsobu uložení dat v~určitém formátu. Exportovat můžeme různá data do různých formátů (např. obrázek do formátu PNG, list nějakých záznamů do tabulky formátu CSV,...).
 	
-	V~rámci tohoto projektu byl export potřeba jen v~jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K~tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi, které jsou s tímto úkonem spojené. Jakým způsobem jsou tato data exportována je popsáno v~sekci \ref{sec:form_comp_export}.
+	V~rámci tohoto projektu byl export potřeba jen v~jednom případě - pro exportování výsledků vyplnění formuláře pro majitele formuláře do formátu MS Excel. K~tomuto účelu byl využit přídavný balíček \uv{maatwebsite/excel}, který zajišťuje veškerou administrativu nad věcmi, které jsou s~tímto úkonem spojené. Jakým způsobem jsou tato data exportována je popsáno v~sekci \ref{sec:form_comp_export}.
 	
 	\subsection{Maily}
 	Maily, resp. jejich třídy, slouží k~definování vzhledu a obsahu emailu. Poté, co se vytvoří instance této třídy, která je hydratována (tzn. naplněna daty), jsou data předána příslušnému pohledu, který je poté poslán na požadované emaily.
@@ -234,7 +234,7 @@
 	\subsection{Pohledy}\label{sec:be_pohledy}
 	Pohledy jsou šablony ve formátu PHP (spravované balíčkem \uv{Blade}), pomocí kterých Laravel nativně vykresluje data uživateli. Poté, co jsou takové šabloně data předána (např. pomocí kontroléru), je šablona následně převedena na HTML formát, který je čitelný např. pro webový prohlížeč. Obvykle také obsahuje závislosti na různé přídavné soubory - např. JavaScript nebo CSS soubory. 
 	
-	V~tomto projektu (jak již bylo zmíněno) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jediný oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce v sekci \ref{sec:impl_frontend}.
+	V~tomto projektu (jak již bylo zmíněno) je pro vykreslení ve webovém prohlížeči použit pouze jeden pohled s~názvem \textit{app} (viz obrázek \ref{fig:pohled_app}). Tato šablona kromě standardní HTML hlavičky a běžných referenci na javascriptové nebo CSS soubory obsahuje pouze tělo obsahující jediný oddíl s~ID \textit{app}. Na tento oddíl díky referenci na ID poté oddělený frontend ve VueJS připojuje další jednotlivé elementy stránky - tyto elementy a další postupy jsou dále popsány ve frontendové části práce v~sekci \ref{sec:impl_frontend}.
 	
 	\begin{figure}[h]
 		\centering
@@ -246,7 +246,7 @@
 	\subsection{Průběh jednotlivých činností}\label{sec:be_prubeh_jednotl_cinnosti}
 	V~této části jsou popsány postupy, jak se jednotlivé akce zpracovávají na serveru a jak jsou data předávána databázi či uživateli webové stránky. Úkony jsou rozděleny tak, jak jsou zapsány v~kontrolérech. Z~hlediska kódu je každý úkon metodou kontroléru.
 	
-	Každá z~těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Zde (tabulka \ref{tab:http_stavove_kody}) je seznam přímo využitých stavových kódů, které jsou serverem v této implementaci obvykle předávány.
+	Každá z~těchto metod vrací po provedení úkonu většinou předdefinovaný stavový kód označující, zda se činnost provedla úspěšně či nikoliv. Zde (tabulka \ref{tab:http_stavove_kody}) je seznam přímo využitých stavových kódů, které jsou serverem v~této implementaci obvykle předávány.
 	
 	\begin{table}[H]
 		\centering
@@ -423,7 +423,7 @@
 			
 			\begin{itemize}
 				\item Na prvním řádku v~první buňce (roh tabulky) je umístěn samotný název formuláře.
-				\item Na druhém řádku je nejprve definován sloupec \textit{Completion ID} (ten obsahuje ID pro každou zaznamenanou odpověď - jedná se o~\textit{id} databázového objektu pro vyplnění formuláře viz sekce \ref{sec:form_completions}). Poté jsou v řádku sázeny jednotlivé otázky formuláře.
+				\item Na druhém řádku je nejprve definován sloupec \textit{Completion ID} (ten obsahuje ID pro každou zaznamenanou odpověď - jedná se o~\textit{id} databázového objektu pro vyplnění formuláře viz sekce \ref{sec:form_completions}). Poté jsou v~řádku sázeny jednotlivé otázky formuláře.
 				\item Na dalších řádcích jsou vypsána data z~odpovědi - tzn. na prvním místě ID vyplnění formuláře, poté příslušné odpovědi pod příslušnými otázkami.
 			\end{itemize}
 		

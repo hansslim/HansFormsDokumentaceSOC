@@ -9,10 +9,10 @@ Lze ji také označit za „klientskou stranu“ aplikace, jelikož je tvořena 
 	\subsection{JavaScript}
 	JavaScript je multiplatformní, objektově orientovaný, událostmi řízený skriptovací jazyk, který je používán primárně při tvorbě webových stránek. Je určen především pro tvorbu klientské strany, ale např. díky prostředí Node.js lze v~něm dnes psát i serverovou část aplikace. \cite{JS1}\cite{JS2}
 	
-	Psát web v~čistém JavaScriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém JavaScriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen v sekci \ref{sec:vuejs}.
+	Psát web v~čistém JavaScriptu dnes v~souvislosti s~pokročilejšími webovými aplikacemi s~největší pravděpodobností postrádá smysl, jelikož zde existují tzv. javascriptové frameworky, které za nás řeší nejrůznější problémy (jak technické, tak i bezpečnostní), které bychom museli implementovat v~čistém JavaScriptu ručně. Tento projekt není výjimkou, a proto byl při tvoření klientské strany použit framework VueJS, který je představen v~sekci \ref{sec:vuejs}.
 	
 	\subsection{VueJS}\label{sec:vuejs}
-	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se o framework psaný v~jazyce JavaScript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné části aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
+	VueJS je progresivní open-source framework určený k~tvorbě uživatelských rozhraní. Jedná se o~framework psaný v~jazyce JavaScript, ale lze ho psát i v~Typescriptu. Tento framework je vhodný primárně jen pro účely viditelné části aplikace – nelze v~něm např. programovat chování serveru. \cite{VueJS1}
 	
 	Svou popularitu si získal především tím, že je vyvíjen komunitou, a strukturou kódu, ve kterém je psán (viz obrázek \ref{fig:vue_kod_komponenty}). Kód jednotlivých komponent je tvořen třemi základními částmi:
 	
@@ -78,7 +78,7 @@ Backend může být také zamýšlen jako prostředí pro správu např. obsahu 
 	V~tomto projektu byl použit primárně ke správě balíčků pro backendovou část.
 		
 \section{Úložiště dat}
-Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem, musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~využitých úložištích v tomto projektu je psáno níže.
+Samotná data, která jsou spravována a vyměňována mezi backendem a frontendem, musí být samozřejmě někde ukládána. Kromě zmíněných dat samozřejmě musí být i samotná aplikace někde uložena a veřejně dostupná. K~těmto účelům slouží právě úložiště dat – o~využitých úložištích v~tomto projektu je psáno níže.
 
 	\subsection{Webhosting}
 	Webhosting je služba, díky které si můžeme pronajmout prostor na cizím vzdáleném serveru pro naše webové stránky. Poskytovatelé těchto služeb většinou nabízí i služby spojené s~provozem databází nebo e-mailové schránky. Hlavní výhodou této služby je fakt, že nemusíme fyzicky vlastnit žádný server a že nemusíme řešit administrativní úkony s~ním spojené (např. instalace specializovaného softwaru na serveru). \cite{Webhosting}
@@ -120,7 +120,7 @@ Samotná data, která jsou spravována a vyměňována mezi backendem a frontend
 		\item \textbf{Durability} (v~překladu Odolnost) – po provedení transakce musí být data permanentně uložena v~databázi \cite{ACID}
 	\end{itemize}
 	
-	V~projektu byla využita relační databáze PostgreSQL, která je popsána v sekci \ref{sec:pgsql}.
+	V~projektu byla využita relační databáze PostgreSQL, která je popsána v~sekci \ref{sec:pgsql}.
 	
 		\subsubsection{PostgreSQL}\label{sec:pgsql}
 		PostgreSQL je open-source objektově-relační databáze (spojení relačního a objektově orientovaného modelu) splňující ACID zásady. Je rozšířená a oblíbená kvůli její architektuře, výkonnosti, spolehlivosti, datové integritě, rozšířitelnosti, škálovatelnosti a velkému množství funkcí. Využívá jazyk SQL, který rozšiřuje o~další funkce a syntaxi. \cite{PostgreSQL}

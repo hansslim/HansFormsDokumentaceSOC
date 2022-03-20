@@ -6,3 +6,4 @@ main.*
 !/cover/*.tex
 !/cover/*.png
 !/cover/desky_soc.pdf
+verze_dokumentace.txt
